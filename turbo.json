@@ -1,0 +1,33 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
+      "dependsOn": ["^build"]
+    },
+    "build-packages": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build-packages"]
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "dependsOn": []
+    },
+    "lint": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["build-packages"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "dev-docs": {
+      "cache": false,
+      "persistent": true
+    },
+    "clean": {
+      "cache": false
+    }
+  },
+  "globalEnv": ["NODE_ENV", "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID"]
+}

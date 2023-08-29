@@ -1,0 +1,14 @@
+This page is for you if you currently are integrated with one of the following SDKs and looking to use this SDK:
+
+- `wagmi`
+- `@solana/wallet-adapter-react`
+
+If so, then you are in the right place.
+
+## Integrating with `wagmi`
+
+The only thing you have to do when integrating with `wagmi` is to omit the `EvmWalletProvider`. This is because in using `wagmi`, you already wrap your app in a `wagmi` client which is what `EvmWalletProvider` uses under the hood.
+
+## Inegrating with `@solana/wallet-adapter-react`
+
+Similarly, for integrating with `@solana/wallet-adapter-react`, you have to omit the `SolanaWalletProvider`. This is because in using `@solana/wallet-adapter-react` you already wrap your app in a `WalletProvider` which is what `SolanaWalletProvider` uses under the hood.

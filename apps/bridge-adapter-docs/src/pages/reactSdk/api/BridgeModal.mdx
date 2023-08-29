@@ -1,0 +1,95 @@
+import Image from "next/image";
+
+# `BridgeModal`
+
+The `BridgeModal` forms the core of the React SDK. It attaches an `onClick` handler to a child element that is responsible for opening the modal when clicked.
+
+<div
+  style={{
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-around",
+    paddingTop: "1.5rem",
+  }}
+>
+  <Image
+    src="/assets/dark-mode.png"
+    alt="Dark mode UI of the bridge"
+    style={{ width: "100%", marginTop: "1rem" }}
+    width={1190}
+    height={900}
+  />
+  <Image
+    src="/assets/light-mode.png"
+    alt="Light mode UI of the bridge"
+    style={{ width: "100%" }}
+    width={1190}
+    height={900}
+  />
+</div>
+
+> Above, the bridge modal in dark and light mode respectively
+
+## Usage
+
+```tsx
+import { BridgeModal } from "@elasticbottle/react-bridge-adapter-sdk";
+// Note that you have to import this wherever you import your global css stylesheet
+// put this before your own stylesheet in case you want to override certain variables
+import "@elasticbottle/react-bridge-adapter-sdk/index.css";
+
+<BridgeModal
+  customization={{
+    theme: "dark",
+    modalTitle: "Defi Dapp",
+  }}
+>
+  <Button>Subscribe</Button>
+</BridgeModal>;
+```
+
+## Configurations
+
+| Prop name       | Type                                                                      | Required | Description                                                 |
+| --------------- | ------------------------------------------------------------------------- | -------- | ----------------------------------------------------------- |
+| `children`      | `React.ReactNode`                                                         | required | The children element that will open the modal when clicked. |
+| `customization` | `{` <br/> `theme: 'dark' \| 'light',` <br/> `modalTitle: string`<br/> `}` | optional | Defaults to no title and `light` theme                      |
+
+## Advance styling
+
+If you want more than the light and dark theme included, you can easilyl override the given style with your own.
+
+Below are the following variables that you can override. The values in HSL format are the current default for `light` mode.
+
+To override the dark mode theme, simply wrap the variables in the `bsa-dark` selector.
+
+```css
+--bsa-background: 224 71% 4%;
+--bsa-foreground: 213 31% 91%;
+
+--bsa-muted: 223 47% 11%;
+--bsa-muted-foreground: 215.4 16.3% 56.9%;
+
+--bsa-accent: 216 34% 17%;
+--bsa-accent-foreground: 210 40% 98%;
+
+--bsa-popover: 224 71% 4%;
+--bsa-popover-foreground: 215 20.2% 65.1%;
+
+--bsa-border: 216 34% 17%;
+--bsa-input: 216 34% 17%;
+
+--bsa-card: 224 71% 4%;
+--bsa-card-foreground: 213 31% 91%;
+
+--bsa-primary: 210 40% 98%;
+--bsa-primary-foreground: 222.2 47.4% 1.2%;
+
+--bsa-secondary: 222.2 47.4% 11.2%;
+--bsa-secondary-foreground: 210 40% 98%;
+
+--bsa-destructive: 0 63% 31%;
+--bsa-destructive-foreground: 210 40% 98%;
+
+--bsa-ring: 216 34% 17%;
+```

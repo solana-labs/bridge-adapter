@@ -1,0 +1,65 @@
+## Installation
+
+To get started, grab the vanilla Javascript NPM package
+
+```bash
+npm install @elasticbottle/core-bridge-adapter-sdk
+yarn add @elasticbottle/core-bridge-adapter-sdk
+pnpm add @elasticbottle/core-bridge-adapter-sdk
+```
+
+## Initializing the SDK
+
+Once you install the SDK, you can instantiate the SDK and begin using it like so:
+
+```javascript
+import { BridgeAdapterSdk } from "@elasticbottle/core-bridge-adapter-sdk";
+
+const sdk = new BridgeAdapterSdk(args);
+
+const chains = await sdk.getSupportedChains(); // ['Ethereum', 'Avalanche', 'Solana', ...]
+
+// contrived for the example
+const sourceChain = 'Ethereum';
+const targetChain = 'Solana';
+
+const supportedSourceTokens = await sdk.getSupportedTokens("source", {
+  sourceChain,
+});
+const supportedTargetTokens = await sdk.getSupportedTokens("target", {
+  targetChain,
+});
+
+// contrived for the example
+const tokenToSwapFrom = supportedSourceTokens[0];
+const tokenToSwapTo = supportedTargetTokens[0];
+
+const swapRoutes = await sdk.getSwapInformation({
+    ...tokenToSwapFrom,
+    // contrived
+    selectedAmountInBaseUnits: "1000000";
+    selectedAmountFormatted: "1";
+  },
+  tokenToSwapTo
+);
+
+const isSuccess = sdk.bridge({
+  sourceAccount: walletClientFromViemSomehow,
+  targetAccount: {
+    signTransaction(transaction) => {
+      // sign the transaction and return the signed transaction
+    },
+    publicKey: new PublicKey("") // public key of the account that signed the transaction
+  },
+  swapRoutes[0],
+  onStatusUpdate(update) {
+    console.log(update)
+  },
+});
+```
+
+## Note on `1.0.0` release
+
+Note that for a 1.0.0 release, there might be consideration to change the API to be more functional. This would take advantage of better tree shaking and bundle size considering for minimal DX penalty. If you have strong opinions on this - [open an issue](https://github.com/ElasticBottle/bridge-adapter-sdk/issues).
+
+For more details on the functions in the sdk, see their respective document page.

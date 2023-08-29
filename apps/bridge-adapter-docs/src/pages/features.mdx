@@ -1,0 +1,71 @@
+import Image from "next/image";
+
+This page covers some of the features that this SDK has out of the box with minimal configuration.
+
+## ✅ Familiar UI with light and dark mode
+
+If you are looking for a familiar swap/bridging UI, the SDK comes with a light/dark mode configurable UI out of the box.
+
+<div
+  style={{
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-around",
+    paddingTop: "1.5rem",
+  }}
+>
+  <Image
+    src="/assets/dark-mode.png"
+    alt="Dark mode UI of the bridge"
+    style={{ width: "100%", marginTop: "1rem" }}
+    width={1190}
+    height={900}
+  />
+  <Image
+    src="/assets/light-mode.png"
+    alt="Light mode UI of the bridge"
+    style={{ width: "100%" }}
+    width={1190}
+    height={900}
+  />
+</div>
+
+## 🔗 7 Supported Chains
+
+As of today, this bridge supports swapping and bridging tokens between 7 chains. Your Mileage might vary depending on which bridges you allow or disallow
+
+- Ethereum
+- Polygon
+- Solana
+- Arbitrum
+- Optimism
+- Binance Smart Chain
+- Avalanche
+
+## 🌉 3 Supported Bridges
+
+The SDK supports 3 bridges out of the box. You can choose to enable or disable any of them.
+
+1 more bridges are in the works, with more to come once the API is solidified.
+
+- Wormhole
+- DeBridge
+- Mayan Finance
+- Allbridge Core (in pipeline)
+
+## 🦄 4 Supported DEXes
+
+The SDK supports 4 DEXes out of the box that is integrated with the various bridges.
+
+Unfortunately, there is no way to select speicifc DEXes to use right now. The SDK will automatically select the best DEX to use based on the token pair and the amount being swapped.
+
+- Paraswap (EVM)
+- 1inch (EVM)
+- Jupiter (Solana)
+- Prism (Solana)
+
+## 📃 Great DX and composable with existing frameworks today
+
+Are you starting from scratch or are you using `@solana/wallet-adapter` or `wagmi`?
+
+No problem! The SDK is designed to easy to use while still being composable with existing frameworks and libraries.

@@ -1,0 +1,27 @@
+{
+  "name": "bridge-adapter-sdk",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "build-packages": "turbo run build-packages",
+    "dev": "turbo run dev --no-cache --continue",
+    "dev-docs": "turbo run dev-docs --no-cache --continue",
+    "lint": "turbo run lint && manypkg check",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "ci:publish": "turbo run build-packages && changeset publish",
+    "ci:version": "changeset version"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.25.2",
+    "@manypkg/cli": "^0.21.0",
+    "eslint": "^8.29.0",
+    "eslint-config-bridge-adapter-sdk": "^0.0.0",
+    "prettier": "^2.8.0",
+    "tsup": "^7.0.0",
+    "turbo": "1.10.4"
+  },
+  "packageManager": "pnpm@8.6.2"
+}

@@ -1,0 +1,54 @@
+# Getting started
+
+The react package allows you to easily integrate the core `BridgeAdapterSdk` into your React application with a UI.
+
+![end to end cross chain swap flow](/assets/e2e-cross-chain-swap.gif)
+
+## Installation
+
+To get started, grab the React NPM package
+
+```bash
+npm install @elasticbottle/react-bridge-adapter-sdk
+yarn add @elasticbottle/react-bridge-adapter-sdk
+pnpm add @elasticbottle/react-bridge-adapter-sdk
+```
+
+## Initializing the SDK
+
+Once you install the SDK, you can integrate it into your code like so:
+
+```tsx
+"use client";
+
+import {
+  BridgeModal,
+  BridgeModalProvider,
+  EvmWalletProvider,
+  SolanaWalletProvider,
+} from "@elasticbottle/react-bridge-adapter-sdk";
+// Note that you have to import this wherever you import your global css stylesheet
+// put this before your own stylesheet in case you want to override certain variables
+import "@elasticbottle/react-bridge-adapter-sdk/index.css";
+
+export function HomePage() {
+  return (
+    <SolanaWalletProvider>
+      <EvmWalletProvider>
+        <BridgeModalProvider>
+          <BridgeModal
+            customization={{
+              theme: "dark",
+              modalTitle: "Defi Dapp",
+            }}
+          >
+            <Button>Subscribe</Button>
+          </BridgeModal>
+        </BridgeModalProvider>
+      </EvmWalletProvider>
+    </SolanaWalletProvider>
+  );
+}
+```
+
+For more details on the respective components, see their own document page.

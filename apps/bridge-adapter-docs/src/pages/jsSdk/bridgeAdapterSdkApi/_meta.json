@@ -1,0 +1,6 @@
+{
+  "getSupportedChains": "getSupportedChains()",
+  "getSupportedTokens": "getSupportedTokens()",
+  "getSwapInformation": "getSwapInformation()",
+  "bridge": "bridge()"
+}
