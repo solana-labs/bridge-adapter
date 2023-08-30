@@ -66,7 +66,7 @@ const burnTx = await ethTokenMessengerContract.methods
     amount,
     AVAX_DESTINATION_DOMAIN,
     destinationAddressInBytes32,
-    USDC_ETH_CONTRACT_ADDRESS
+    USDC_ETH_CONTRACT_ADDRESS,
   )
   .send();
 ```
@@ -75,7 +75,7 @@ const burnTx = await ethTokenMessengerContract.methods
 
 ```typescript
 const transactionReceipt = await web3.eth.getTransactionReceipt(
-  burnTx.transactionHash
+  burnTx.transactionHash,
 );
 const eventTopic = web3.utils.keccak256("MessageSent(bytes)");
 const log = transactionReceipt.logs.find((l) => l.topics[0] === eventTopic);
@@ -85,7 +85,7 @@ const messageHash = web3.utils.keccak256(messageBytes);
 let attestationResponse = { status: "pending" };
 while (attestationResponse.status != "complete") {
   const response = await fetch(
-    `https://iris-api-sandbox.circle.com/attestations/${messageHash}`
+    `https://iris-api-sandbox.circle.com/attestations/${messageHash}`,
   );
   attestationResponse = await response.json();
   await new Promise((r) => setTimeout(r, 2000));
@@ -97,7 +97,7 @@ while (attestationResponse.status != "complete") {
 ```typescript
 const receiveTx = await avaxMessageTransmitterContract.receiveMessage(
   receivingMessageBytes,
-  signature
+  signature,
 );
 ```
 
@@ -243,7 +243,7 @@ class AbstractBridgeAdapter {
   // TODO: figure out return type
 
   abstract receive(
-    targetAccount: PublicKey | ethers.Signer | viem.Account
+    targetAccount: PublicKey | ethers.Signer | viem.Account,
   ): Promise<void>;
   // TODO: figure out return type
 }

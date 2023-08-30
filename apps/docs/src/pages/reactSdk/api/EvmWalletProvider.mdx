@@ -1,0 +1,37 @@
+# `EvmWalletProvider`
+
+This provider is only needed if your app does not currently use [`wagmi`](https://wagmi.sh/) already.
+
+## Usage
+
+```tsx
+import { EvmWalletProvider } from "bridge-adapter-react";
+
+<EvmWalletProvider
+  settings={{
+    coinbaseWalletSettings: {
+      appName: "Example Defi Dapp",
+    },
+    walletConnectProjectId:
+      process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ?? "",
+    alchemyApiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? "",
+    infuraApiKey: process.env.NEXT_PUBLIC_INFURA_PROJECT_ID ?? "",
+  }}
+>
+  <BridgeModalProvider>
+    <BridgeModal>
+      <Button>Subscribe</Button>
+    </BridgeModal>
+  </BridgeModalProvider>
+</EvmWalletProvider>;
+```
+
+## Configurations
+
+| Prop name                | Type                  | Required | Description                                                                       |
+| ------------------------ | --------------------- | -------- | --------------------------------------------------------------------------------- |
+| `children`               | `React.ReactNode`     | required | The children will have access to the provider's values                            |
+| `coinbaseWalletSettings` | `{ appname: string }` | optional | The name of your app that will be used when a users connect with a CoinbaseWallet |
+| `walletConnectProjectId` | `string`              | optional | Your wallet connect Project ID                                                    |
+| `infuraApiKey`           | `string`              | optional | Alchemy API key, Defaults to public RPCs otherwise                                |
+| `alchemyApiKey`          | `string`              | optional | Infura API key, Defaults to public RPCs otherwise                                 |

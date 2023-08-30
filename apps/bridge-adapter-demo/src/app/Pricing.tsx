@@ -1,11 +1,11 @@
 "use client";
 
+import { BridgeModal } from "@solana/bridge-adapter-react-ui";
 import {
-  BridgeModal,
   BridgeModalProvider,
   EvmWalletProvider,
   SolanaWalletProvider,
-} from "@elasticbottle/react-bridge-adapter-sdk";
+} from "bridge-adapter-react";
 
 import {
   CoinbaseWalletAdapter,
@@ -17,6 +17,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useMemo } from "react";
+
+const defaultTheme = "dark" as Parameters<typeof BridgeModal>[0]["theme"];
 
 export default function Pricing() {
   const products = [
@@ -49,7 +51,7 @@ export default function Pricing() {
             new PhantomWalletAdapter(),
             new CoinbaseWalletAdapter(),
           ],
-    []
+    [],
   );
 
   return (
@@ -73,7 +75,7 @@ export default function Pricing() {
                   "divide-y divide-zinc-600 rounded-lg bg-zinc-900 shadow-sm",
                   {
                     "border border-pink-500": product.name === "Freelancer",
-                  }
+                  },
                 )}
               >
                 <div className="flex h-full flex-col justify-between p-6">
@@ -97,26 +99,24 @@ export default function Pricing() {
                       autoConnect={false}
                     >
                       <EvmWalletProvider
-                        settings={{
-                          coinbaseWalletSettings: {
-                            appName: "Example Defi Dapp",
-                          },
-                          walletConnectProjectId:
-                            process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ??
-                            "",
+                        coinbaseWalletSettings={{
+                          appName: "Example Defi Dapp",
                         }}
+                        walletConnectProjectId={
+                          process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ??
+                          ""
+                        }
                       >
                         <BridgeModalProvider>
+                          {/* eslint-disable-next-line */}
                           <BridgeModal
-                            customization={{
-                              theme: "dark",
-                              modalTitle: "Defi Dapp",
-                            }}
+                            theme={defaultTheme}
+                            modalTitle="Defi Dapp"
                           >
                             <Button
                               size="sm"
                               type="button"
-                              className="mt-8 w-full hover:bg-zinc-400"
+                              className="mt-8 w-full bg-primary hover:bg-zinc-400"
                             >
                               Subscribe
                             </Button>

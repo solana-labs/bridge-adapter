@@ -1,0 +1,132 @@
+{
+  "name": "@solana/bridge-adapter-react-ui",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "dist/index",
+      "types": "dist/index"
+    },
+    "./index.css": "./dist/index.css"
+  },
+  "main": "dist/index",
+  "types": "dist/index",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup src/index.tsx --env.ESM_ONLY true --external react",
+    "build-packages": "pnpm build --silent",
+    "build-storybook": "storybook build",
+    "clean": "./clean.sh",
+    "dev": "tsup src/index.tsx --env.ESM_ONLY true --external react --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "storybook": "storybook dev -p 6006",
+    "test": "pnpm run test-unit && pnpm run test-fn",
+    "test-unit": "ava src",
+    "test-fn": "vitest src/__tests__/**/**.test.*",
+    "test-coverage": "test-storybook --coverage",
+    "test-storybook": "test-storybook --browsers chromium, firefox"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=tsx"
+    ]
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.4",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-popover": "^1.0.6",
+    "@radix-ui/react-separator": "^1.0.3",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-switch": "^1.0.3",
+    "@solana/bridge-adapter-base-ui": "^0.1.0",
+    "@thirdweb-dev/chain-icons": "^1.0.5",
+    "bridge-adapter-base": "^0.1.0",
+    "bridge-adapter-react": "^0.1.0",
+    "class-variance-authority": "^0.6.1",
+    "clsx": "^1.2.1",
+    "cmdk": "^0.2.0",
+    "encoding": "^0.1.13",
+    "immer": "^10.0.2",
+    "lokijs": "^1.5.12",
+    "lucide-react": "^0.252.0",
+    "react-error-boundary": "^4.0.10",
+    "react-window": "^1.8.9",
+    "tailwind-merge": "^1.13.2",
+    "valibot": "^0.3.0",
+    "zustand": "^4.3.9"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.22.14",
+    "@babel/preset-react": "^7.22.5",
+    "@solana/wallet-adapter-react": "^0.15.35",
+    "@solana/wallet-adapter-wallets": "^0.19.22",
+    "@solana/web3.js": "^1.78.0",
+    "@storybook/addon-a11y": "^7.4.0",
+    "@storybook/addon-coverage": "^0.0.9",
+    "@storybook/addon-essentials": "^7.4.0",
+    "@storybook/addon-interactions": "^7.4.0",
+    "@storybook/addon-links": "^7.4.0",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/addon-styling": "^1.3.7",
+    "@storybook/blocks": "^7.4.0",
+    "@storybook/jest": "^0.2.2",
+    "@storybook/nextjs": "^7.4.0",
+    "@storybook/react": "^7.4.0",
+    "@storybook/react-webpack5": "^7.4.0",
+    "@storybook/test-runner": "^0.13.0",
+    "@storybook/testing-library": "^0.2.0",
+    "@tanstack/eslint-plugin-query": "^4.29.9",
+    "@tanstack/react-query": "^4.29.19",
+    "@types/react": "^18.2.13",
+    "@types/react-dom": "^18.2.6",
+    "@types/react-window": "^1.8.5",
+    "@typescript-eslint/parser": "^6.2.1",
+    "autoprefixer": "^10.4.14",
+    "ava": "^5.3.1",
+    "bridge-adapter-sdk-tsconfig": "^0.0.0",
+    "eslint": "^8.29.0",
+    "eslint-config-bridge-adapter-sdk": "^0.0.0",
+    "eslint-plugin-storybook": "^0.6.13",
+    "eslint-plugin-turbo": "^1.10.14",
+    "ethers": "^5.7.2",
+    "postcss": "8.4.24",
+    "prettier": "^2.8.0",
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^7.4.0",
+    "tailwind": "^4.0.0",
+    "tailwindcss": "3.3.2",
+    "tailwindcss-animate": "^1.0.6",
+    "tsup": "^7.0.0",
+    "tsx": "^3.12.8",
+    "typescript": "^5.1.3",
+    "viem": "^1.4.1",
+    "vite": "^4.4.9",
+    "vitest": "^0.34.4",
+    "wagmi": "^1.3.9"
+  },
+  "peerDependencies": {
+    "@solana/wallet-adapter-react": "^0.15.32",
+    "@solana/wallet-adapter-wallets": "^0.19.22",
+    "@solana/web3.js": "^1.78.0",
+    "@tanstack/react-query": "^4.29.19",
+    "ethers": "^5.7.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "viem": "^1.4.1",
+    "wagmi": "^1.3.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

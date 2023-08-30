@@ -30,12 +30,12 @@ export abstract class AbstractBridgeAdapter {
   abstract getSupportedTokens(
     interestedTokenList: ChainDestType,
     chains?: Partial<ChainSourceAndTarget>,
-    tokens?: { sourceToken: Token; targetToken: Token }
+    tokens?: { sourceToken: Token; targetToken: Token },
   ): Promise<Token[]>;
 
   abstract getSwapDetails(
     sourceToken: Token,
-    targetToken: Token
+    targetToken: Token,
   ): Promise<SwapInformation>;
 
   abstract bridge({

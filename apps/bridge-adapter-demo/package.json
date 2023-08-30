@@ -1,21 +1,21 @@
 {
-  "name": "bridge-adapter-demo",
-  "version": "0.1.0",
+  "name": "bridge-adapter-sdk-demo",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
-    "dev-demo": "next dev",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm -rf .next",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@elasticbottle/react-bridge-adapter-sdk": "^0.0.0",
+    "@solana/bridge-adapter-react-ui": "^0.1.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@solana/wallet-adapter-react": "^0.15.32",
     "@solana/wallet-adapter-wallets": "^0.19.19",
     "@solana/web3.js": "^1.78.0",
     "@tanstack/react-query": "^4.29.19",
+    "bridge-adapter-react": "^0.1.0",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "ethers": "^5.7.2",
@@ -29,7 +29,7 @@
     "wagmi": "^1.3.9"
   },
   "devDependencies": {
-    "@elasticbottle/bridge-adapter-sdk-tsconfig": "^0.0.0",
+    "bridge-adapter-sdk-tsconfig": "^0.0.0",
     "@types/node": "20.3.1",
     "@types/react": "^18.2.13",
     "@types/react-dom": "^18.2.6",

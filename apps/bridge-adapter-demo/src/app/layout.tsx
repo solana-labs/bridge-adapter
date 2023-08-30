@@ -1,6 +1,6 @@
 import Footer from "@/components/ui/Footer";
 import Navbar from "@/components/ui/Navbar";
-import "@elasticbottle/react-bridge-adapter-sdk/index.css";
+import "@solana/bridge-adapter-react-ui/index.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";

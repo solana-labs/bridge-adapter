@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* For Wallet Icons */
+    --ck-brand-walletConnect: #3b99fc;
+    --ck-brand-coinbaseWallet: #0052ff;
+    --ck-brand-metamask: #f6851b;
+    --ck-brand-metamask-01: #f6851b;
+    --ck-brand-metamask-02: #e2761b;
+    --ck-brand-metamask-03: #cd6116;
+    --ck-brand-metamask-04: #161616;
+    --ck-brand-metamask-05: #763d16;
+    --ck-brand-metamask-06: #d7c1b3;
+    --ck-brand-metamask-07: #c0ad9e;
+    --ck-brand-metamask-08: #e4761b;
+    --ck-brand-metamask-09: #233447;
+    --ck-brand-metamask-10: #e4751f;
+    --ck-brand-metamask-11: #fef5e7;
+    --ck-brand-metamask-12: #e3c8ab;
+
+    --bsa-background: 0 0% 100%;
+    --bsa-foreground: 222.2 47.4% 11.2%;
+
+    --bsa-muted: 210 40% 96.1%;
+    --bsa-muted-foreground: 215.4 16.3% 46.9%;
+
+    --bsa-popover: 0 0% 100%;
+    --bsa-popover-foreground: 222.2 47.4% 11.2%;
+
+    --bsa-border: 214.3 31.8% 91.4%;
+    --bsa-input: 214.3 31.8% 91.4%;
+
+    --bsa-card: 0 0% 100%;
+    --bsa-card-foreground: 222.2 47.4% 11.2%;
+
+    --bsa-primary: 222.2 47.4% 11.2%;
+    --bsa-primary-foreground: 210 40% 98%;
+
+    --bsa-secondary: 210 40% 96.1%;
+    --bsa-secondary-foreground: 222.2 47.4% 11.2%;
+
+    --bsa-accent: 210 40% 96.1%;
+    --bsa-accent-foreground: 222.2 47.4% 11.2%;
+
+    --bsa-destructive: 0 100% 50%;
+    --bsa-destructive-foreground: 210 40% 98%;
+
+    --bsa-ring: 215 20.2% 65.1%;
+
+    --bsa-radius: 0.5rem;
+  }
+
+  .bsa-dark {
+    --bsa-background: 224 71% 4%;
+    --bsa-foreground: 213 31% 91%;
+
+    --bsa-muted: 223 47% 11%;
+    --bsa-muted-foreground: 215.4 16.3% 56.9%;
+
+    --bsa-accent: 216 34% 17%;
+    --bsa-accent-foreground: 210 40% 98%;
+
+    --bsa-popover: 224 71% 4%;
+    --bsa-popover-foreground: 215 20.2% 65.1%;
+
+    --bsa-border: 216 34% 17%;
+    --bsa-input: 216 34% 17%;
+
+    --bsa-card: 224 71% 4%;
+    --bsa-card-foreground: 213 31% 91%;
+
+    --bsa-primary: 210 40% 98%;
+    --bsa-primary-foreground: 222.2 47.4% 1.2%;
+
+    --bsa-secondary: 222.2 47.4% 11.2%;
+    --bsa-secondary-foreground: 210 40% 98%;
+
+    --bsa-destructive: 0 63% 31%;
+    --bsa-destructive-foreground: 210 40% 98%;
+
+    --bsa-ring: 216 34% 17%;
+
+    --bsa-radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply bsa-border-border;
+  }
+}
+
+/* TODO: put this in a more fitting place... */
+/* like components @layer or smth */
+.solflare-wallet-adapter-iframe {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: auto;
+}

@@ -1,0 +1,39 @@
+# `SolanaWalletProvider`
+
+This provider is only needed if your app does not currently use [`@solana/wallet-adapter-react`](https://github.com/solana-labs/wallet-adapter) already.
+
+## Usage
+
+```tsx
+import { SolanaWalletProvider } from "bridge-adapter-react";
+
+<SolanaWalletProvider wallets={adapters} autoConnect={false}>
+  <BridgeModalProvider>
+    <BridgeModal>
+      <Button>Subscribe</Button>
+    </BridgeModal>
+  </BridgeModalProvider>
+</SolanaWalletProvider>;
+```
+
+## Configurations
+
+See more details about the props to the `SolanaWalletProvider`. See the props pass into the `WalletProvider` [here](https://github.com/solana-labs/wallet-adapter/blob/master/APP.md).
+
+For convinience, here is the interface:
+
+```javascript
+interface SolanaWalletProviderProps {
+  children: ReactNode;
+  autoConnect?: boolean;
+  localStorageKey?: string;
+  onError?: (error: WalletError, adapter?: Adapter) => void;
+  wallets?: Adapter[];
+  rpcUrl?: string;
+}
+```
+
+Everything is the same as the `WalletProviderProps` passed to `WalletProvider` except that:
+
+- `wallets` prop is optional and defaults to any injected wallet in the user's browser.
+- `rpcUrl` prop is optional and defaults to `https://api.mainnet-beta.solana.com`

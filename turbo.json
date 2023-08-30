@@ -9,6 +9,10 @@
       "outputs": ["dist/**"],
       "dependsOn": ["^build-packages"]
     },
+    "build-storybook": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["build-packages"]
+    },
     "test": {
       "outputs": ["coverage/**"],
       "dependsOn": []
