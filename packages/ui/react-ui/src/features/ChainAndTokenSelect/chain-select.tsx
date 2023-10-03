@@ -1,7 +1,7 @@
-import type { ChainName } from "bridge-adapter-base";
+import type { ChainName } from "@solana/bridge-adapter-base";
 import { useCallback } from "react";
 import { hasChainDest } from "../../shared/lib/utils";
-import { setChain, useBridgeModalStore } from "bridge-adapter-react";
+import { setChain, useBridgeModalStore } from "@solana/bridge-adapter-react";
 import { useChainInfo } from "./use-chain-info";
 import { ChainSelectBase } from "./chain-select-base";
 

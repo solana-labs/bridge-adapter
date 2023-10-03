@@ -5,7 +5,7 @@ import {
   goBackOneStep,
   setCurrentBridgeStep,
   useBridgeModalStore,
-} from "bridge-adapter-react";
+} from "@solana/bridge-adapter-react";
 import { BridgeStepToTitle } from "../types/BridgeModal";
 import { Button } from "../shared/ui/button";
 import { DialogHeader, DialogTitle } from "../shared/ui/dialog";

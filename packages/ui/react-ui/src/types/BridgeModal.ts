@@ -1,4 +1,4 @@
-import type { ChainDestType, ChainName } from "bridge-adapter-base";
+import type { ChainDestType, ChainName } from "@solana/bridge-adapter-base";
 
 export const EMPTY_BRIDGE_STEP_TITLE = "Select a chain";
 

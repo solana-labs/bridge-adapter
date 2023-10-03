@@ -1,12 +1,14 @@
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useBridgeModalStore } from "bridge-adapter-react";
-import { useEtheriumChain } from "bridge-adapter-react";
+import {
+  useBridgeModalStore,
+  useEvmContext,
+  useSolanaWallet as useWallet,
+} from "@solana/bridge-adapter-react";
 import Debug from "debug";
 
 const warn = Debug("warn:react-ui:useIsWalletConnected");
 
 export function useIsWalletConnected() {
-  const { isConnected: isEvmWalletConnected } = useEtheriumChain();
+  const { isConnected: isEvmWalletConnected } = useEvmContext();
   const { connected: isSolanaWalletConnected } = useWallet();
   const { sourceToken, targetToken } = useBridgeModalStore.use.token();
 

@@ -1,10 +1,10 @@
-import type { SwapInformation } from "bridge-adapter-base";
+import type { SwapInformation } from "@solana/bridge-adapter-base";
 import type { FC } from "react";
 import {
   setCurrentBridgeStep,
   setSwapInformation,
   useBridgeModalStore,
-} from "bridge-adapter-react";
+} from "@solana/bridge-adapter-react";
 import { useSwapInfo } from "./use-swap-info";
 import { SwapDetailsBase } from "./swap-details-base";
 

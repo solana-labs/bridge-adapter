@@ -3,8 +3,8 @@ import type {
   ChainDestType,
   SwapInformation,
   TokenWithAmount,
-} from "bridge-adapter-base";
-import { BridgeAdapterSdk } from "bridge-adapter-base";
+} from "@solana/bridge-adapter-base";
+import { BridgeAdapterSdk } from "@solana/bridge-adapter-base";
 import { parseUnits } from "viem";
 import type { StoreApi, UseBoundStore } from "zustand";
 import { create } from "zustand";

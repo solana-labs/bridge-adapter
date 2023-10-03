@@ -1,4 +1,4 @@
-import { setCurrentBridgeStep } from "bridge-adapter-react";
+import { setCurrentBridgeStep } from "@solana/bridge-adapter-react";
 import type { FC } from "react";
 import { PendingTransactionButtonBase } from "./pending-transaction-button-base";
 

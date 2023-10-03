@@ -1,4 +1,4 @@
-import type { TokenWithAmount } from "bridge-adapter-base";
+import type { TokenWithAmount } from "@solana/bridge-adapter-base";
 
 export const DEFAULT_TOKEN_WITH_AMOUNT: TokenWithAmount = {
   address: "",

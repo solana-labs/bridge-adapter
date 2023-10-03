@@ -1,6 +1,6 @@
 import { Copy, CopyCheck } from "lucide-react";
-import { cn } from "../../shared/lib/styles";
-import { formatEvmAddress } from "../../lib/utils";
+import { cn } from "../lib/styles";
+import { formatEvmAddress } from "../lib/utils";
 import { useCopyAddress } from "./useCopyAddress";
 
 export function AddressLine({

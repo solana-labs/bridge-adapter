@@ -2,7 +2,7 @@
 import React from "react";
 import * as rtl from "@testing-library/react";
 import { describe, test, expect, beforeEach, afterEach } from "vitest";
-import { SolanaWalletProvider } from "bridge-adapter-react";
+import { SolanaWalletProvider } from "@solana/bridge-adapter-react";
 import { useSolanaWalletMultiButton } from "../shared/use-solana-wallet-multi-button";
 
 describe("useSolanaWalletMultiButton", () => {

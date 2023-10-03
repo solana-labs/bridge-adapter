@@ -1,21 +1,34 @@
+import type { FC } from "react";
+import Debug from "debug";
 import { useEffect } from "react";
 import { withErrorBoundary } from "react-error-boundary";
-import { useBridgeModalStore } from "bridge-adapter-react";
+import { useBridgeModalStore } from "@solana/bridge-adapter-react";
 import { useSolanaWalletMultiButton } from "@solana/bridge-adapter-base-ui";
 import type { BridgeStepParams } from "../../types/BridgeModal";
 import { Button } from "../../shared/ui/button";
 import { WalletAdapterIcon } from "../../shared/ui/icons/WalletAdapterIcon";
 
-function SolanaWalletConnectionListBase() {
-  const { buttonState, onConnect, onSelectWallet, wallets } =
+const debug = Debug("debug:react-ui:SolanaWalletSelection");
+
+interface SolanaWalletConnectionListBaseProps {
+  onSuccess?: () => void;
+}
+
+const SolanaWalletConnectionListBase: FC<
+  SolanaWalletConnectionListBaseProps
+> = () => {
+  const { buttonState, onConnect, onSelectWallet, wallets, walletName } =
     useSolanaWalletMultiButton();
+
+  console.log({ wallets, walletName });
+
   const { onSuccess } =
     useBridgeModalStore.use.currentBridgeStepParams() as BridgeStepParams<"WALLET_SELECTION">;
 
   useEffect(() => {
     switch (buttonState) {
       case "connected": {
-        console.log("connected");
+        debug("Wallet connected");
         onSuccess?.();
         break;
       }
@@ -24,7 +37,7 @@ function SolanaWalletConnectionListBase() {
         console.log(buttonState);
         break;
       case "has-wallet":
-        onConnect && onConnect();
+        onConnect?.();
         break;
     }
   }, [buttonState, onConnect, onSuccess]);
@@ -49,7 +62,7 @@ function SolanaWalletConnectionListBase() {
       ))}
     </div>
   );
-}
+};
 
 // TODO: Figure out a way to detect this
 export const SolanaWalletConnectionList = withErrorBoundary(

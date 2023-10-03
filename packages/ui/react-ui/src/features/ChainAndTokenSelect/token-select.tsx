@@ -1,7 +1,7 @@
-import type { Token } from "bridge-adapter-base";
+import type { Token } from "@solana/bridge-adapter-base";
 import { formatUnits, parseUnits } from "viem";
 import { hasChainDest } from "../../shared/lib/utils";
-import { setToken, useBridgeModalStore } from "bridge-adapter-react";
+import { setToken, useBridgeModalStore } from "@solana/bridge-adapter-react";
 import { useTokenInfo } from "./use-token-info";
 import { TokenSelectBase } from "./token-select-base";
 

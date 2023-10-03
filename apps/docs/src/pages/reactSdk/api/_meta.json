@@ -1,6 +1,0 @@
-{
-  "BridgeModal": "BridgeModal",
-  "BridgeModalProvider": "BridgeModalProvider",
-  "EvmWalletProvider": "EvmWalletProvider",
-  "SolanaWalletProvider": "SolanaWalletProvider"
-}

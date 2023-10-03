@@ -1,6 +1,12 @@
-import type { SolanaOrEvmAccount, SwapInformation } from "bridge-adapter-base";
+import type {
+  SolanaOrEvmAccount,
+  SwapInformation,
+} from "@solana/bridge-adapter-base";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useEtheriumWallet, useBridgeModalStore } from "bridge-adapter-react";
+import {
+  useEthereumWallet,
+  useBridgeModalStore,
+} from "@solana/bridge-adapter-react";
 
 export function useBridgeParams(): {
   sourceAccount: SolanaOrEvmAccount | undefined;
@@ -13,7 +19,7 @@ export function useBridgeParams(): {
   }
   const { signTransaction, publicKey } = useWallet();
   const { data: walletClient, isLoading: isLoadingWalletClient } =
-    useEtheriumWallet();
+    useEthereumWallet();
   const { sourceToken, targetToken } = useBridgeModalStore.use.token();
 
   if (sourceToken.chain === "Solana" && !signTransaction && !publicKey) {

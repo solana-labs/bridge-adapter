@@ -1,17 +1,23 @@
-import { chainNameToViemChain, formatTokenBalance } from "bridge-adapter-base";
-import type { Token } from "bridge-adapter-base";
+import type { Token } from "@solana/bridge-adapter-base";
+import {
+  chainNameToViemChain,
+  formatTokenBalance,
+} from "@solana/bridge-adapter-base";
 
-//!!!import { useWallet } from "@solana/wallet-adapter-react";
+//TODO: !!!import { useWallet } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useQuery } from "@tanstack/react-query";
 import { object, parse, string } from "valibot";
 import type { Hash } from "viem";
 import { createPublicClient, formatUnits, http, parseAbi } from "viem";
 //!!!import { useWalletClient } from "wagmi";
-import { useEtheriumWallet, useSolanaWallet } from "bridge-adapter-react";
+import {
+  useEthereumWallet,
+  useSolanaWallet,
+} from "@solana/bridge-adapter-react";
 
 export function useTokenBalance(token: Token) {
-  const { data: walletClient } = useEtheriumWallet();
+  const { data: walletClient } = useEthereumWallet();
   const { publicKey } = useSolanaWallet(); //useWallet();
   const {
     data: tokenBalance,

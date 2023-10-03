@@ -1,6 +1,9 @@
-import type { BridgeStatus } from "bridge-adapter-base";
+import type { BridgeStatus } from "@solana/bridge-adapter-base";
 import { useCallback, useState } from "react";
-import { goBackOneStep, setCurrentBridgeStep } from "bridge-adapter-react";
+import {
+  goBackOneStep,
+  setCurrentBridgeStep,
+} from "@solana/bridge-adapter-react";
 import { useSubmitAndTrackTransaction } from "./use-submit-and-track-transaction";
 import { PendingTransactionBase } from "./pending-transaction-base";
 

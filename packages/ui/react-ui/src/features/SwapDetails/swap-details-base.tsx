@@ -1,4 +1,4 @@
-import type { SwapInformation } from "bridge-adapter-base";
+import type { SwapInformation } from "@solana/bridge-adapter-base";
 import type { FC } from "react";
 import { useCallback } from "react";
 import { Clock2, Compass, DollarSign } from "lucide-react";

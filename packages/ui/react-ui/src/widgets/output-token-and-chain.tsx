@@ -1,4 +1,4 @@
-import { useBridgeModalStore } from "bridge-adapter-react";
+import { useBridgeModalStore } from "@solana/bridge-adapter-react";
 import { ChainAndTokenSelectButton } from "../features/ChainAndTokenSelect";
 import { useTokenBalance } from "../features/MultiChainSelection";
 

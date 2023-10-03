@@ -1,9 +1,9 @@
 import { Clock2, DollarSign, Droplet } from "lucide-react";
 import type { FC } from "react";
+import type { SwapInformation } from "@solana/bridge-adapter-base";
 import { formatSwapFee, formatTime } from "../../shared/lib/utils";
 import { Card, CardContent, CardHeader } from "../../shared/ui/card";
 import { PendingTransactionButtonBase } from "./pending-transaction-button-base";
-import type { SwapInformation } from "bridge-adapter-base";
 
 interface SwapReviewBaseProps {
   onBeginSwap: () => void;

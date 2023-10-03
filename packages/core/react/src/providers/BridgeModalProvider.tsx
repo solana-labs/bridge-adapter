@@ -1,4 +1,4 @@
-import type { BridgeAdapterSdkArgs } from "bridge-adapter-base";
+import type { BridgeAdapterSdkArgs } from "@solana/bridge-adapter-base";
 import { useEffect } from "react";
 import { setBridgeAdapterSdkSettings } from "./BridgeModalContext";
 

@@ -5,12 +5,13 @@ import type { BridgeModalTheme } from "./widgets/bridge-modal";
 import type { BridgeHeaderProps } from "./widgets/bridge-header";
 import { ChainAndTokenSelect } from "./features/ChainAndTokenSelect";
 import { MultiChainSelection } from "./pages";
-import { PendingTransaction } from "./features";
-import { ProfileDetails } from "./features";
+import {
+  CompletedTransaction,
+  PendingTransaction,
+} from "./features/TransactionLifecycle";
 import { SwapDetails, SwapReview } from "./features/SwapDetails";
-import { SwapSettings } from "./features";
-import { TokenSelection } from "./features";
-import { CompletedTransaction } from "./features";
+import { ProfileDetails, SwapSettings } from "./widgets";
+import { TokenSelection } from "./features/TokenSelection";
 import { WalletSelection } from "./features/WalletSelection";
 
 const HeaderSlotComponent = memo<BridgeHeaderProps>(({ title }) => (

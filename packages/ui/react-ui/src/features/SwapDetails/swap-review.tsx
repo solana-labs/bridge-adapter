@@ -1,7 +1,7 @@
 import {
   setCurrentBridgeStep,
   useBridgeModalStore,
-} from "bridge-adapter-react";
+} from "@solana/bridge-adapter-react";
 import type { FC } from "react";
 import { SwapReviewBase } from "./swap-review-base";
 

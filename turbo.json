@@ -15,7 +15,7 @@
     },
     "test": {
       "outputs": ["coverage/**"],
-      "dependsOn": []
+      "dependsOn": ["build-packages"]
     },
     "lint": {
       "outputs": ["dist/**"],
@@ -33,5 +33,5 @@
       "cache": false
     }
   },
-  "globalEnv": ["NODE_ENV", "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID"]
+  "globalEnv": ["NODE_ENV", "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID", "DEBUG"]
 }

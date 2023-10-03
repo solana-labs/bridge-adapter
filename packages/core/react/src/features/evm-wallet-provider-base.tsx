@@ -5,6 +5,8 @@ import type { Connector, configureChains } from "wagmi";
 
 type ChainsConfig = ReturnType<typeof configureChains>;
 
+type WagmiLogger = Parameters<typeof createConfig>[0]["logger"];
+
 export function EvmWalletProviderBase({
   autoConnect = false,
   children,
@@ -17,9 +19,7 @@ export function EvmWalletProviderBase({
   publicClient: ChainsConfig["publicClient"];
   wsPublicClient: ChainsConfig["webSocketPublicClient"];
   connectors: Connector[];
-  logger: {
-    warn(m: unknown): void;
-  };
+  logger: WagmiLogger;
   children: ReactNode;
 }) {
   const config = useMemo(() => {
@@ -28,7 +28,7 @@ export function EvmWalletProviderBase({
       logger,
       publicClient: publicClient,
       webSocketPublicClient: wsPublicClient,
-      connectors: connectors,
+      connectors,
     });
   }, [autoConnect, logger, publicClient, wsPublicClient, connectors]);
 

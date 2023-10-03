@@ -1,8 +1,8 @@
-import type { WalletName } from "@solana/wallet-adapter-base";
-import type { Wallet } from "@solana/wallet-adapter-react";
-import { useSolanaWallet as useWallet } from "bridge-adapter-react";
 import type { PublicKey } from "@solana/web3.js";
+import type { Wallet } from "@solana/wallet-adapter-react";
+import type { WalletName } from "@solana/wallet-adapter-base";
 import { useCallback } from "react";
+import { useSolanaWallet } from "@solana/bridge-adapter-react";
 
 type ButtonState = {
   buttonState:
@@ -22,16 +22,19 @@ type ButtonState = {
 
 export function useSolanaWalletMultiButton(): ButtonState {
   const {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     connect,
     connected,
     connecting,
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     disconnect,
     disconnecting,
     publicKey,
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     select,
     wallet,
     wallets,
-  } = useWallet();
+  } = useSolanaWallet();
 
   let buttonState: ButtonState["buttonState"];
   if (connecting) {

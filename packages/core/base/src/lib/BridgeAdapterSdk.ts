@@ -57,7 +57,7 @@ export class BridgeAdapterSdk {
         } else {
           console.error(
             "Failed to get tokens from bridge",
-            chainResponse.reason,
+            chainResponse.reason as unknown,
           );
         }
       })
@@ -110,7 +110,7 @@ export class BridgeAdapterSdk {
         } else {
           console.warn(
             "Failed to get tokens from bridge",
-            tokenResponse.reason,
+            tokenResponse.reason as unknown,
           );
         }
       })
@@ -151,7 +151,7 @@ export class BridgeAdapterSdk {
         } else {
           console.warn(
             "Error fetching route info for one of the bridge",
-            routeInfo.reason,
+            routeInfo.reason as unknown,
           );
         }
       })

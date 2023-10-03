@@ -1,4 +1,4 @@
-import type { TokenWithAmount } from "bridge-adapter-base";
+import type { TokenWithAmount } from "@solana/bridge-adapter-base";
 import type { FC } from "react";
 import { Ban, ChevronRight } from "lucide-react";
 import type { ChainSelectionType } from "../../types/BridgeModal";

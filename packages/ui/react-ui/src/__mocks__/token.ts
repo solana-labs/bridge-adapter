@@ -1,4 +1,4 @@
-import type { ChainName } from "bridge-adapter-base";
+import type { ChainName } from "@solana/bridge-adapter-base";
 
 export const token = ({
   address = "",

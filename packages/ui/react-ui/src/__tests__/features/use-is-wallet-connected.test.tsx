@@ -2,9 +2,12 @@
 import React from "react";
 import * as rtl from "@testing-library/react";
 import { describe, test, expect, beforeEach, afterEach } from "vitest";
-import { SolanaWalletProvider, setToken } from "bridge-adapter-react";
-import { useBridgeModalStore } from "bridge-adapter-react";
-import { useIsWalletConnected } from "../../features/WalletSelection/use-is-wallet-connected";
+import {
+  SolanaWalletProvider,
+  setToken,
+  useBridgeModalStore,
+} from "@solana/bridge-adapter-react";
+import { useIsWalletConnected } from "../../features/WalletSelection";
 import * as mock from "../../__mocks__/token";
 
 const TestComponent = React.forwardRef(function ImperativeComponent(

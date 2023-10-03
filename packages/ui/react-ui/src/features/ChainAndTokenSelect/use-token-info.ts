@@ -1,6 +1,6 @@
-import type { ChainDestType } from "bridge-adapter-base";
+import type { ChainDestType } from "@solana/bridge-adapter-base";
 import { useQuery } from "@tanstack/react-query";
-import { useBridgeModalStore } from "bridge-adapter-react";
+import { useBridgeModalStore } from "@solana/bridge-adapter-react";
 
 // FIXME: write tests
 

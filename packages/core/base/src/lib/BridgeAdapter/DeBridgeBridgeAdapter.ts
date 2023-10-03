@@ -15,8 +15,8 @@ import {
   string,
   union,
   useDefault,
-  type Output,
 } from "valibot";
+import type { Output } from "valibot";
 import type { Hash } from "viem";
 import { formatUnits } from "viem";
 import type {
@@ -185,7 +185,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
         if (!solanaTokenListResp.ok) {
           throw new Error("Failed to fetch token list");
         }
-        const solanaTokenListRaw = await solanaTokenListResp.json();
+        const solanaTokenListRaw: unknown = await solanaTokenListResp.json();
         const solanaTokenList = parse(this.TokenListSchema, solanaTokenListRaw);
         this.tokenList[chain] = solanaTokenList.map((token) => {
           return {
@@ -206,7 +206,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
         if (!tokenListResp.ok) {
           throw new Error("Failed to fetch token list");
         }
-        const tokenListRaw = await tokenListResp.json();
+        const tokenListRaw: unknown = await tokenListResp.json();
 
         try {
           const tokenList = parse(this.TokenObjectSchema, tokenListRaw);
@@ -293,7 +293,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
         `Failed to fetch quote for debridge. ${await quoteResp.text()}`,
       );
     }
-    const quoteRaw = await quoteResp.json();
+    const quoteRaw: unknown = await quoteResp.json();
     console.log("quoteRaw", quoteRaw);
     const quote = parse(this.QuoteSchema, quoteRaw);
     this.debridgeQuote = quote;
@@ -422,7 +422,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
     if (!createTxResp.ok) {
       throw new Error("Failed to create transaction");
     }
-    const createTxRaw = await createTxResp.json();
+    const createTxRaw: unknown = await createTxResp.json();
     console.log("createTxRaw", createTxRaw);
     const createTx = parse(this.CreateTxSchema, createTxRaw);
     return createTx;
@@ -568,7 +568,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
             }
           }
         })
-        .catch((e) => {
+        .catch((e: unknown) => {
           console.log("Error getting debridge transaction status", e);
         });
     }, 5_000);
@@ -584,7 +584,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
     if (!orderIdResp.ok) {
       throw new Error("Failed to get order id");
     }
-    const orderIdRaw = await orderIdResp.json();
+    const orderIdRaw: unknown = await orderIdResp.json();
     console.log("orderIdRaw", orderIdRaw);
     const { orderIds } = parse(
       object({ orderIds: array(string()) }),
@@ -604,7 +604,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
     if (!txnStatusResp.ok) {
       throw new Error("Failed to get transaction id");
     }
-    const txnStatusRaw = await txnStatusResp.json();
+    const txnStatusRaw: unknown = await txnStatusResp.json();
     console.log("txnStatusRaw", txnStatusRaw);
     const txnStatus = parse(
       object({ orderId: string(), status: string() }),

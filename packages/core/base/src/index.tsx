@@ -1,3 +1,4 @@
+export * from "./errors";
 export { CHAIN_NAMES as SupportedChainNames } from "./constants/ChainNames";
 export { BridgeAdapterSdk } from "./lib/BridgeAdapterSdk";
 export type { BridgeAdapterSdkArgs } from "./lib/BridgeAdapterSdk";

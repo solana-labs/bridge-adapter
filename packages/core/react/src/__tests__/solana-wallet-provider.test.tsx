@@ -2,7 +2,7 @@
 import React from "react";
 import { expect, test, describe, afterEach, beforeEach } from "vitest";
 import * as rtl from "@testing-library/react";
-import { SolanaWalletProvider } from "../providers/SolanaWalletProvider";
+import { SolanaWalletProvider } from "../features";
 
 let container: HTMLElement;
 

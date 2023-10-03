@@ -1,7 +1,7 @@
 import {
   setCurrentBridgeStep,
   useBridgeModalStore,
-} from "bridge-adapter-react";
+} from "@solana/bridge-adapter-react";
 import { SwapReviewButtonBase } from "./swap-review-button-base";
 
 export function SwapReviewButton() {

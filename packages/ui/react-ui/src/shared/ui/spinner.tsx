@@ -2,7 +2,7 @@ import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
 import * as React from "react";
-import { cn } from "../../lib/styles";
+import { cn } from "../lib/styles";
 
 const spinnerVariants = cva("bsa-p-1 bsa-animate-spin bsa-rounded-full", {
   variants: {

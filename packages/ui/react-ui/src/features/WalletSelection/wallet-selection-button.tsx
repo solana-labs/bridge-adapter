@@ -1,7 +1,7 @@
 import {
   setCurrentBridgeStep,
   useBridgeModalStore,
-} from "bridge-adapter-react";
+} from "@solana/bridge-adapter-react";
 import type { FC } from "react";
 import { useCallback } from "react";
 import { useCanConnectWallet } from "./use-can-connect-wallet";
@@ -24,7 +24,6 @@ export const WalletSelectionButton: FC<unknown> = () => {
         params: {
           chain: "Solana",
           onSuccess() {
-            console.log("needEvmWalletConnection", needEvmWalletConnection);
             if (needEvmWalletConnection) {
               setCurrentBridgeStep({
                 step: "WALLET_SELECTION",

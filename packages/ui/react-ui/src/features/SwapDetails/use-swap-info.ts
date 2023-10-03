@@ -1,7 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { isSwapInfoEqual } from "../../shared/lib/utils";
-import { setSwapInformation, useBridgeModalStore } from "bridge-adapter-react";
+import {
+  setSwapInformation,
+  useBridgeModalStore,
+} from "@solana/bridge-adapter-react";
 import { useCanGetSwapInfo } from "./use-can-get-swap-info";
 
 // FIXME: write tests

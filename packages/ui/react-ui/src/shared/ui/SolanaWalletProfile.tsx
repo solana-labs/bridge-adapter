@@ -23,7 +23,10 @@ export function SolanaWalletProfile({
   // eslint-disable-next-line @typescript-eslint/unbound-method
   //TODO:const { connected, disconnect, publicKey, wallet } = useWallet();
 
+  console.log({ isConnected, wallet, publicKey });
+
   if (!isConnected) {
+    console.log("777");
     return (
       <div
         className={cn(
@@ -38,6 +41,7 @@ export function SolanaWalletProfile({
       </div>
     );
   }
+
   return (
     <div
       className={cn(

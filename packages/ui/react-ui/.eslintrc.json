@@ -9,7 +9,7 @@
   "rules": {
     "@next/next/no-img-element": "off",
     "no-restricted-imports": [
-      0,
+      "error",
       {
         "patterns": [
           {

@@ -2,7 +2,7 @@ import type {
   ChainDestType,
   FeeToken,
   SwapInformation,
-} from "bridge-adapter-base";
+} from "@solana/bridge-adapter-base";
 import { PublicKey } from "@solana/web3.js";
 import { clsx } from "clsx";
 import type { ClassValue } from "clsx";

@@ -3,3 +3,4 @@
 **/storybook-static
 **/dist/**
 .pnpm-store
+.changeset

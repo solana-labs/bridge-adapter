@@ -1,5 +1,5 @@
 {
-  "name": "bridge-adapter-base",
+  "name": "@solana/bridge-adapter-base",
   "version": "0.1.0",
   "license": "MIT",
   "sideEffects": false,
@@ -7,11 +7,11 @@
   "exports": {
     ".": {
       "import": "dist/index",
-      "types": "dist/index"
+      "types": "dist/index.d.ts"
     }
   },
   "main": "dist/index",
-  "types": "dist/index",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/**"
   ],
@@ -20,7 +20,9 @@
     "build-packages": "pnpm build --silent",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsup src/index.tsx --env.ESM_ONLY true --watch",
-    "lint": "eslint \"src/**/*.ts*\""
+    "lint": "eslint \"src/**/*.ts*\"",
+    "test": "pnpm run test-types",
+    "test-types": "tsc --noEmit"
   },
   "eslintConfig": {
     "parserOptions": {

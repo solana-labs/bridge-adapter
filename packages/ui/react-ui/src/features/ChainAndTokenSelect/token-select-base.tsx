@@ -1,4 +1,4 @@
-import type { Token } from "bridge-adapter-base";
+import type { Token } from "@solana/bridge-adapter-base";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { FixedSizeList } from "react-window";
@@ -110,7 +110,7 @@ export const TokenSelectBase: FC<TokenSelectBaseProps> = ({
             >
               <div className="bsa-flex bsa-items-center bsa-space-x-2">
                 <img
-                  className="bsa-h-8 bsa-w-8 bsa-rounded-md"
+                  className="bsa-h-8 bsa-w-8 bsa-rounded-md overflow-hidden"
                   src={token.logoUri}
                   alt={token.name}
                 />

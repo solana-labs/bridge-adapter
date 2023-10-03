@@ -305,7 +305,7 @@ export class MayanBridgeAdapter extends AbstractBridgeAdapter {
           });
           return false;
         })
-        .catch((e) => {
+        .catch((e: unknown) => {
           console.error("Error fetching mayan transaction status", e);
         });
     }, 5_000);
@@ -318,7 +318,7 @@ export class MayanBridgeAdapter extends AbstractBridgeAdapter {
     if (!response.ok) {
       throw new Error("Error fetching mayan transaction status");
     }
-    const rawData = await response.json();
+    const rawData: unknown = await response.json();
     const parsedData = parse(
       object({
         status: string(),

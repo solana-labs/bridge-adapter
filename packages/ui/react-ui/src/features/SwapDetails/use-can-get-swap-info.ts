@@ -1,4 +1,4 @@
-import { useBridgeModalStore } from "bridge-adapter-react";
+import { useBridgeModalStore } from "@solana/bridge-adapter-react";
 
 // FIXME: write test
 

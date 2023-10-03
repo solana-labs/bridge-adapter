@@ -12,7 +12,7 @@ env:
 
 jobs:
   format:
-    name: Formatting
+    name: Check codestyle
     runs-on: ubuntu-latest
     steps:
       - name: checkout code repository
@@ -49,7 +49,7 @@ jobs:
         run: pnpm run format --check
 
   lint:
-    name: Linting
+    name: Linting source code
     needs: format
     runs-on: ubuntu-latest
     steps:

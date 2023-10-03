@@ -1,18 +1,12 @@
-import { useMemo } from "react";
+import * as React from "react";
 import type { ReactNode } from "react";
-import { WagmiConfig, createConfig } from "wagmi";
-import { useDefaultEtheriumConfig } from "../provider-entities/etherium";
+import { useDefaultEthereumConfig } from "../provider-entities/ethereum";
 import { logger } from "../lib/utils";
+import { EvmWalletProviderBase } from "./evm-wallet-provider-base";
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
-export function EvmWalletProvider({
-  alchemyApiKey,
-  children,
-  coinbaseWalletSettings,
-  infuraApiKey,
-  walletConnectProjectId,
-}: {
+interface EvmWalletProviderProps {
   alchemyApiKey?: string;
   children: ReactNode;
   coinbaseWalletSettings?: {
@@ -21,9 +15,17 @@ export function EvmWalletProvider({
   };
   infuraApiKey?: string;
   walletConnectProjectId?: string;
-}) {
+}
+
+export const EvmWalletProvider: React.FC<EvmWalletProviderProps> = ({
+  alchemyApiKey,
+  children,
+  coinbaseWalletSettings,
+  infuraApiKey,
+  walletConnectProjectId,
+}) => {
   const { connectors, publicClient, webSocketPublicClient } =
-    useDefaultEtheriumConfig({
+    useDefaultEthereumConfig({
       alchemyApiKey,
       infuraApiKey,
       coinbaseWalletOptions: coinbaseWalletSettings,
@@ -31,19 +33,19 @@ export function EvmWalletProvider({
       metamaskWalletOptions: {},
     });
 
-  const defaultLogger = useMemo(() => {
+  const defaultLogger = React.useMemo(() => {
     return IS_PRODUCTION ? logger : undefined;
   }, []);
 
-  const config = useMemo(() => {
-    return createConfig({
-      autoConnect: true,
-      logger: defaultLogger,
-      publicClient: publicClient,
-      webSocketPublicClient,
-      connectors: connectors,
-    });
-  }, [defaultLogger, publicClient, webSocketPublicClient, connectors]);
-
-  return <WagmiConfig config={config}>{children}</WagmiConfig>;
-}
+  return (
+    <EvmWalletProviderBase
+      autoConnect
+      logger={defaultLogger}
+      publicClient={publicClient}
+      wsPublicClient={webSocketPublicClient}
+      connectors={connectors}
+    >
+      {children}
+    </EvmWalletProviderBase>
+  );
+};

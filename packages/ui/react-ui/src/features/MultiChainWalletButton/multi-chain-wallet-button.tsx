@@ -1,12 +1,14 @@
-import { setCurrentBridgeStep } from "bridge-adapter-react";
-import { useWallet as useSolWallet } from "@solana/wallet-adapter-react";
+import type { FC } from "react";
+import Debug from "debug";
 import {
+  setCurrentBridgeStep,
   useAccount,
   useDisconnect,
   useEnsAvatar,
   useEnsName,
   useNetwork,
-} from "bridge-adapter-react";
+  useSolanaWallet,
+} from "@solana/bridge-adapter-react";
 import {
   Popover,
   PopoverContent,
@@ -14,32 +16,52 @@ import {
 } from "../../shared/ui/popover";
 import { cn } from "../../shared/lib/styles";
 import { Button, buttonVariants } from "../../shared/ui/button";
-//TODO: import { EvmWalletProfile } from "../ProfileDisplays/EvmWalletProfile";
 import { EvmWalletProfile } from "../../shared/ui/EvmWalletProfile";
-//import { SolanaWalletProfile } from "../ProfileDisplays/SolanaWalletProfile";
 import { SolanaWalletProfile } from "../../shared/ui/SolanaWalletProfile";
 import { useMultiChainWalletInfo } from "./use-multi-chain-wallet-info";
 
-const getNilString = (a: string | null | undefined): string | undefined => {
-  if (a === null || a === undefined) {
-    return undefined;
-  }
-  return a;
+const debug = Debug("debug:react-ui:MultiChainWalletButton");
+
+interface MultiChainWalletButtonProps {
+  labels?: {
+    [key: string]: string;
+    showChains: string;
+    accountProfile: string;
+  };
+}
+
+const LABELS = {
+  accountProfile: "Account Profile",
+  showChains: "View Accounts",
 };
 
-export function MultiChainWalletButton() {
+export const MultiChainWalletButton: FC<MultiChainWalletButtonProps> = ({
+  labels = LABELS,
+}) => {
   const { solanaWalletConnected, evmWalletConnected, disconnectChain } =
     useMultiChainWalletInfo();
 
   console.log({ solanaWalletConnected, evmWalletConnected, disconnectChain });
 
-  const solana = useSolWallet();
+  const solana = useSolanaWallet();
+
+  debug("Solana Wallet Info", solana.wallet);
 
   const { address, connector, isConnected } = useAccount();
   const { data: avatar } = useEnsAvatar();
   const { data: ensName } = useEnsName();
   const { chain } = useNetwork();
   const { disconnect } = useDisconnect();
+
+  const ethereum = {
+    address,
+    connector,
+    isConnected,
+    avatar,
+    ensName,
+    chain,
+    disconnect,
+  };
 
   const wallet = solana.wallet
     ? {
@@ -50,13 +72,15 @@ export function MultiChainWalletButton() {
       }
     : null;
 
+  console.log({ solanaWalletConnected, evmWalletConnected });
+
   return (
     <>
       {solanaWalletConnected || evmWalletConnected ? (
         <Popover>
           <PopoverTrigger asChild>
             <Button variant="ghost" aria-label="Show chains">
-              View Accounts
+              {labels.showChains}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="bsa-z-50 bsa-flex bsa-flex-col bsa-gap-y-2 bsa-bg-background bsa-py-2">
@@ -79,15 +103,15 @@ export function MultiChainWalletButton() {
             )}
             {evmWalletConnected && (
               <EvmWalletProfile
-                address={address}
-                avatar={getNilString(avatar)}
-                chainName={chain?.name}
-                connectorName={connector?.name}
-                ensName={getNilString(ensName)}
-                isConnected={isConnected}
+                address={ethereum.address}
+                avatar={getNilString(ethereum.avatar)}
+                chainName={ethereum.chain?.name}
+                connectorName={ethereum.connector?.name}
+                ensName={getNilString(ethereum.ensName)}
+                isConnected={ethereum.isConnected}
                 onDisconnect={() => {
-                  if (disconnect) {
-                    disconnect();
+                  if (ethereum.disconnect) {
+                    ethereum.disconnect();
                     disconnectChain("Ethereum");
                   }
                 }}
@@ -98,14 +122,14 @@ export function MultiChainWalletButton() {
               />
             )}
             <Button
-              variant={"ghost"}
+              variant="ghost"
               onClick={() => {
                 setCurrentBridgeStep({
                   step: "PROFILE_DETAILS",
                 });
               }}
             >
-              Account Profile
+              {labels.accountProfile}
             </Button>
           </PopoverContent>
         </Popover>
@@ -114,4 +138,11 @@ export function MultiChainWalletButton() {
       )}
     </>
   );
+};
+
+function getNilString(a: string | null | undefined): string | undefined {
+  if (a === null || a === undefined) {
+    return undefined;
+  }
+  return a;
 }

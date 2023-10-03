@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import {
   EvmWalletProvider,
   SolanaWalletProvider,
-  BridgeModalProvider,
-} from "bridge-adapter-react";
+  BridgeAdapterProvider,
+} from "@solana/bridge-adapter-react";
 import { within, userEvent } from "@storybook/testing-library";
 import {
   CoinbaseWalletAdapter,
@@ -64,8 +64,11 @@ export const Default: StoryObj<
 
     return (
       <SolanaWalletProvider wallets={wallets} autoConnect={false}>
-        <EvmWalletProvider settings={evmSettings}>
-          <BridgeModalProvider>
+        <EvmWalletProvider
+          coinbaseWalletSettings={evmSettings.coinbaseWalletSettings}
+          walletConnectProjectId={evmSettings.walletConnectProjectId}
+        >
+          <BridgeAdapterProvider>
             <BridgeModal theme={props.theme} modalTitle={props.modalTitle}>
               <Button
                 data-testid="open-modal"
@@ -76,7 +79,7 @@ export const Default: StoryObj<
                 Open demo modal
               </Button>
             </BridgeModal>
-          </BridgeModalProvider>
+          </BridgeAdapterProvider>
         </EvmWalletProvider>
       </SolanaWalletProvider>
     );

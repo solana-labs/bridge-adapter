@@ -3,7 +3,7 @@ import {
   TOKEN_AMOUNT_ERROR_INDICATOR,
   setTokenAmount,
   useBridgeModalStore,
-} from "bridge-adapter-react";
+} from "@solana/bridge-adapter-react";
 import { Input } from "../shared/ui/input";
 import { ChainAndTokenSelectButton } from "../features/ChainAndTokenSelect";
 import { useIsWalletConnected } from "../features/WalletSelection";

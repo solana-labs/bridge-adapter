@@ -12,7 +12,7 @@ import type { SVGProps } from "react";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import { Link2Off } from "lucide-react";
-import { cn } from "../../../lib/styles";
+import { cn } from "../../lib/styles";
 import type { ChainSelectionType } from "../../../types/BridgeModal";
 
 const iconVariants = cva("", {

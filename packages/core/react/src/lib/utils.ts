@@ -2,7 +2,7 @@ import type {
   ChainDestType,
   FeeToken,
   SwapInformation,
-} from "bridge-adapter-base";
+} from "@solana/bridge-adapter-base";
 import type { BridgeStep, BridgeStepParams } from "../types/BridgeModal";
 import type { ClassValue } from "clsx";
 import type { useConnect } from "wagmi";

@@ -13,10 +13,5 @@
     ],
     "@babel/preset-react"
   ],
-  "plugins": [],
-  "env": {
-    "unit": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current" } }]]
-    }
-  }
+  "plugins": []
 }

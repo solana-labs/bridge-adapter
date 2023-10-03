@@ -1,18 +1,17 @@
 {
   "name": "@solana/bridge-adapter-base-ui",
   "version": "0.1.0",
-  "private": true,
   "license": "MIT",
   "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
       "import": "dist/index",
-      "types": "dist/index"
+      "types": "dist/index.d.ts"
     }
   },
   "main": "dist/index",
-  "types": "dist/index",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/**"
   ],
@@ -22,7 +21,9 @@
     "clean": "./clean.sh",
     "dev": "tsup src/index.ts --env.ESM_ONLY true --external react --watch",
     "lint": "eslint src --ext .ts,.tsx",
-    "test": "vitest src/__tests__/**.test.*"
+    "test": "pnpm run test-fn && pnpm run test-types",
+    "test-fn": "vitest src/__tests__/**.test.*",
+    "test-types": "tsc --noEmit"
   },
   "eslintConfig": {
     "parserOptions": {
@@ -36,8 +37,8 @@
     }
   },
   "dependencies": {
-    "bridge-adapter-base": "^0.1.0",
-    "bridge-adapter-react": "^0.1.0",
+    "@solana/bridge-adapter-base": "^0.1.0",
+    "@solana/bridge-adapter-react": "^0.1.0",
     "cmdk": "^0.2.0",
     "encoding": "^0.1.13",
     "immer": "^10.0.2",
@@ -50,6 +51,7 @@
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-wallets": "^0.19.22",
     "@solana/web3.js": "^1.78.0",
+    "@tanstack/react-query": "^4.29.19",
     "@types/react": "^18.2.13",
     "@types/react-dom": "^18.2.6",
     "@types/react-window": "^1.8.5",

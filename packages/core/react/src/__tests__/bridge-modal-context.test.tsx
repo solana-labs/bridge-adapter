@@ -2,7 +2,7 @@
 import React from "react";
 import * as ctx from "../providers/BridgeModalContext";
 import * as rtl from "@testing-library/react";
-import { BridgeAdapterSdk } from "bridge-adapter-base";
+import { BridgeAdapterSdk } from "@solana/bridge-adapter-base";
 import { describe, test, expect, beforeEach, afterEach } from "vitest";
 
 const defaultTokenAmount = {
