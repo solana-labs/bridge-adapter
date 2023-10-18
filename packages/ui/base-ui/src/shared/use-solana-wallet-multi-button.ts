@@ -14,10 +14,10 @@ type ButtonState = {
   onConnect?: () => void;
   onDisconnect?: () => void;
   onSelectWallet: (walletName: WalletName | null) => void;
-  wallets: Wallet[];
   publicKey?: PublicKey;
   walletIcon?: Wallet["adapter"]["icon"];
   walletName?: Wallet["adapter"]["name"];
+  wallets: Wallet[];
 };
 
 export function useSolanaWalletMultiButton(): ButtonState {
@@ -68,9 +68,9 @@ export function useSolanaWalletMultiButton(): ButtonState {
         ? handleDisconnect
         : undefined,
     onSelectWallet: select,
-    wallets,
     publicKey: publicKey ?? undefined,
     walletIcon: wallet?.adapter.icon,
     walletName: wallet?.adapter.name,
+    wallets,
   };
 }

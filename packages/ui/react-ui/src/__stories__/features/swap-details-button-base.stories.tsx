@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect } from "@storybook/jest";
-import { within, userEvent } from "@storybook/testing-library";
+import { userEvent, within } from "@storybook/testing-library";
 import { SwapDetailsButtonBase } from "../../features/SwapDetails";
 
 const meta: Meta<typeof SwapDetailsButtonBase> = {

@@ -8,7 +8,7 @@ export type SolanaWalletData = {
   adapter: Pick<Wallet["adapter"], "name" | "icon">;
 };
 
-interface SolanaWalletConnectionListBaseProps {
+export interface SolanaWalletConnectionListBaseProps {
   buttonState: string;
   onConnect?: () => void;
   onSelectWallet: (a: SolanaWalletData["adapter"]["name"]) => void;
@@ -22,13 +22,17 @@ export const SolanaWalletConnectionListBase: FC<
   useEffect(() => {
     switch (buttonState) {
       case "connected": {
-        console.log("connected");
         onSuccess?.();
         break;
       }
       case "connecting":
       case "disconnecting":
-        console.log(buttonState);
+        /**
+         *  TODO: Add a visual indicator to show that connection is in progress.
+         *  - [] Add loader or something
+         *
+         *  MetaMask wallet loads its iframe quite forever. Should show something to accent this
+         */
         break;
       case "has-wallet":
         onConnect && onConnect();

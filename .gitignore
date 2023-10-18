@@ -7,6 +7,7 @@
 .next
 .turbo
 .vercel
+.vim
 dist
 dist-ssr
 node_modules

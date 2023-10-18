@@ -6,12 +6,12 @@ import {
   useDisconnect,
   useEnsName,
 } from "@solana/bridge-adapter-react";
+import { EvmWalletDetail } from "./evm-wallet-detail";
+import { ViewAndCopyWallet } from "./view-and-copy-wallet";
 import { ETHEREUM_BASE_EXPLORER_URL } from "../../constants/BaseExplorers";
 import { cn } from "../../shared/lib/styles";
 import { AddressLine } from "../../shared/ui/AddressLine";
 import { ChainIcon } from "../../shared/ui/icons/ChainIcon";
-import { EvmWalletDetail } from "./evm-wallet-detail";
-import { ViewAndCopyWallet } from "./view-and-copy-wallet";
 
 export function EvmWalletDetailedProfile({
   className,

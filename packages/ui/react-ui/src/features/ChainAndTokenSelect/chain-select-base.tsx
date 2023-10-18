@@ -1,13 +1,13 @@
-import type { ChainName } from "@solana/bridge-adapter-base";
-import type { FC } from "react";
 import React from "react";
-import { cn } from "../../shared/lib/styles";
+import type { ChainName } from "@solana/bridge-adapter-base";
+import type { ChainSelectionType } from "@solana/bridge-adapter-react";
+import type { FC } from "react";
 import { Button } from "../../shared/ui/button";
 import { ChainIcon } from "../../shared/ui/icons/ChainIcon";
+import { cn } from "../../shared/lib/styles";
 import { Skeleton } from "../../shared/ui/skeleton";
-import type { ChainSelectionType } from "../../types/BridgeModal";
 
-interface ChainSelectBaseProps {
+export interface ChainSelectBaseProps {
   chains?: ChainName[];
   error?: Error;
   isLoadingChains: boolean;

@@ -1,10 +1,10 @@
+import type { ChainSelectionType } from "@solana/bridge-adapter-react";
 import type { FC } from "react";
 import type { TokenWithAmount } from "@solana/bridge-adapter-base";
-import type { ChainSelectionType } from "../../types/BridgeModal";
-import { Switch } from "../../shared/ui/switch";
 import { SingleRelayerFeeInputBase } from "./single-relayer-fee-input-base";
+import { Switch } from "../../shared/ui/switch";
 
-interface RelayerFeeBaseProps {
+export interface RelayerFeeBaseProps {
   active?: boolean;
   error?: string;
   labels?: {

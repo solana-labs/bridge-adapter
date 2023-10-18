@@ -1,10 +1,10 @@
 import type { FC } from "react";
+import type { SlippageToleranceType } from "@solana/bridge-adapter-react";
 import { useCallback, useState } from "react";
 import {
   setSlippageTolerance,
   useBridgeModalStore,
 } from "@solana/bridge-adapter-react";
-import type { SlippageToleranceType } from "../../types/BridgeModal";
 import { SlippageToleranceBase } from "./slippage-tolerance-base";
 
 export const SlippageTolerance: FC<unknown> = () => {

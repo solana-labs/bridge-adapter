@@ -1,12 +1,10 @@
 import * as React from "react";
 import type { ReactNode } from "react";
 import { useDefaultEthereumConfig } from "../provider-entities/ethereum";
-import { logger } from "../lib/utils";
+import { logger } from "../lib/logger";
 import { EvmWalletProviderBase } from "./evm-wallet-provider-base";
 
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
-
-interface EvmWalletProviderProps {
+export interface EvmWalletProviderProps {
   alchemyApiKey?: string;
   children: ReactNode;
   coinbaseWalletSettings?: {
@@ -33,14 +31,10 @@ export const EvmWalletProvider: React.FC<EvmWalletProviderProps> = ({
       metamaskWalletOptions: {},
     });
 
-  const defaultLogger = React.useMemo(() => {
-    return IS_PRODUCTION ? logger : undefined;
-  }, []);
-
   return (
     <EvmWalletProviderBase
       autoConnect
-      logger={defaultLogger}
+      logger={logger}
       publicClient={publicClient}
       wsPublicClient={webSocketPublicClient}
       connectors={connectors}

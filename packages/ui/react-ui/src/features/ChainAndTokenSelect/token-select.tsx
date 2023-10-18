@@ -1,9 +1,9 @@
 import type { Token } from "@solana/bridge-adapter-base";
 import { formatUnits, parseUnits } from "viem";
-import { hasChainDest } from "../../shared/lib/utils";
 import { setToken, useBridgeModalStore } from "@solana/bridge-adapter-react";
 import { useTokenInfo } from "./use-token-info";
 import { TokenSelectBase } from "./token-select-base";
+import { hasChainDest } from "../../shared/lib/utils";
 
 export function TokenSelect() {
   const params = useBridgeModalStore.use.currentBridgeStepParams();

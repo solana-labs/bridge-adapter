@@ -29,9 +29,19 @@
       "cache": false,
       "persistent": true
     },
+    "dev-demo": {
+      "cache": false,
+      "dependsOn": ["build-packages"],
+      "persistent": true
+    },
     "clean": {
       "cache": false
     }
   },
-  "globalEnv": ["NODE_ENV", "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID", "DEBUG"]
+  "globalEnv": [
+    "NODE_ENV",
+    "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID",
+    "NEXT_PUBLIC_LOG_LEVEL",
+    "NEXT_PUBLIC_SOLANA_RPC_URL"
+  ]
 }

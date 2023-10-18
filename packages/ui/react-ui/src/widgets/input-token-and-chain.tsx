@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
 import {
-  TOKEN_AMOUNT_ERROR_INDICATOR,
   setTokenAmount,
+  TOKEN_AMOUNT_ERROR_INDICATOR,
   useBridgeModalStore,
 } from "@solana/bridge-adapter-react";
-import { Input } from "../shared/ui/input";
+import { useEffect, useState } from "react";
 import { ChainAndTokenSelectButton } from "../features/ChainAndTokenSelect";
+import { Input } from "../shared/ui/input";
 import { useIsWalletConnected } from "../features/WalletSelection";
 import { useTokenBalance } from "../features/MultiChainSelection";
 
@@ -32,7 +32,7 @@ export function InputTokenAndChainWidget() {
     setError("");
     try {
       setTokenAmount(value, chainDest);
-    } catch (e) {
+    } catch (_: unknown) {
       setError("Please enter a valid number");
     }
   };
@@ -51,16 +51,17 @@ export function InputTokenAndChainWidget() {
       <div className="bsa-flex bsa-justify-between">
         <div>
           <Input
-            placeholder="0.00"
             className="bsa-border-none bsa-text-xl focus-visible:bsa-ring-0"
+            name="token-amount"
+            onChange={onInputChange}
+            placeholder="0.00"
+            disabled={!isWalletConnected}
             value={
               tokenOfInterest.selectedAmountFormatted ===
               TOKEN_AMOUNT_ERROR_INDICATOR
                 ? inputValue
                 : tokenOfInterest.selectedAmountFormatted
             }
-            onChange={onInputChange}
-            disabled={!isWalletConnected}
           />
           {error && (
             <div className="bsa-text-xs bsa-text-destructive-foreground">

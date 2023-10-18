@@ -1,3 +1,4 @@
+import Debug from "debug";
 import type {
   BridgeAdapterSdkArgs,
   ChainDestType,
@@ -18,7 +19,9 @@ import type {
   RelayerFeeType,
   SetCurrentBridgeStepType,
   SlippageToleranceType,
-} from "../types/BridgeModal";
+} from "../types/bridge-adapter";
+
+const debug = Debug("debug:react:context");
 
 type BridgeModalState = {
   sdk: BridgeAdapterSdk;
@@ -51,7 +54,6 @@ type BridgeModalActions = {
   setTokenAmount: (amount: string, chainDest: ChainDestType) => void;
   setSwapInformation: (swapInformation: SwapInformation) => void;
   goBackOneStep: () => void;
-
   setSlippageTolerance: (slippageTolerance: SlippageToleranceType) => void;
   setRelayerFee: (relayerFee: RelayerFeeType) => void;
   resetBridgeModalStore: () => void;
@@ -107,13 +109,33 @@ export const useBridgeModalStore = createSelectors(useBridgeModalStoreBase);
 export const setCurrentBridgeStep: BridgeModalActions["setCurrentBridgeStep"] =
   (args) => {
     useBridgeModalStore.setState((state) => {
+      debug("%O Step;", state.currentBridgeStep, "Params:", {
+        ...state.currentBridgeStepParams,
+      });
       state.previousBridgeStep.push(state.currentBridgeStep);
       state.previousBridgeStepParams.push(state.currentBridgeStepParams);
+      debug("%O Prevoius Step;", { ...state.previousBridgeStep }, "Params:", {
+        ...state.previousBridgeStepParams,
+      });
 
+      /**
+       *  Change the original logic as there are couple of problems:
+       *  [] 1. Pushing parameters to the previous step leads to the memory leaking
+       *  [x] 2. `WALLET_SELECTION` screen do not allow to return to the first screen
+       *    as it "redirects" to itself with different parameters
+       */
+      if (state.currentBridgeStep === args.step) {
+        state.previousBridgeStep.pop();
+        state.previousBridgeStepParams.pop();
+      }
       state.currentBridgeStep = args.step;
+
       if ("params" in args) {
         state.currentBridgeStepParams = args.params;
       }
+      debug("%O Next Step:", state.currentBridgeStep, "; Params:", {
+        ...state.currentBridgeStepParams,
+      });
     });
   };
 
@@ -121,6 +143,7 @@ export const goBackOneStep: BridgeModalActions["goBackOneStep"] = () => {
   useBridgeModalStore.setState((state) => {
     const previousBridgeStep = state.previousBridgeStep.pop();
     const previousBridgeStepParams = state.previousBridgeStepParams.pop();
+
     if (
       previousBridgeStep === undefined ||
       typeof previousBridgeStep === "undefined"
@@ -235,6 +258,7 @@ export const resetBridgeModalStore: BridgeModalActions["resetBridgeModalStore"] 
   };
 
 export const SLIPPING_TOLERANCE_AUTO: SlippageToleranceType = "auto";
+
 export const setSlippageTolerance: BridgeModalActions["setSlippageTolerance"] =
   (slippageTolerance) => {
     useBridgeModalStore.setState((state) => {

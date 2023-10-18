@@ -40,7 +40,6 @@
     "@solana/bridge-adapter-base": "^0.1.0",
     "@solana/bridge-adapter-react": "^0.1.0",
     "cmdk": "^0.2.0",
-    "encoding": "^0.1.13",
     "immer": "^10.0.2",
     "lokijs": "^1.5.12",
     "react-error-boundary": "^4.0.10",

@@ -1,3 +1,4 @@
+import Debug from "debug";
 import { approveEth, getAllowanceEth } from "@certusone/wormhole-sdk";
 import { VersionedTransaction } from "@solana/web3.js";
 import {
@@ -43,6 +44,19 @@ import { getWalletAddress } from "../../utils/getWalletAddress";
 import { submitSolanaTransaction } from "../../utils/solana";
 import { walletClientToSigner } from "../../utils/viem/ethers";
 import { AbstractBridgeAdapter } from "./AbstractBridgeAdapter";
+import { BRIDGE_ALIASES, CHAIN_ALIASES } from "../../constants/ChainNames";
+
+const log = Debug("log:DeBridgeBridgeAdapter");
+const debug = Debug("debug:DeBridgeBridgeAdapter");
+
+const DEBRIDGE_TX_WATCH_INTERVAL = 5_000;
+
+enum DeBridgeTxStatus {
+  Created = "Created",
+  SentUnlock = "SentUnlock",
+  ClaimedUnlock = "ClaimedUnlock",
+  Fulfilled = "Fulfilled",
+}
 
 export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
   private supportedChains: ChainName[] = [];
@@ -59,8 +73,8 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
   private TokenObjectSchema = object({
     tokens: this.TokenRecordSchema,
   });
-  private deBridgeEvmFee = "0xb3E9C57fB983491416a0C77b07629C0991c3FD59";
-  private deBridgeSolanaFee = "3uAfBoHB1cTyB7H8G2KTpSgZS1T1ME4bHb8uqzqhWsfe";
+  //private deBridgeEvmFee = "0xb3E9C57fB983491416a0C77b07629C0991c3FD59";
+  //private deBridgeSolanaFee = "3uAfBoHB1cTyB7H8G2KTpSgZS1T1ME4bHb8uqzqhWsfe";
   private deBridgeSolanaChainId = 7565164;
 
   private QuoteSchema = object({
@@ -104,6 +118,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
     }),
     fixFee: string(),
   });
+
   private debridgeQuote: Output<typeof this.QuoteSchema> | undefined;
 
   private CreateTxSchema = union([
@@ -121,16 +136,20 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
     }),
   ]);
 
+  private isSolanaChain(chain: ChainName): boolean {
+    return chain === CHAIN_ALIASES.Solana;
+  }
+
   constructor(args: BridgeAdapterArgs) {
     super(args);
   }
 
   name(): Bridges {
-    return "deBridge";
+    return BRIDGE_ALIASES.DeBridge;
   }
   async getSupportedChains(): Promise<ChainName[]> {
     if (!this.supportedChains.length) {
-      console.log("fetching debridge chain");
+      log(`Fetching ${this.name()} chain`);
       const chainsResp = await fetch(
         "https://api.dln.trade/v1.0/supported-chains",
       );
@@ -178,8 +197,8 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
     }
     const chainId = chainNameToChainId(chain);
     if (!this.tokenList[chain]) {
-      if (chain === "Solana") {
-        console.log("fetching debridge Solana token list");
+      if (this.isSolanaChain(chain)) {
+        log(`Fetching ${this.name()} Solana token list`);
         const solanaTokenListUrl = new URL("https://cache.jup.ag/tokens");
         const solanaTokenListResp = await fetch(solanaTokenListUrl);
         if (!solanaTokenListResp.ok) {
@@ -199,7 +218,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
           };
         });
       } else {
-        console.log("fetching debridge EVM token list");
+        log(`Fetching ${this.name()} EVM token list`);
         const tokenListUrl = new URL("https://api.dln.trade/v1.0/token-list");
         tokenListUrl.searchParams.set("chainId", chainId.toString());
         const tokenListResp = await fetch(tokenListUrl);
@@ -210,7 +229,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
 
         try {
           const tokenList = parse(this.TokenObjectSchema, tokenListRaw);
-          if (chain === "Ethereum") {
+          if (chain === CHAIN_ALIASES.Ethereum) {
             // blur token image missing on debridge
             tokenList.tokens[
               "0x5283d291dbcf85356a21ba090e6db59121208b44"
@@ -230,11 +249,12 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
               };
             },
           );
-          console.log("this.tokenList[chain]", this.tokenList[chain], chain);
+          log(`Fetched ${this.name()} EVM token list for ${chain}`);
+          debug(`%O this.tokenList[${chain}]`, this.tokenList[chain]);
         } catch (e) {
           if (e instanceof ValiError) {
-            console.log(
-              "Error parsing response from server for deBridge",
+            log(
+              `Error parsing response from server for ${this.name()}`,
               flatten(e),
             );
           }
@@ -286,7 +306,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
     quoteUrl.searchParams.set("dstChainTokenOut", targetToken.address);
     quoteUrl.searchParams.set("dstChainTokenOutAmount", "auto");
     quoteUrl.searchParams.set("prependOperatingExpense", "true");
-    quoteUrl.searchParams.set("affiliateFeePercent", "0.05");
+    quoteUrl.searchParams.set("affiliateFeePercent", "0");
     const quoteResp = await fetch(quoteUrl);
     if (!quoteResp.ok) {
       throw new Error(
@@ -294,7 +314,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
       );
     }
     const quoteRaw: unknown = await quoteResp.json();
-    console.log("quoteRaw", quoteRaw);
+    log("quoteRaw", quoteRaw);
     const quote = parse(this.QuoteSchema, quoteRaw);
     this.debridgeQuote = quote;
     const sourceNativeCurrency = chainNameToNativeCurrency(sourceToken.chain);
@@ -414,8 +434,12 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
       "dstChainOrderAuthorityAddress",
       targetAddress,
     );
-    createTxUrl.searchParams.set("affiliateFeeRecipient", this.deBridgeEvmFee);
-    createTxUrl.searchParams.set("affiliateFeePercent", "0.1");
+    /**
+     *  Do not charge affiliate fee here.
+     *  TODO:
+     *  - [] Allow affiliate fee to be configurable.
+     */
+    createTxUrl.searchParams.set("affiliateFeePercent", "0");
     createTxUrl.searchParams.set("prependOperatingExpenses", "true");
 
     const createTxResp = await fetch(createTxUrl);
@@ -423,7 +447,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
       throw new Error("Failed to create transaction");
     }
     const createTxRaw: unknown = await createTxResp.json();
-    console.log("createTxRaw", createTxRaw);
+    log("createTxRaw", createTxRaw);
     const createTx = parse(this.CreateTxSchema, createTxRaw);
     return createTx;
   }
@@ -535,7 +559,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
       this.getDeBridgeTransactionStatus(transactionHash)
         .then((status) => {
           switch (status) {
-            case "Created": {
+            case DeBridgeTxStatus.Created: {
               onStatusUpdate({
                 information: "Successfully locked tokens on source chain",
                 name: "PendingConfirmation",
@@ -543,9 +567,9 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
               });
               break;
             }
-            case "SentUnlock":
-            case "ClaimedUnlock":
-            case "Fulfilled": {
+            case DeBridgeTxStatus.SentUnlock:
+            case DeBridgeTxStatus.ClaimedUnlock:
+            case DeBridgeTxStatus.Fulfilled: {
               onStatusUpdate({
                 information: "Successfully completed swap",
                 name: "Completed",
@@ -569,9 +593,9 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
           }
         })
         .catch((e: unknown) => {
-          console.log("Error getting debridge transaction status", e);
+          log(`Error getting ${this.name()} transaction status`, e);
         });
-    }, 5_000);
+    }, DEBRIDGE_TX_WATCH_INTERVAL);
 
     return true;
   }
@@ -585,7 +609,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
       throw new Error("Failed to get order id");
     }
     const orderIdRaw: unknown = await orderIdResp.json();
-    console.log("orderIdRaw", orderIdRaw);
+    log("orderIdRaw", orderIdRaw);
     const { orderIds } = parse(
       object({ orderIds: array(string()) }),
       orderIdRaw,
@@ -605,7 +629,7 @@ export class DeBridgeBridgeAdapter extends AbstractBridgeAdapter {
       throw new Error("Failed to get transaction id");
     }
     const txnStatusRaw: unknown = await txnStatusResp.json();
-    console.log("txnStatusRaw", txnStatusRaw);
+    log("txnStatusRaw", txnStatusRaw);
     const txnStatus = parse(
       object({ orderId: string(), status: string() }),
       txnStatusRaw,

@@ -2,7 +2,7 @@ import type { BridgeStatus } from "@solana/bridge-adapter-base";
 import type { FC } from "react";
 import { Spinner } from "../../shared/ui/spinner";
 
-interface PendingTransactionBaseProps {
+export interface PendingTransactionBaseProps {
   status: BridgeStatus;
 }
 

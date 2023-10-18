@@ -4,13 +4,11 @@ import {
   formatTokenBalance,
 } from "@solana/bridge-adapter-base";
 
-//TODO: !!!import { useWallet } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useQuery } from "@tanstack/react-query";
 import { object, parse, string } from "valibot";
 import type { Hash } from "viem";
 import { createPublicClient, formatUnits, http, parseAbi } from "viem";
-//!!!import { useWalletClient } from "wagmi";
 import {
   useEthereumWallet,
   useSolanaWallet,
@@ -18,7 +16,7 @@ import {
 
 export function useTokenBalance(token: Token) {
   const { data: walletClient } = useEthereumWallet();
-  const { publicKey } = useSolanaWallet(); //useWallet();
+  const { publicKey } = useSolanaWallet();
   const {
     data: tokenBalance,
     isInitialLoading: isTokenBalanceLoading,
@@ -46,7 +44,6 @@ export function useTokenBalance(token: Token) {
         );
 
         for (const item of results.value) {
-          console.log("item", item);
           const tokenInfoSchema = object({
             data: object({
               parsed: object({
@@ -59,7 +56,6 @@ export function useTokenBalance(token: Token) {
           });
           const tokenInfo = parse(tokenInfoSchema, item.account).data.parsed
             .info;
-          console.log("tokenInfo", tokenInfo);
           const address = tokenInfo.mint;
           const amount = tokenInfo.tokenAmount.uiAmountString;
           if (address === token.address) {

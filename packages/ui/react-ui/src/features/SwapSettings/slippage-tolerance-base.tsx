@@ -1,12 +1,12 @@
 import type { FC } from "react";
-import { useCallback } from "react";
-import { SLIPPING_TOLERANCE_AUTO } from "@solana/bridge-adapter-react";
-import type { SlippageToleranceType } from "../../types/BridgeModal";
+import type { SlippageToleranceType } from "@solana/bridge-adapter-react";
 import { Button } from "../../shared/ui/button";
 import { cn } from "../../shared/lib/styles";
 import { Input } from "../../shared/ui/input";
+import { SLIPPING_TOLERANCE_AUTO } from "@solana/bridge-adapter-react";
+import { useCallback } from "react";
 
-interface SlippageToleranceBaseProps {
+export interface SlippageToleranceBaseProps {
   error?: string;
   labels?: {
     [key: string]: string;
@@ -61,21 +61,22 @@ export const SlippageToleranceBase: FC<SlippageToleranceBaseProps> = ({
         <div className="bsa-ml-4">
           <Input
             aria-label="Slippage Tolerance"
-            placeholder="0.00"
-            min={0}
-            step={0.01}
             className={cn(
               `bsa-rounded-br-none bsa-rounded-tr-none bsa-border-r-0 bsa-text-right bsa-text-xl focus-visible:bsa-ring-0`,
               slippageTolerance === SLIPPING_TOLERANCE_AUTO
                 ? "bsa-text-muted-foreground bsa-opacity-50"
                 : "",
             )}
+            min={0}
+            name="slippage-tolerance"
+            onChange={onInputChange}
+            placeholder="0.00"
+            step={0.01}
             value={
               slippageTolerance === SLIPPING_TOLERANCE_AUTO
                 ? slippage
                 : slippageTolerance
             }
-            onChange={onInputChange}
           />
           {error && (
             <div className="bsa-text-xs bsa-text-destructive-foreground">

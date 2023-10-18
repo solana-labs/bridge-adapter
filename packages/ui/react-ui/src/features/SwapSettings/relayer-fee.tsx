@@ -1,10 +1,10 @@
 import type { FC } from "react";
+import type { RelayerFeeType } from "@solana/bridge-adapter-react";
 import {
   setRelayerFee,
   useBridgeModalStore,
 } from "@solana/bridge-adapter-react";
 import { useState } from "react";
-import type { RelayerFeeType } from "../../types/BridgeModal";
 import { RelayerFeeBase } from "./relayer-fee-base";
 
 export const RelayerFee: FC<unknown> = () => {

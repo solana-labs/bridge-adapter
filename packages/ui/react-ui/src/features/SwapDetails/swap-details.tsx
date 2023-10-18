@@ -1,24 +1,19 @@
-import type { SwapInformation } from "@solana/bridge-adapter-base";
+import * as BridgeAdapter from "@solana/bridge-adapter-react";
 import type { FC } from "react";
-import {
-  setCurrentBridgeStep,
-  setSwapInformation,
-  useBridgeModalStore,
-} from "@solana/bridge-adapter-react";
-import { useSwapInfo } from "./use-swap-info";
+import type { SwapInformation } from "@solana/bridge-adapter-base";
 import { SwapDetailsBase } from "./swap-details-base";
+import { useSwapInfo } from "./use-swap-info";
 
 export const SwapDetails: FC<unknown> = () => {
-  const { isLoadingSwapInfo, swapInfo } = useSwapInfo();
-  const currentSwapInfo = useBridgeModalStore.use.swapInformation();
+  const { isLoadingSwapInfo, routeErrors, swapInfo } = useSwapInfo();
+  const currentSwapInfo =
+    BridgeAdapter.useBridgeModalStore.use.swapInformation();
 
-  const chooseSwapInfo = (swapInfo: SwapInformation) => {
-    return () => {
-      setSwapInformation(swapInfo);
-      setCurrentBridgeStep({
-        step: "MULTI_CHAIN_SELECTION",
-      });
-    };
+  const chooseSwapInfo = (info: SwapInformation) => {
+    BridgeAdapter.setSwapInformation(info);
+    BridgeAdapter.setCurrentBridgeStep({
+      step: "MULTI_CHAIN_SELECTION",
+    });
   };
 
   return (
@@ -26,6 +21,7 @@ export const SwapDetails: FC<unknown> = () => {
       currentSwapInfo={currentSwapInfo}
       isLoading={isLoadingSwapInfo}
       onSelectSwapInfo={chooseSwapInfo}
+      routeErrors={routeErrors}
       swapInfo={swapInfo}
     />
   );

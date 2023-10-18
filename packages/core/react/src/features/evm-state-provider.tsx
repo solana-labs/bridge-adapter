@@ -5,29 +5,24 @@ import {
   useContext,
   useState,
 } from "react";
-import Debug from "debug";
+import * as BridgeAdapterBase from "@solana/bridge-adapter-base";
 import type { ChainName } from "@solana/bridge-adapter-base";
 import type { Connector } from "wagmi";
 import type { ReactNode } from "react";
-import {
-  chainNameToChainId,
-  SupportedChainNames,
-} from "@solana/bridge-adapter-base";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
-
-const debug = Debug("debug:react-ui:EvmState");
+import { logger } from "../lib/logger";
 
 type ChainNameSetter = (name: ChainName) => void;
 
+type ConnectParams = Parameters<ReturnType<typeof useConnect>["connect"]>[0];
+
 interface EvmState {
-  disconnect: () => unknown;
-  connect: () => unknown;
+  disconnect: ReturnType<typeof useDisconnect>["disconnect"];
+  connect: (_: ConnectParams & { onSuccess?: () => void }) => void;
   connectors: Connector[];
   isLoading: boolean;
   isConnected: boolean;
-  onSuccess?: () => unknown;
   pendingConnector?: Connector;
-  //changeChainHandler: ({ name?: ChainName }) => void;
   setChain: ChainNameSetter;
 }
 
@@ -37,49 +32,69 @@ const STATE = {
   disconnect: () => {},
   isLoading: false,
   isConnected: false,
-  onSuccess: () => {},
   pendingConnector: undefined,
-  //changeChainHandler: (a: { name?: ChainName }) => {},
   setChain() {},
 } satisfies EvmState;
 
 const EvmState = createContext<EvmState>(STATE);
 
-export const EvmStateProvider = ({ children }: { children: ReactNode }) => {
-  const [chainName, setChainName] = useState<ChainName>(SupportedChainNames[0]);
-  const [onSuccess /*, setSuccessHandler*/] = useState<
-    (() => unknown) | undefined
-  >(undefined);
+export const EvmStateProvider = ({
+  children,
+  onError,
+}: {
+  children: ReactNode;
+  onError?: (e: Error) => void;
+}) => {
+  const [chainName, setChainName] = useState<ChainName>(
+    BridgeAdapterBase.SupportedChainNames[0],
+  );
 
   const { isConnected } = useAccount();
 
-  const { connect, connectors, isLoading, pendingConnector } = useConnect({
-    chainId: chainNameToChainId(chainName),
-    onSuccess,
-  });
-  const { disconnect } = useDisconnect();
+  const handleConnectError = useCallback(
+    (error: Error) => {
+      logger.error("Can not establish connection due to error");
+      onError?.(error);
+    },
+    [onError],
+  );
 
-  //const changeChainHandler = useCallback(
-  //({ name, onSuccess }: { name?: ChainName; onSuccess?: () => unknown }) => {
-  //setChainName(name || SupportedChainNames[0]);
-  //setSuccessHandler(onSuccess);
-  //},
-  //[setChainName, setSuccessHandler],
-  //);
-  //
-  const setChain = useCallback<ChainNameSetter>((name) => {
-    debug(`Trying to set the new chain`, name);
-    setChainName(name);
+  // FIXME: remove the implementation if it's not needed
+  const handleConnectSuccess = useCallback(() => {
+    logger.debug("Connection established successfully");
   }, []);
 
-  console.log("rerender on setting chain");
+  const { connectAsync, connectors, isLoading, pendingConnector } = useConnect({
+    chainId: BridgeAdapterBase.chainNameToChainId(chainName),
+    onSuccess: handleConnectSuccess,
+    onError: handleConnectError,
+  });
+
+  const { disconnect } = useDisconnect({
+    onError: handleConnectError,
+  });
+
+  const connectToWallet = useCallback(
+    async ({ connector, onSuccess }: Parameters<EvmState["connect"]>[0]) => {
+      const data = await connectAsync({ connector });
+      if (data) {
+        const { name, id } = data.connector ?? {};
+        logger.info(`Connected to wallet ${name}::${id}`);
+        onSuccess?.();
+      }
+    },
+    [connectAsync],
+  );
+
+  const setChain = useCallback<ChainNameSetter>((name) => {
+    logger.debug(`Trying to set the new chain: ${name}`);
+    setChainName(name);
+  }, []);
 
   const data = useMemo(
     () => ({
       disconnect,
-      connect,
-      onSuccess,
-      //changeChainHandler,
+      connect: connectToWallet,
       connectors,
       isConnected,
       isLoading,
@@ -88,10 +103,8 @@ export const EvmStateProvider = ({ children }: { children: ReactNode }) => {
     }),
     [
       disconnect,
-      connect,
+      connectToWallet,
       connectors,
-      onSuccess,
-      //changeChainHandler,
       isLoading,
       isConnected,
       pendingConnector,

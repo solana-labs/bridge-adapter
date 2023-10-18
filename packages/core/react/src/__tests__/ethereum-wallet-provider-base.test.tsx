@@ -8,7 +8,7 @@ import { expect, test, describe, afterEach, beforeEach } from "vitest";
 import { useEthereumWallet, useDefaultEthereumConfig } from "../index";
 import { EvmWalletProviderBase } from "../features/evm-wallet-provider-base";
 
-const warn = Debug("warn:EvmWalletProviderBase");
+const warn = Debug("warn:react:EvmWalletProviderBase");
 
 type MarkerRefType = {
   getContextState(): ReturnType<typeof useEthereumWallet>;

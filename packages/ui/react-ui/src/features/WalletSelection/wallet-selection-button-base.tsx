@@ -3,7 +3,8 @@ import { useCallback } from "react";
 import { Button } from "../../shared/ui/button";
 import { cn } from "../../shared/lib/styles";
 
-interface WalletSelectionButtonBase extends HTMLProps<HTMLButtonElement> {
+export interface WalletSelectionButtonBase
+  extends HTMLProps<HTMLButtonElement> {
   canConnectWallet?: boolean;
   hasSourceChain?: boolean;
   hasTargetChain?: boolean;

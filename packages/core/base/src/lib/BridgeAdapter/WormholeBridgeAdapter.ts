@@ -359,8 +359,9 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
       transaction.feePayer = targetAccount.publicKey;
 
       // sign, send, and confirm transaction
-      const signedTransaction =
-        await targetAccount.signTransaction(transaction);
+      const signedTransaction = await targetAccount.signTransaction(
+        transaction,
+      );
       await submitSolanaTransaction(signedTransaction, connection);
     }
   }
@@ -551,6 +552,9 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
       targetToken.chain,
     );
     const wormholeTargetChainId = toChainId(wormholeTargetChain);
+
+    console.log("Source", sourceToken);
+    console.log("Target", targetToken);
 
     if (sourceToken.chain === "Solana") {
       // From Solana to EVM

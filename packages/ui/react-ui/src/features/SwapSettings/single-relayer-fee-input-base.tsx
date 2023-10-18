@@ -3,7 +3,7 @@ import { useState } from "react";
 import { cn } from "../../shared/lib/styles";
 import { Input } from "../../shared/ui/input";
 
-interface SingleRelayerFeeInputBaseProps {
+export interface SingleRelayerFeeInputBaseProps {
   active?: boolean;
   chain?: string;
   className?: string;
@@ -38,7 +38,7 @@ export const SingleRelayerFeeInputBase: FC<SingleRelayerFeeInputBaseProps> = ({
       try {
         setRelayerFee(fee);
         setError("");
-      } catch (e) {
+      } catch (_: unknown) {
         setError(labels.invalidInputValueError);
       }
     }
@@ -55,16 +55,17 @@ export const SingleRelayerFeeInputBase: FC<SingleRelayerFeeInputBaseProps> = ({
           <div>
             <Input
               aria-label="Relayer Fee"
-              disabled={!active}
-              placeholder="0.00"
-              type="number"
-              min={0}
-              step={1}
               className={cn(
                 `bsa-rounded-br-none bsa-rounded-tr-none bsa-border-r-0 bsa-text-right bsa-text-xl focus-visible:bsa-ring-0`,
               )}
-              value={relayerFee}
+              disabled={!active}
+              min={0}
+              name="relayer-fee"
               onChange={onInputChange}
+              placeholder="0.00"
+              step={1}
+              type="number"
+              value={relayerFee}
             />
             {error && (
               <div className="bsa-text-xs bsa-text-destructive-foreground">

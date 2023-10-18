@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { setBridgeAdapterSdkSettings } from "./BridgeModalContext";
 
 export function BridgeModalProvider({
-  children,
   bridgeAdapterSetting,
+  children,
+  settings,
   sourceChain,
   targetChain,
-  settings,
 }: {
   children: React.ReactNode;
 } & BridgeAdapterSdkArgs) {
@@ -17,15 +17,17 @@ export function BridgeModalProvider({
     : "";
 
   useEffect(() => {
+    const setting = bridgeAdapterSettingString
+      ? (JSON.parse(
+          bridgeAdapterSettingString,
+        ) as BridgeAdapterSdkArgs["bridgeAdapterSetting"])
+      : undefined;
+
     setBridgeAdapterSdkSettings({
-      bridgeAdapterSetting: bridgeAdapterSettingString
-        ? (JSON.parse(
-            bridgeAdapterSettingString,
-          ) as BridgeAdapterSdkArgs["bridgeAdapterSetting"])
-        : undefined,
+      bridgeAdapterSetting: setting,
+      settings,
       sourceChain,
       targetChain,
-      settings,
     });
   }, [bridgeAdapterSettingString, settings, sourceChain, targetChain]);
 

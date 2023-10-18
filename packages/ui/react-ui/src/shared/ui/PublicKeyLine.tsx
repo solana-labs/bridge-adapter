@@ -1,8 +1,8 @@
 import type { PublicKey } from "@solana/web3.js";
 import { Copy, CopyCheck } from "lucide-react";
+import { useCopyAddress } from "./useCopyAddress";
 import { formatPublicKey } from "../lib/utils";
 import { cn } from "../lib/styles";
-import { useCopyAddress } from "./useCopyAddress";
 
 export function PublicKeyLine({
   publicKey,

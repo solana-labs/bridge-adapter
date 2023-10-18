@@ -36,6 +36,10 @@ export const WalletSelectionButton: FC<unknown> = () => {
                   },
                 },
               });
+            } else {
+              setCurrentBridgeStep({
+                step: "MULTI_CHAIN_SELECTION",
+              });
             }
           },
         },

@@ -1,11 +1,14 @@
 "use client";
-
-import { Dialog, DialogContent } from "@radix-ui/react-dialog";
-import type { DialogProps } from "@radix-ui/react-dialog";
-import { Command as CommandPrimitive } from "cmdk";
-import { Search } from "lucide-react";
 import * as React from "react";
+import type { DialogProps } from "@radix-ui/react-dialog";
 import { cn } from "../lib/styles";
+import { Command as CommandPrimitive } from "cmdk";
+import { Dialog, DialogContent } from "@radix-ui/react-dialog";
+import { Search } from "lucide-react";
+
+const CLS = {
+  CommandOuter: `bsa-flex bsa-h-full bsa-w-full bsa-flex-col bsa-overflow-hidden bsa-rounded-md bsa-bg-popover bsa-text-popover-foreground`,
+};
 
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
@@ -14,7 +17,8 @@ const Command = React.forwardRef<
   <CommandPrimitive
     ref={ref}
     className={cn(
-      "bsa-flex bsa-h-full bsa-w-full bsa-flex-col bsa-overflow-hidden bsa-rounded-md bsa-bg-popover bsa-text-popover-foreground",
+      //"bsa-flex bsa-h-full bsa-w-full bsa-flex-col bsa-overflow-hidden bsa-rounded-md bsa-bg-popover bsa-text-popover-foreground",
+      CLS.CommandOuter,
       className,
     )}
     {...props}
@@ -29,7 +33,7 @@ type CommandDialogProps = DialogProps;
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
     <Dialog {...props}>
-      <DialogContent className="bsa-overflow-hidden bsa-p-0 bsa-shadow-lg">
+      <DialogContent className={`bsa-overflow-hidden bsa-p-0 bsa-shadow-lg`}>
         <Command className="[&_[cmdk-group-heading]]:bsa-px-2 [&_[cmdk-group-heading]]:bsa-font-medium [&_[cmdk-group-heading]]:bsa-text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:bsa-pt-0 [&_[cmdk-group]]:bsa-px-2 [&_[cmdk-input-wrapper]_svg]:bsa-h-5 [&_[cmdk-input-wrapper]_svg]:bsa-w-5 [&_[cmdk-input]]:bsa-h-12 [&_[cmdk-item]]:bsa-px-2 [&_[cmdk-item]]:bsa-py-3 [&_[cmdk-item]_svg]:bsa-h-5 [&_[cmdk-item]_svg]:bsa-w-5">
           {children}
         </Command>

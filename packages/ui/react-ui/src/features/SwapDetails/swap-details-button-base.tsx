@@ -1,9 +1,10 @@
 import { ChevronRight } from "lucide-react";
-import type { FC, JSX, HTMLProps } from "react";
+import type { FC, HTMLProps, JSX } from "react";
 import { Button } from "../../shared/ui/button";
 import { cn } from "../../shared/lib/styles";
 
-interface SwapDetailsButtonBaseProps extends HTMLProps<HTMLButtonElement> {
+export interface SwapDetailsButtonBaseProps
+  extends HTMLProps<HTMLButtonElement> {
   isAbleRetrieveDetails: boolean;
   isLoadingDetails: boolean;
   hasDetails: boolean;

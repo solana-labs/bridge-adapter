@@ -1,25 +1,26 @@
-import type { BridgeStatus } from "@solana/bridge-adapter-base";
+import * as BridgeAdapter from "@solana/bridge-adapter-react";
 import { useCallback, useState } from "react";
-import {
-  goBackOneStep,
-  setCurrentBridgeStep,
-} from "@solana/bridge-adapter-react";
+import type { BridgeStatus } from "@solana/bridge-adapter-base";
 import { Spinner } from "../../shared/ui/spinner";
-import { useSubmitAndTrackTransaction } from "./use-submit-and-track-transaction";
+import { useBridgeAdapter } from "@solana/bridge-adapter-react";
+import { useSubmitAndTrackTransaction } from "../../entities";
 
 export function PendingTransaction() {
-  const onError = useCallback((e: Error) => {
-    console.error("Something went wrong during swap", e);
-    goBackOneStep();
-  }, []);
+  const { setNotification } = useBridgeAdapter();
+  const onError = useCallback(
+    (e: Error) => {
+      setNotification(e);
+      BridgeAdapter.goBackOneStep();
+    },
+    [setNotification],
+  );
   const [currentStatus, setCurrentStatus] = useState<BridgeStatus | undefined>(
     undefined,
   );
   const onStatusUpdate = useCallback((args: BridgeStatus) => {
     setCurrentStatus(args);
-    console.log("args", args);
     if (args.name === "Completed") {
-      setCurrentBridgeStep({
+      BridgeAdapter.setCurrentBridgeStep({
         step: "TRANSACTION_COMPLETED",
       });
     }
@@ -32,7 +33,7 @@ export function PendingTransaction() {
 
   return (
     <div className="bsa-flex bsa-h-80 bsa-w-full bsa-flex-col bsa-items-center bsa-justify-center bsa-space-y-5">
-      <Spinner variant={"default"} className="bsa-h-20 bsa-w-20" />
+      <Spinner variant="default" className="bsa-h-20 bsa-w-20" />
       <div>{currentStatus?.information}</div>
     </div>
   );

@@ -6,7 +6,7 @@ import {
 } from "@solana/wallet-adapter-react";
 import { clusterApiUrl } from "@solana/web3.js";
 
-interface SolanaWalletProviderProps
+export interface SolanaWalletProviderProps
   extends Omit<WalletProviderProps, "wallets"> {
   wallets?: WalletProviderProps["wallets"];
   rpcUrl?: string;
@@ -15,6 +15,7 @@ interface SolanaWalletProviderProps
 export const SolanaWalletProvider: React.FC<SolanaWalletProviderProps> = ({
   autoConnect = false,
   children,
+  onError,
   rpcUrl,
   wallets = [],
 }) => {
@@ -22,7 +23,11 @@ export const SolanaWalletProvider: React.FC<SolanaWalletProviderProps> = ({
 
   return (
     <ConnectionProvider endpoint={rpcUrl ?? clusterApiUrl("mainnet-beta")}>
-      <WalletProvider wallets={adapters} autoConnect={autoConnect}>
+      <WalletProvider
+        onError={onError}
+        wallets={adapters}
+        autoConnect={autoConnect}
+      >
         {children}
       </WalletProvider>
     </ConnectionProvider>

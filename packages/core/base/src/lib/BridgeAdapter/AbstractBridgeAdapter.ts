@@ -14,6 +14,7 @@ export abstract class AbstractBridgeAdapter {
   protected sourceChain: ChainName | undefined;
   protected targetChain: ChainName | undefined;
   protected settings: BridgeAdapterArgs["settings"];
+
   constructor({ sourceChain, targetChain, settings }: BridgeAdapterArgs) {
     this.sourceChain = sourceChain;
     this.targetChain = targetChain;

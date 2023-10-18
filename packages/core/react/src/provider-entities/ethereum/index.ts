@@ -5,7 +5,7 @@ import { arbitrum, avalanche, bsc, optimism, polygon } from "wagmi/chains";
 import * as providers from "./providers";
 import * as connectors from "./connectors";
 
-interface DefautEthereiumConfigOptions {
+export interface DefautEthereiumConfigOptions {
   alchemyApiKey?: string;
   coinbaseWalletOptions?: { appName: string };
   infuraApiKey?: string;

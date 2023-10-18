@@ -1,4 +1,4 @@
-import { SlippageTolerance, RelayerFee } from "../features/SwapSettings";
+import { RelayerFee, SlippageTolerance } from "../features/SwapSettings";
 
 /**
  *  Widget

@@ -1,18 +1,16 @@
 import type { FC, SVGProps } from "react";
 
+// eslint-disable-next-line no-shadow
 export enum WalletName {
   "MetaMask" = "MetaMask",
   "Coinbase Wallet" = "Coinbase Wallet",
   "walletConnect" = "walletConnect",
 }
 
-export function WalletIcon({
-  walletName,
-  ...props
-}: {
+export const WalletIcon: FC<{
   walletName: WalletName;
   [key: string]: unknown;
-}) {
+}> = ({ walletName, ...props }) => {
   switch (walletName.toLowerCase()) {
     case "MetaMask".toLowerCase(): {
       return <MetaMask {...props} />;
@@ -26,7 +24,7 @@ export function WalletIcon({
     default:
       return null;
   }
-}
+};
 
 // creds to connectKit
 export const MetaMask: FC<

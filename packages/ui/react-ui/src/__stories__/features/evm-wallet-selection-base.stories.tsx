@@ -16,13 +16,13 @@ const connector1 = (ready = false) =>
     id: "connector_id_1",
     name: "MetaMask",
     ready,
-  }) as ConnectorData;
+  } as ConnectorData);
 const connector2 = (ready = false) =>
   ({
     id: "connector_id_2",
     name: "walletConnect",
     ready,
-  }) as ConnectorData;
+  } as ConnectorData);
 
 export const Default: StoryObj<typeof EvmWalletConnectionListBase> = {
   args: {

@@ -15,12 +15,22 @@ const config = {
       },
     },
     extend: {
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      borderRadius: {
+        lg: "var(--bsa-radius)",
+        md: "calc(var(--bsa-radius) - 2px)",
+        sm: "calc(var(--bsa-radius) - 4px)",
+      },
       colors: {
         border: "hsl(var(--bsa-border))",
         input: "hsl(var(--bsa-input))",
         ring: "hsl(var(--bsa-ring))",
         background: "hsl(var(--bsa-background))",
         foreground: "hsl(var(--bsa-foreground))",
+        error: "hsl(var(--bsa-error))",
         primary: {
           DEFAULT: "hsl(var(--bsa-primary))",
           foreground: "hsl(var(--bsa-primary-foreground))",
@@ -50,11 +60,6 @@ const config = {
           foreground: "hsl(var(--bsa-card-foreground))",
         },
       },
-      borderRadius: {
-        lg: "var(--bsa-radius)",
-        md: "calc(var(--bsa-radius) - 2px)",
-        sm: "calc(var(--bsa-radius) - 4px)",
-      },
       fontFamily: {
         sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
       },
@@ -68,9 +73,9 @@ const config = {
           to: { height: 0 },
         },
       },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+      spacing: {
+        1.5: "1.5rem",
+        "calc(100%-3rem)": "calc(100%-3rem)",
       },
     },
   },

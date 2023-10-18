@@ -1,17 +1,14 @@
+import * as BridgeAdapterReact from "@solana/bridge-adapter-react";
+import type { BridgeStep } from "@solana/bridge-adapter-react";
 import type { FC } from "react";
+import { BridgeStepToTitle } from "../constants";
+import { Button } from "../shared/ui/button";
 import { ChevronLeft, Settings } from "lucide-react";
 import { cn } from "../shared/lib/styles";
-import {
-  goBackOneStep,
-  setCurrentBridgeStep,
-  useBridgeModalStore,
-} from "@solana/bridge-adapter-react";
-import { BridgeStepToTitle } from "../types/BridgeModal";
-import { Button } from "../shared/ui/button";
-import { DialogHeader, DialogTitle } from "../shared/ui/dialog";
 import { MultiChainWalletButton } from "../features/MultiChainWalletButton";
 
 export interface BridgeHeaderProps {
+  currentBridgeStep: BridgeStep;
   title?: string;
 }
 
@@ -20,11 +17,12 @@ export interface BridgeHeaderProps {
  *
  *  Header with controls
  */
-export const BridgeHeader: FC<BridgeHeaderProps> = ({ title }) => {
-  const currentBridgeStep = useBridgeModalStore.use.currentBridgeStep();
-
+export const BridgeHeader: FC<BridgeHeaderProps> = ({
+  currentBridgeStep,
+  title,
+}) => {
   let HeaderBody = (
-    <DialogTitle
+    <div
       className={cn({
         "bsa-items-right bsa-flex bsa-text-xl": true,
         "bsa-justify-between": !!title,
@@ -39,18 +37,19 @@ export const BridgeHeader: FC<BridgeHeaderProps> = ({ title }) => {
         className="bsa-p-2"
         aria-label="swap settings"
         onClick={() => {
-          setCurrentBridgeStep({
+          BridgeAdapterReact.setCurrentBridgeStep({
             step: "SWAP_SETTINGS",
           });
         }}
       >
         <Settings />
       </Button>
-    </DialogTitle>
+    </div>
   );
+
   if (currentBridgeStep !== "MULTI_CHAIN_SELECTION") {
     HeaderBody = (
-      <DialogTitle
+      <div
         className={cn({
           "bsa-flex bsa-items-center bsa-text-xl": true,
           "bsa-justify-between": !!title,
@@ -63,7 +62,7 @@ export const BridgeHeader: FC<BridgeHeaderProps> = ({ title }) => {
           className="bsa-p-2"
           aria-label="Go Back"
           onClick={() => {
-            goBackOneStep();
+            BridgeAdapterReact.goBackOneStep();
           }}
         >
           <ChevronLeft />
@@ -71,13 +70,9 @@ export const BridgeHeader: FC<BridgeHeaderProps> = ({ title }) => {
         <div className="bsa-pointer-events-none bsa-ml-10 bsa-flex bsa-w-full bsa-flex-grow bsa-justify-center">
           {BridgeStepToTitle[currentBridgeStep]}
         </div>
-      </DialogTitle>
+      </div>
     );
   }
 
-  return (
-    <DialogHeader aria-description="Modal to swap assets between various blockchains">
-      {HeaderBody}
-    </DialogHeader>
-  );
+  return HeaderBody;
 };

@@ -1,14 +1,14 @@
-import type { Token } from "@solana/bridge-adapter-base";
+import type { ChainSelectionType } from "@solana/bridge-adapter-react";
 import type { FC } from "react";
-import { useEffect, useState } from "react";
-import { FixedSizeList } from "react-window";
+import type { Token } from "@solana/bridge-adapter-base";
 import { AddressLine } from "../../shared/ui/AddressLine";
 import { Button } from "../../shared/ui/button";
+import { FixedSizeList } from "react-window";
 import { Input } from "../../shared/ui/input";
 import { Skeleton } from "../../shared/ui/skeleton";
-import type { ChainSelectionType } from "../../types/BridgeModal";
+import { useEffect, useState } from "react";
 
-interface TokenSelectBaseProps {
+export interface TokenSelectBaseProps {
   isLoadingTokens: boolean;
   labels?: {
     [key: string]: string;
@@ -53,7 +53,6 @@ export const TokenSelectBase: FC<TokenSelectBaseProps> = ({
       setFilteredTokens([...tokens]);
     }
   }, [tokenSearch, tokens]);
-
   let TokenList = (
     <div className="bsa-flex bsa-flex-col bsa-space-y-5 bsa-overflow-auto">
       {Array(5)
@@ -133,12 +132,13 @@ export const TokenSelectBase: FC<TokenSelectBaseProps> = ({
   return (
     <div className="bsa-flex bsa-flex-col bsa-space-y-5">
       <Input
-        placeholder={labels.searchPlaceholder}
-        type="text"
-        value={tokenSearch}
+        name="search"
         onChange={(e) => {
           setTokenSearch(e.target.value);
         }}
+        placeholder={labels.searchPlaceholder}
+        type="text"
+        value={tokenSearch}
       />
       <div className="bsa-max-h-72 bsa-w-full bsa-overflow-hidden bsa-px-1 bsa-py-1">
         {TokenList}

@@ -3,15 +3,12 @@ import type {
   FeeToken,
   SwapInformation,
 } from "@solana/bridge-adapter-base";
-import type { BridgeStep, BridgeStepParams } from "../types/BridgeModal";
+import type { BridgeStep, BridgeStepParams } from "../types/bridge-adapter";
 import type { ClassValue } from "clsx";
 import type { useConnect } from "wagmi";
 import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 import { PublicKey } from "@solana/web3.js";
-import { Roarr as log } from "roarr";
-import type { Logger } from "roarr";
-import type { JsonObject } from "roarr/dist/types";
 
 const customTwMerge = extendTailwindMerge({
   prefix: "bsa-",
@@ -20,21 +17,6 @@ const customTwMerge = extendTailwindMerge({
 export function cn(...inputs: ClassValue[]) {
   return customTwMerge(clsx(inputs));
 }
-
-interface CustomLogger extends Logger<JsonObject> {
-  warn(message: string, ...other: unknown[]): void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  warn(...any: any): any;
-}
-
-export const logger: Pick<CustomLogger, "info" | "debug" | "error" | "warn"> = {
-  info: log.info,
-  debug: log.debug,
-  error: log.error,
-  warn(message: string, ...rest: unknown[]) {
-    log.warn(rest.length ? JSON.stringify({ message, rest }) : message);
-  },
-};
 
 export function getEvmAvailableWallets(
   wallets: ReturnType<typeof useConnect>["connectors"],
@@ -48,7 +30,6 @@ export function getEvmAvailableWallets(
 
 export function parseForErrorString(e: unknown) {
   if (e instanceof Error) {
-    console.log("e.message", e.message);
     if (
       e.message.includes("User rejected the request") ||
       e.message.includes("user did not approve")

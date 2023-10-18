@@ -1,20 +1,22 @@
+import Debug from "debug";
+import type * as BridgeTypes from "../types/Bridges";
+import type { AbstractBridgeAdapter } from "./BridgeAdapter/AbstractBridgeAdapter";
 import type { BridgeAdapterSetting } from "../types/BridgeAdapterSetting";
-import type {
-  BridgeAdapterArgs,
-  BridgeStatus,
-  SolanaOrEvmAccount,
-} from "../types/Bridges";
-import type { ChainName, ChainSourceAndTarget } from "../types/Chain";
 import type { ChainDestType } from "../types/ChainDest";
+import type { ChainName, ChainSourceAndTarget } from "../types/Chain";
 import type { SwapInformation } from "../types/SwapInformation";
 import type { Token, TokenWithAmount } from "../types/Token";
 import { getBridgeAdapters } from "../utils/getBridgeAdapters";
 import { getSourceAndTargetChain } from "../utils/getSourceAndTargetChain";
-import type { AbstractBridgeAdapter } from "./BridgeAdapter/AbstractBridgeAdapter";
 
-export type BridgeAdapterSdkArgs = BridgeAdapterArgs & {
+const warn = Debug("warn:base:BridgeAdapterSdk");
+
+export type BridgeAdapterSdkArgs = BridgeTypes.BridgeAdapterArgs & {
   bridgeAdapterSetting?: BridgeAdapterSetting;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type RouteError<T = any> = { index: number; reason: T };
 
 export class BridgeAdapterSdk {
   sourceChain: ChainName | undefined;
@@ -138,24 +140,38 @@ export class BridgeAdapterSdk {
     return Array.from(deduplicatedTokens.values());
   }
 
-  async getSwapInformation(sourceToken: TokenWithAmount, targetToken: Token) {
+  async getSwapInformation(
+    sourceToken: TokenWithAmount,
+    targetToken: Token,
+    /// Allow to handle route errors
+    onErrors?: (_: RouteError[] | undefined) => void,
+  ) {
     const routeInfos = await Promise.allSettled(
       this.bridgeAdapters.map(async (bridgeAdapter) => {
         return bridgeAdapter.getSwapDetails(sourceToken, targetToken);
       }),
     );
+
+    // NOTE: consider rewriting the logic as
+    // multiple promises can be handled, for example,
+    // using `useQueries` at the application level.
+    const unfulfilledRoutes: RouteError[] = [];
     const routes = routeInfos
-      .map((routeInfo) => {
+      .map((routeInfo, index) => {
         if (routeInfo.status === "fulfilled") {
           return routeInfo.value;
         } else {
-          console.warn(
-            "Error fetching route info for one of the bridge",
-            routeInfo.reason as unknown,
-          );
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          unfulfilledRoutes.push({ index, reason: routeInfo.reason });
+          warn("%o Failed to fetch route info with reason:", routeInfo.reason);
         }
       })
       .filter((routeInfo): routeInfo is SwapInformation => !!routeInfo);
+
+    if (onErrors) {
+      onErrors(unfulfilledRoutes.length > 0 ? unfulfilledRoutes : undefined);
+    }
+
     return routes;
   }
 
@@ -166,9 +182,9 @@ export class BridgeAdapterSdk {
     targetAccount,
   }: {
     swapInformation: SwapInformation;
-    sourceAccount: SolanaOrEvmAccount;
-    targetAccount: SolanaOrEvmAccount;
-    onStatusUpdate: (args: BridgeStatus) => void;
+    sourceAccount: BridgeTypes.SolanaOrEvmAccount;
+    targetAccount: BridgeTypes.SolanaOrEvmAccount;
+    onStatusUpdate: (args: BridgeTypes.BridgeStatus) => void;
   }) {
     const bridgeAdapter = this.bridgeAdapters.find((bridgeAdapter) => {
       return bridgeAdapter.name() === swapInformation.bridgeName;

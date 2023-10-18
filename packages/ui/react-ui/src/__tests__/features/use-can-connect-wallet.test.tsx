@@ -1,8 +1,8 @@
 /** @jest-environment jsdom */
 import React from "react";
 import * as rtl from "@testing-library/react";
-import { describe, test, expect, beforeEach, afterEach } from "vitest";
-import { SolanaWalletProvider, setToken } from "@solana/bridge-adapter-react";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
+import { setToken, SolanaWalletProvider } from "@solana/bridge-adapter-react";
 import { useCanConnectWallet } from "../../features/WalletSelection";
 import * as mock from "../../__mocks__/token";
 

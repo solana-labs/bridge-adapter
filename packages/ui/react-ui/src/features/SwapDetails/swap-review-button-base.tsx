@@ -2,7 +2,8 @@ import type { FC, HTMLProps } from "react";
 import { cn } from "../../shared/lib/styles";
 import { Button } from "../../shared/ui/button";
 
-interface SwapReviewButtonBaseProps extends HTMLProps<HTMLButtonElement> {
+export interface SwapReviewButtonBaseProps
+  extends HTMLProps<HTMLButtonElement> {
   isAbleReview: boolean;
   labels?: {
     [key: string]: string;

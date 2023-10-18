@@ -6,7 +6,7 @@ import {
 } from "@solana/bridge-adapter-react";
 import { ChainAndTokenSelectButtonBase } from "./chain-and-token-select-button-base";
 
-interface ChainAndTokenSelectButtonProps {
+export interface ChainAndTokenSelectButtonProps {
   className: string;
   chainDest: ChainDestType;
 }

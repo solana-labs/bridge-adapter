@@ -1,9 +1,9 @@
 import type { ChainName } from "@solana/bridge-adapter-base";
 import { useCallback } from "react";
-import { hasChainDest } from "../../shared/lib/utils";
 import { setChain, useBridgeModalStore } from "@solana/bridge-adapter-react";
 import { useChainInfo } from "./use-chain-info";
 import { ChainSelectBase } from "./chain-select-base";
+import { hasChainDest } from "../../shared/lib/utils";
 
 export function ChainSelect() {
   const params = useBridgeModalStore.use.currentBridgeStepParams();

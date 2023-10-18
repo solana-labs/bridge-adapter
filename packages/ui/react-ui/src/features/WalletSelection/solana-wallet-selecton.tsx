@@ -1,26 +1,22 @@
-import type { FC } from "react";
 import Debug from "debug";
-import { useEffect } from "react";
-import { withErrorBoundary } from "react-error-boundary";
-import { useBridgeModalStore } from "@solana/bridge-adapter-react";
-import { useSolanaWalletMultiButton } from "@solana/bridge-adapter-base-ui";
-import type { BridgeStepParams } from "../../types/BridgeModal";
+import type { BridgeStepParams } from "@solana/bridge-adapter-react";
+import type { FC } from "react";
 import { Button } from "../../shared/ui/button";
+import { useBridgeModalStore } from "@solana/bridge-adapter-react";
+import { useEffect } from "react";
+import { useSolanaWalletMultiButton } from "@solana/bridge-adapter-base-ui";
 import { WalletAdapterIcon } from "../../shared/ui/icons/WalletAdapterIcon";
+import { withErrorBoundary } from "react-error-boundary";
 
 const debug = Debug("debug:react-ui:SolanaWalletSelection");
 
-interface SolanaWalletConnectionListBaseProps {
-  onSuccess?: () => void;
-}
+export interface SolanaWalletConnectionListBaseProps {}
 
 const SolanaWalletConnectionListBase: FC<
   SolanaWalletConnectionListBaseProps
 > = () => {
-  const { buttonState, onConnect, onSelectWallet, wallets, walletName } =
+  const { buttonState, onConnect, onSelectWallet, wallets } =
     useSolanaWalletMultiButton();
-
-  console.log({ wallets, walletName });
 
   const { onSuccess } =
     useBridgeModalStore.use.currentBridgeStepParams() as BridgeStepParams<"WALLET_SELECTION">;
@@ -34,10 +30,13 @@ const SolanaWalletConnectionListBase: FC<
       }
       case "connecting":
       case "disconnecting":
-        console.log(buttonState);
         break;
       case "has-wallet":
-        onConnect?.();
+        try {
+          onConnect?.();
+        } catch (e) {
+          console.warn("Can not connect to wallet", e);
+        }
         break;
     }
   }, [buttonState, onConnect, onSuccess]);

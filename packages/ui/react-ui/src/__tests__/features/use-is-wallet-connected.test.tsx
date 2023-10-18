@@ -1,10 +1,10 @@
 /** @jest-environment jsdom */
 import React from "react";
 import * as rtl from "@testing-library/react";
-import { describe, test, expect, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import {
-  SolanaWalletProvider,
   setToken,
+  SolanaWalletProvider,
   useBridgeModalStore,
 } from "@solana/bridge-adapter-react";
 import { useIsWalletConnected } from "../../features/WalletSelection";

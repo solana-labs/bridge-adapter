@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import type { ReactNode } from "react";
-import { WagmiConfig, createConfig } from "wagmi";
 import type { Connector, configureChains } from "wagmi";
+import type { ReactNode } from "react";
+import { useMemo } from "react";
+import { WagmiConfig, createConfig } from "wagmi";
 
 type ChainsConfig = ReturnType<typeof configureChains>;
 
@@ -30,7 +30,7 @@ export function EvmWalletProviderBase({
       webSocketPublicClient: wsPublicClient,
       connectors,
     });
-  }, [autoConnect, logger, publicClient, wsPublicClient, connectors]);
+  }, [autoConnect, connectors, logger, publicClient, wsPublicClient]);
 
   return <WagmiConfig config={config}>{children}</WagmiConfig>;
 }

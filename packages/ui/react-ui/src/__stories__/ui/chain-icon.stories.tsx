@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import type { ChainSelectionType } from "@solana/bridge-adapter-react";
 import { within } from "@storybook/testing-library";
 import { expect } from "@storybook/jest";
 import { ChainIcon } from "../../shared/index";
-import type { ChainSelectionType } from "../../types/BridgeModal";
 
 const meta: Meta<typeof ChainIcon> = {
   title: "Shared/UI/Icons/ChainIcon",

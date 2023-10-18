@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 //import { useAccount, useDisconnect } from "wagmi";
 import { clearChain, useBridgeModalStore } from "@solana/bridge-adapter-react";
 import { useSolanaWalletMultiButton } from "@solana/bridge-adapter-base-ui";
-import { EMPTY_BRIDGE_STEP_TITLE } from "../../types/BridgeModal";
+import { EMPTY_BRIDGE_STEP_TITLE } from "../../constants";
 
 function useAccount() {
   return {

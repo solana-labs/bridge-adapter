@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect } from "@storybook/jest";
-import { within, userEvent } from "@storybook/testing-library";
+import { userEvent, within } from "@storybook/testing-library";
 import { SlippageToleranceBase } from "../../features/SwapSettings";
 
 const meta: Meta<typeof SlippageToleranceBase> = {

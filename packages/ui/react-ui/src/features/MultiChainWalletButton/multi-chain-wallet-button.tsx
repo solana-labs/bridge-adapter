@@ -9,20 +9,16 @@ import {
   useNetwork,
   useSolanaWallet,
 } from "@solana/bridge-adapter-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../shared/ui/popover";
-import { cn } from "../../shared/lib/styles";
+import * as Popover from "../../shared/ui/popover";
 import { Button, buttonVariants } from "../../shared/ui/button";
-import { EvmWalletProfile } from "../../shared/ui/EvmWalletProfile";
-import { SolanaWalletProfile } from "../../shared/ui/SolanaWalletProfile";
+import { cn } from "../../shared/lib/styles";
+import { EvmWalletProfile } from "./evm-wallet-profile";
+import { SolanaWalletProfile } from "./solana-wallet-profile";
 import { useMultiChainWalletInfo } from "./use-multi-chain-wallet-info";
 
 const debug = Debug("debug:react-ui:MultiChainWalletButton");
 
-interface MultiChainWalletButtonProps {
+export interface MultiChainWalletButtonProps {
   labels?: {
     [key: string]: string;
     showChains: string;
@@ -40,8 +36,6 @@ export const MultiChainWalletButton: FC<MultiChainWalletButtonProps> = ({
 }) => {
   const { solanaWalletConnected, evmWalletConnected, disconnectChain } =
     useMultiChainWalletInfo();
-
-  console.log({ solanaWalletConnected, evmWalletConnected, disconnectChain });
 
   const solana = useSolanaWallet();
 
@@ -72,18 +66,16 @@ export const MultiChainWalletButton: FC<MultiChainWalletButtonProps> = ({
       }
     : null;
 
-  console.log({ solanaWalletConnected, evmWalletConnected });
-
   return (
     <>
       {solanaWalletConnected || evmWalletConnected ? (
-        <Popover>
-          <PopoverTrigger asChild>
+        <Popover.Popover>
+          <Popover.PopoverTrigger asChild>
             <Button variant="ghost" aria-label="Show chains">
               {labels.showChains}
             </Button>
-          </PopoverTrigger>
-          <PopoverContent className="bsa-z-50 bsa-flex bsa-flex-col bsa-gap-y-2 bsa-bg-background bsa-py-2">
+          </Popover.PopoverTrigger>
+          <Popover.PopoverContent className="bsa-z-50 bsa-flex bsa-flex-col bsa-gap-y-2 bsa-bg-background bsa-py-2">
             {solanaWalletConnected && (
               <SolanaWalletProfile
                 isConnected={solana.connected}
@@ -131,8 +123,8 @@ export const MultiChainWalletButton: FC<MultiChainWalletButtonProps> = ({
             >
               {labels.accountProfile}
             </Button>
-          </PopoverContent>
-        </Popover>
+          </Popover.PopoverContent>
+        </Popover.Popover>
       ) : (
         <></>
       )}

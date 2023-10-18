@@ -3,12 +3,15 @@ import type {
   FeeToken,
   SwapInformation,
 } from "@solana/bridge-adapter-base";
-import { PublicKey } from "@solana/web3.js";
-import { clsx } from "clsx";
+import type {
+  BridgeStep,
+  BridgeStepParams,
+} from "@solana/bridge-adapter-react";
 import type { ClassValue } from "clsx";
-import { extendTailwindMerge } from "tailwind-merge";
 import type { useConnect } from "wagmi";
-import type { BridgeStep, BridgeStepParams } from "../../types/BridgeModal";
+import { clsx } from "clsx";
+import { extendTailwindMerge } from "tailwind-merge";
+import { PublicKey } from "@solana/web3.js";
 
 const customTwMerge = extendTailwindMerge({
   prefix: "bsa-",
@@ -30,7 +33,6 @@ export function getEvmAvailableWallets(
 
 export function parseForErrorString(e: unknown) {
   if (e instanceof Error) {
-    console.log("e.message", e.message);
     if (
       e.message.includes("User rejected the request") ||
       e.message.includes("user did not approve")

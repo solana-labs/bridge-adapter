@@ -1,7 +1,7 @@
 import { UserCircle2 } from "lucide-react";
+import { useAccount } from "wagmi";
 import { cn } from "../../shared/lib/styles";
 import { Button } from "../../shared/ui/button";
-import { useAccount } from "wagmi";
 import type { WalletName } from "../../shared/ui/icons/WalletIcon";
 import { WalletIcon } from "../../shared/ui/icons/WalletIcon";
 

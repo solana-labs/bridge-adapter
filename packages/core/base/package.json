@@ -18,11 +18,20 @@
   "scripts": {
     "build": "tsup src/index.tsx --env.ESM_ONLY true",
     "build-packages": "pnpm build --silent",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "clean": "./clean.sh",
     "dev": "tsup src/index.tsx --env.ESM_ONLY true --watch",
     "lint": "eslint \"src/**/*.ts*\"",
     "test": "pnpm run test-types",
-    "test-types": "tsc --noEmit"
+    "test-types": "tsc --noEmit",
+    "test-unit": "ava src"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=tsx"
+    ]
   },
   "eslintConfig": {
     "parserOptions": {
@@ -34,7 +43,7 @@
   },
   "dependencies": {
     "@allbridge/bridge-core-sdk": "^3.0.0",
-    "@certusone/wormhole-sdk": "^0.9.22",
+    "@certusone/wormhole-sdk": "^0.10.4",
     "@mayanfinance/swap-sdk": "^4.2.3",
     "@solana/spl-token": "^0.3.8",
     "csv42": "^4.0.0",

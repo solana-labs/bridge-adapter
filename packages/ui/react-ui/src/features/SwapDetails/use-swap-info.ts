@@ -1,46 +1,48 @@
-import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import * as BridgeAdapter from "@solana/bridge-adapter-react";
+import type { RouteError } from "@solana/bridge-adapter-base";
 import { isSwapInfoEqual } from "../../shared/lib/utils";
-import {
-  setSwapInformation,
-  useBridgeModalStore,
-} from "@solana/bridge-adapter-react";
 import { useCanGetSwapInfo } from "./use-can-get-swap-info";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
-// FIXME: write tests
+// TODO: write tests
 
 export function useSwapInfo() {
-  const sdk = useBridgeModalStore.use.sdk();
-  const { sourceToken, targetToken } = useBridgeModalStore.use.token();
-  const currentSwapInformation = useBridgeModalStore.use.swapInformation();
+  const sdk = BridgeAdapter.useBridgeModalStore.use.sdk();
+  const { sourceToken, targetToken } =
+    BridgeAdapter.useBridgeModalStore.use.token();
+  const currentSwapInformation =
+    BridgeAdapter.useBridgeModalStore.use.swapInformation();
   const { canGetSwapInfo } = useCanGetSwapInfo();
 
-  const { data, isLoading, error } = useQuery({
+  const [routeErrors, setRouteErrors] = useState<RouteError[]>();
+
+  const { data, isLoading } = useQuery({
     queryFn: async () => {
-      const routeInfo = await sdk.getSwapInformation(sourceToken, targetToken);
-      console.log("routeInfo", routeInfo);
+      const routeInfo = await sdk.getSwapInformation(
+        sourceToken,
+        targetToken,
+        setRouteErrors,
+      );
       return routeInfo;
     },
-    queryKey: ["bridgeInfo", sourceToken, targetToken],
+    queryKey: ["bridgeInfo", sourceToken, targetToken, setRouteErrors],
     enabled: canGetSwapInfo,
+    useErrorBoundary: true,
   });
 
   useEffect(() => {
     if (data && data.length && !currentSwapInformation) {
-      setSwapInformation(data[0]);
+      BridgeAdapter.setSwapInformation(data[0]);
     }
     if (data && data.length && currentSwapInformation) {
       for (const newSwapInfo of data) {
         if (isSwapInfoEqual(newSwapInfo, currentSwapInformation)) {
-          setSwapInformation(newSwapInfo);
+          BridgeAdapter.setSwapInformation(newSwapInfo);
         }
       }
     }
   }, [currentSwapInformation, data]);
 
-  if (error) {
-    throw error;
-  }
-
-  return { swapInfo: data, isLoadingSwapInfo: isLoading };
+  return { swapInfo: data, isLoadingSwapInfo: isLoading, routeErrors };
 }

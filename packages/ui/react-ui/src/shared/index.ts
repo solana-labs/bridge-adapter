@@ -13,6 +13,7 @@ export * from "./ui/icons/WalletAdapterIcon";
 export * from "./ui/icons/WalletIcon";
 export * from "./ui/input";
 export * from "./ui/label";
+export * from "./ui/notification";
 export * from "./ui/popover";
 export * from "./ui/PublicKeyLine";
 export * from "./ui/separator";

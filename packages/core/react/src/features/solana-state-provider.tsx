@@ -1,9 +1,5 @@
 import * as React from "react";
 
-export const SolanaStateProvider = ({
-  children,
-}: {
+export const SolanaStateProvider: React.FC<{
   children: React.ReactNode;
-}) => {
-  return <>{children}</>;
-};
+}> = ({ children }) => <>{children}</>;

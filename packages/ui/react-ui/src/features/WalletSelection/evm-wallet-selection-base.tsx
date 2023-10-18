@@ -1,15 +1,15 @@
-import type { FC } from "react";
-import type { Connector } from "wagmi";
 import { Button } from "../../shared/ui/button";
-import type { WalletName } from "../../shared/ui/icons/WalletIcon";
+import type { Connector } from "wagmi";
+import type { FC } from "react";
 import { WalletIcon } from "../../shared/ui/icons/WalletIcon";
+import type { WalletName } from "../../shared/ui/icons/WalletIcon";
 
 export type ConnectorData<T = unknown, K = unknown> = Pick<
   Connector<T, K>,
   "id" | "name" | "ready"
 > & { name: WalletName };
 
-interface EvmWalletConnectionListBaseProps {
+export interface EvmWalletConnectionListBaseProps {
   connectors: ConnectorData[];
   isLoading?: boolean;
   pendingConnector?: ConnectorData;
@@ -19,9 +19,19 @@ interface EvmWalletConnectionListBaseProps {
 export const EvmWalletConnectionListBase: FC<
   EvmWalletConnectionListBaseProps
 > = ({ connectors, isLoading = false, pendingConnector, onDisconnect }) => {
+  /// Reduce the number of connectors as `injected` might overlap the existing.
+  const uniqConnectors = connectors.reduce<ConnectorData[]>((acc, next) => {
+    const exists = acc.findIndex((item) => {
+      return item.name === next.name;
+    });
+
+    if (exists !== -1) return acc;
+    else return acc.concat(next);
+  }, []);
+
   return (
     <div className="bsa-flex bsa-flex-col bsa-space-y-4">
-      {connectors.map((connector) => {
+      {uniqConnectors.map((connector) => {
         if (!connector.ready) {
           return null;
         }

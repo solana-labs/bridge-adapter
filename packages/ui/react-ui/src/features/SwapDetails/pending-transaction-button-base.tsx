@@ -2,7 +2,7 @@ import type { FC, HTMLProps } from "react";
 import { Button } from "../../shared/ui/button";
 import { cn } from "../../shared/lib/styles";
 
-interface PendingTransactionButtonBaseProps
+export interface PendingTransactionButtonBaseProps
   extends HTMLProps<HTMLButtonElement> {
   labels?: {
     text: string;

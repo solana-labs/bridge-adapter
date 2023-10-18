@@ -11,7 +11,7 @@ export function ViewAndCopyWallet({
   const { copyAddress, isCopied } = useCopyAddress(address);
   const explorerUrl = `${baseExplorerUrl}${address}`;
   return (
-    <div className="w-full bsa-flex bsa-items-center">
+    <div className="bsa-flex bsa-items-center w-full">
       <a
         href={explorerUrl}
         target="_blank"

@@ -1,0 +1,27 @@
+{
+  "name": "bridge-adapter-demo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "clean": "rm -rf .turbo && rm -rf dist && rm -rf node_modules",
+    "dev-demo": "next dev",
+    "lint": "next lint",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@solana/bridge-adapter-react": "^0.1.0",
+    "@solana/bridge-adapter-react-ui": "^0.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18.2.13",
+    "@types/react-dom": "^18.2.6",
+    "eslint": "^8.29.0",
+    "eslint-config-next": "^13.4.7",
+    "next": "13.4.6",
+    "typescript": "^5.1.3"
+  }
+}
