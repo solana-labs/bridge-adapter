@@ -1,22 +1,17 @@
-import { memo } from "react";
-import type { FC, JSX } from "react";
 import * as BridgeAdapterReact from "@solana/bridge-adapter-react";
-import { BridgeHeader, BridgeSwap } from "../widgets";
-import type { BridgeHeaderProps } from "../widgets";
+import * as Dialog from "../shared/ui/dialog";
 import type { BridgeAdapterTheme } from "../types";
+import type { BridgeHeaderProps } from "../widgets";
+import type { FC, HTMLProps, JSX } from "react";
 import { BridgeContent } from "./bridge-content";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-} from "../shared/ui/dialog";
+import { BridgeHeader, BridgeSwap } from "../widgets";
+import { memo } from "react";
 
 const HeaderSlotComponent = memo<BridgeHeaderProps>(
   ({ currentBridgeStep, title }) => (
-    <DialogHeader aria-description="Modal to swap assets between various blockchains">
+    <Dialog.DialogHeader aria-description="Modal to swap assets between various blockchains">
       <BridgeHeader currentBridgeStep={currentBridgeStep} title={title} />
-    </DialogHeader>
+    </Dialog.DialogHeader>
   ),
 );
 HeaderSlotComponent.displayName = "BridgeHeader";
@@ -27,31 +22,44 @@ BodySlotComponent.displayName = "BridgeBody";
 /**
  *  Bridge Adapter Dialog
  */
-export const BridgeAdapterDialog: FC<{
+export interface BridgeAdapterDialogProps extends HTMLProps<HTMLElement> {
   children: JSX.Element;
   title: string;
   theme: BridgeAdapterTheme;
-}> = ({ children, title, theme }) => {
+}
+
+export const BridgeAdapterDialog: FC<BridgeAdapterDialogProps> = ({
+  children,
+  className,
+  title,
+  theme,
+}) => {
   const currentBridgeStep =
     BridgeAdapterReact.useBridgeModalStore.use.currentBridgeStep();
 
+  const onSwapCompleted = () => {
+    BridgeAdapterReact.resetBridgeModalStore();
+  };
+
   const onOpenChange = () => {
     if (currentBridgeStep === "TRANSACTION_COMPLETED") {
-      BridgeAdapterReact.resetBridgeModalStore();
+      onSwapCompleted();
     }
   };
 
   return (
-    <Dialog onOpenChange={onOpenChange} modal={false}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
+    <Dialog.Dialog onOpenChange={onOpenChange} modal={false}>
+      <Dialog.DialogTrigger asChild>{children}</Dialog.DialogTrigger>
+      <Dialog.DialogContent>
         <BridgeSwap
           BodyComponent={BodySlotComponent}
+          className={className}
           HeaderComponent={HeaderSlotComponent}
+          onSwapCompleted={onSwapCompleted}
           theme={theme}
           title={title}
         />
-      </DialogContent>
-    </Dialog>
+      </Dialog.DialogContent>
+    </Dialog.Dialog>
   );
 };

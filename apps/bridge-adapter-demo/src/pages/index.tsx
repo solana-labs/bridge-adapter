@@ -59,21 +59,24 @@ export default function Home({
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <BridgeAdapterReact.SolanaWalletProvider
-          wallets={wallets}
           autoConnect={false}
           onError={(e: Error) => setError(e)}
+          wallets={wallets}
         >
           <BridgeAdapterReact.EvmWalletProvider
             coinbaseWalletSettings={evmSettings.coinbaseWalletSettings}
             walletConnectProjectId={evmSettings.walletConnectProjectId}
           >
             <BridgeAdapterReact.BridgeAdapterProvider
+              bridgeAdapterSettings={{
+                allow: ["deBridge", "wormhole"],
+              }}
               error={error}
               settings={{
                 solana: { solanaRpcUrl },
               }}
             >
-              <BridgeAdapter title={title} />
+              <BridgeAdapter className={styles.inner} title={title} />
             </BridgeAdapterReact.BridgeAdapterProvider>
           </BridgeAdapterReact.EvmWalletProvider>
         </BridgeAdapterReact.SolanaWalletProvider>

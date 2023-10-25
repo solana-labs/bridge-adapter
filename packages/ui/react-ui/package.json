@@ -23,7 +23,7 @@
     "clean": "./clean.sh",
     "dev": "tsup src/index.tsx --env.ESM_ONLY true --external react --watch",
     "lint": "eslint src --ext .ts,.tsx",
-    "storybook": "storybook dev -p 6006",
+    "playground": "storybook dev -p 6006",
     "test": "pnpm run test-unit && pnpm run test-fn",
     "test-coverage": "test-storybook --coverage",
     "test-fn": "vitest src/__tests__/**/**.test.*",

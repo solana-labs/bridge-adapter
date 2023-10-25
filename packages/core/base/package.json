@@ -21,7 +21,7 @@
     "clean": "./clean.sh",
     "dev": "tsup src/index.tsx --env.ESM_ONLY true --watch",
     "lint": "eslint \"src/**/*.ts*\"",
-    "test": "pnpm run test-types",
+    "test": "pnpm run test-types && pnpm run test-unit",
     "test-types": "tsc --noEmit",
     "test-unit": "ava src"
   },

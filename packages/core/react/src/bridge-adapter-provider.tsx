@@ -1,7 +1,10 @@
 import * as React from "react";
 import type { BridgeAdapterSdkArgs } from "@solana/bridge-adapter-base";
-import { BridgeModalProvider } from "./providers/BridgeModalProvider";
-import { EvmStateProvider, SolanaStateProvider } from "./features";
+import {
+  BridgeAdapterSettingsProvider,
+  EvmStateProvider,
+  SolanaStateProvider,
+} from "./features";
 
 export interface BridgeAdapterContextState {
   /// Non-blocking notification about some kind of error.
@@ -18,7 +21,7 @@ const BridgeAdapterContext =
   React.createContext<BridgeAdapterContextState>(STATE);
 
 export function BridgeAdapterProvider({
-  bridgeAdapterSetting,
+  bridgeAdapterSettings,
   children,
   error,
   settings,
@@ -54,8 +57,8 @@ export function BridgeAdapterProvider({
 
   return (
     <BridgeAdapterContext.Provider value={data}>
-      <BridgeModalProvider
-        bridgeAdapterSetting={bridgeAdapterSetting}
+      <BridgeAdapterSettingsProvider
+        bridgeAdapterSettings={bridgeAdapterSettings}
         settings={settings}
         sourceChain={sourceChain}
         targetChain={targetChain}
@@ -63,7 +66,7 @@ export function BridgeAdapterProvider({
         <SolanaStateProvider>
           <EvmStateProvider onError={onEvmError}>{children}</EvmStateProvider>
         </SolanaStateProvider>
-      </BridgeModalProvider>
+      </BridgeAdapterSettingsProvider>
     </BridgeAdapterContext.Provider>
   );
 }

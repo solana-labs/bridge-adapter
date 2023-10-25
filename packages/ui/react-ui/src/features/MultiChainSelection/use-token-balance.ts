@@ -1,18 +1,22 @@
 import type { Token } from "@solana/bridge-adapter-base";
+import type { Hash } from "viem";
+import Debug from "debug";
 import {
   chainNameToViemChain,
   formatTokenBalance,
 } from "@solana/bridge-adapter-base";
-
 import { Connection, PublicKey } from "@solana/web3.js";
-import { useQuery } from "@tanstack/react-query";
-import { object, parse, string } from "valibot";
-import type { Hash } from "viem";
 import { createPublicClient, formatUnits, http, parseAbi } from "viem";
+import { NATIVE_MINT } from "@solana/spl-token";
+import { object, parse, string } from "valibot";
+import { solanaRpcUrl } from "../../env";
+import { useQuery } from "@tanstack/react-query";
 import {
   useEthereumWallet,
   useSolanaWallet,
 } from "@solana/bridge-adapter-react";
+
+const debug = Debug("debug:react-ui:useTokenBalance");
 
 export function useTokenBalance(token: Token) {
   const { data: walletClient } = useEthereumWallet();
@@ -33,33 +37,45 @@ export function useTokenBalance(token: Token) {
           // no wallet connected yet on solana
           return "0";
         }
-        const connection = new Connection(
-          "https://solana-mainnet.g.alchemy.com/v2/Pt4N65LbFsR5ofrJXw8626s5qtMDMp6j",
-          "confirmed",
-        );
-        // Get the initial solana token balance
-        const results = await connection.getParsedTokenAccountsByOwner(
-          publicKey,
-          { mint: new PublicKey(token.address) },
-        );
 
-        for (const item of results.value) {
-          const tokenInfoSchema = object({
-            data: object({
-              parsed: object({
-                info: object({
-                  mint: string(),
-                  tokenAmount: object({ uiAmountString: string() }),
+        if (!solanaRpcUrl) {
+          debug("Solana RPC node address is absent");
+          return "0";
+        }
+
+        const connection = new Connection(solanaRpcUrl, "confirmed");
+
+        if (NATIVE_MINT.equals(new PublicKey(token.address))) {
+          const balance = await connection.getBalance(publicKey);
+          const DECIMALS = 9;
+          const amount = balance / Math.pow(10, DECIMALS);
+
+          return amount.toFixed(DECIMALS);
+        } else {
+          // Get the initial solana token balance
+          const results = await connection.getParsedTokenAccountsByOwner(
+            publicKey,
+            { mint: new PublicKey(token.address) },
+          );
+
+          for (const item of results.value) {
+            const tokenInfoSchema = object({
+              data: object({
+                parsed: object({
+                  info: object({
+                    mint: string(),
+                    tokenAmount: object({ uiAmountString: string() }),
+                  }),
                 }),
               }),
-            }),
-          });
-          const tokenInfo = parse(tokenInfoSchema, item.account).data.parsed
-            .info;
-          const address = tokenInfo.mint;
-          const amount = tokenInfo.tokenAmount.uiAmountString;
-          if (address === token.address) {
-            return amount;
+            });
+            const tokenInfo = parse(tokenInfoSchema, item.account).data.parsed
+              .info;
+            const address = tokenInfo.mint;
+            const amount = tokenInfo.tokenAmount.uiAmountString;
+            if (address === token.address) {
+              return amount;
+            }
           }
         }
         return "0";

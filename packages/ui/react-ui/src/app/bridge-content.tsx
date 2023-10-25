@@ -9,8 +9,14 @@ import { SwapDetails, SwapReview } from "../features/SwapDetails";
 import { ProfileDetails, SwapSettings } from "../widgets";
 import { WalletSelection } from "../features/WalletSelection";
 
-export const BridgeContent: FC<{ currentBridgeStep: string }> = ({
+export interface BridgeContentProps {
+  currentBridgeStep: string;
+  onComplete?: () => void;
+}
+
+export const BridgeContent: FC<BridgeContentProps> = ({
   currentBridgeStep,
+  onComplete,
 }) => {
   let body: ReactNode;
   switch (currentBridgeStep) {
@@ -48,7 +54,7 @@ export const BridgeContent: FC<{ currentBridgeStep: string }> = ({
       break;
     }
     case "TRANSACTION_COMPLETED": {
-      body = <CompletedTransaction />;
+      body = <CompletedTransaction onComplete={onComplete} />;
       break;
     }
     default:

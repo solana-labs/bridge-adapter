@@ -3,16 +3,27 @@ import {
   TOKEN_AMOUNT_ERROR_INDICATOR,
   useBridgeModalStore,
 } from "@solana/bridge-adapter-react";
+import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { ChainAndTokenSelectButton } from "../features/ChainAndTokenSelect";
 import { Input } from "../shared/ui/input";
 import { useIsWalletConnected } from "../features/WalletSelection";
 import { useTokenBalance } from "../features/MultiChainSelection";
 
+const LABELS = {
+  balance: "Balance",
+};
+
+export interface InputTokenAndChainWidgetProps {
+  labels?: { [key: string]: string; balance: string };
+}
+
 /**
  *  Widget
  */
-export function InputTokenAndChainWidget() {
+export const InputTokenAndChainWidget: FC<InputTokenAndChainWidgetProps> = ({
+  labels = LABELS,
+}) => {
   const { sourceToken } = useBridgeModalStore.use.token();
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState("");
@@ -75,10 +86,11 @@ export function InputTokenAndChainWidget() {
             className="bsa-px-2"
           />
           <div className="bsa-min-w-max bsa-text-muted-foreground">
-            Balance: {tokenBalance ?? "0"} {tokenOfInterest.symbol}
+            {labels.balance}:{" "}
+            {tokenBalance ? `${tokenBalance} ${tokenOfInterest.symbol}` : "-"}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};

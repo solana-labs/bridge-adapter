@@ -2,13 +2,13 @@ import type { Bridges } from "../types/Bridges";
 import type { ChainName } from "../types/Chain";
 
 export const CHAIN_NAMES = [
-  "Ethereum",
-  "Solana",
-  "Polygon",
-  "Avalanche",
   "Arbitrum",
-  "Optimism",
+  "Avalanche",
   "BSC",
+  "Ethereum",
+  "Optimism",
+  "Polygon",
+  "Solana",
 ] as const;
 
 export const CHAIN_ALIASES: Record<ChainName, ChainName> = {

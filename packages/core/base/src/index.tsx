@@ -7,6 +7,7 @@ export type {
   BridgeStatus,
   SolanaOrEvmAccount,
 } from "./types/Bridges";
+export { BridgeStatusNames } from "./types/Bridges";
 export type { ChainName, ChainSourceAndTarget } from "./types/Chain";
 export type { ChainDestType } from "./types/ChainDest";
 export type { SwapInformation } from "./types/SwapInformation";

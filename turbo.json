@@ -21,17 +21,13 @@
       "outputs": ["dist/**"],
       "dependsOn": ["build-packages"]
     },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "dev-docs": {
-      "cache": false,
-      "persistent": true
-    },
-    "dev-demo": {
+    "demo": {
       "cache": false,
       "dependsOn": ["build-packages"],
+      "persistent": false
+    },
+    "dev": {
+      "cache": false,
       "persistent": true
     },
     "clean": {
@@ -42,6 +38,8 @@
     "NODE_ENV",
     "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID",
     "NEXT_PUBLIC_LOG_LEVEL",
-    "NEXT_PUBLIC_SOLANA_RPC_URL"
+    "NEXT_PUBLIC_SOLANA_RPC_URL",
+    "NEXT_PUBLIC_ETHEREUM_BASE_EXPLORER_URL",
+    "NEXT_PUBLIC_SOLANA_BASE_EXPLORER_URL"
   ]
 }

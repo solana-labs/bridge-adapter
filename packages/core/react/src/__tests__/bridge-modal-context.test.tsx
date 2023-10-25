@@ -1,25 +1,12 @@
 /** @jest-environment jsdom */
-import * as ctx from "../providers/BridgeModalContext";
+import * as ctx from "../entities/bridge-adapter-context";
 import * as rtl from "@testing-library/react";
 import React from "react";
 import type { BridgeStepParams } from "../types/bridge-adapter";
 import { BridgeAdapterSdk } from "@solana/bridge-adapter-base";
 import { describe, test, expect, beforeEach, afterEach } from "vitest";
-import { setCurrentBridgeStep } from "../providers/BridgeModalContext";
 
-const defaultTokenAmount = {
-  address: "",
-  selectedAmountFormatted: "",
-  selectedAmountInBaseUnits: "",
-  chain: "Ethereum",
-  decimals: 18,
-  logoUri: "",
-  name: "",
-  symbol: "",
-  bridgeNames: [],
-};
-
-describe("BridgeModalContext::State", () => {
+describe("BridgeAdapterContext::State", () => {
   test("should be initialized with default state", () => {
     const data = ctx.useBridgeModalStore;
 
@@ -34,8 +21,8 @@ describe("BridgeModalContext::State", () => {
         targetChain: "Select a chain",
       },
       token: {
-        sourceToken: defaultTokenAmount,
-        targetToken: { ...defaultTokenAmount, chain: "Solana" },
+        sourceToken: ctx.DEFAULT_TOKEN_WITH_AMOUNT,
+        targetToken: { ...ctx.DEFAULT_TOKEN_WITH_AMOUNT, chain: "Solana" },
       },
       swapInformation: undefined,
       relayerFee: {
@@ -48,7 +35,7 @@ describe("BridgeModalContext::State", () => {
   });
 });
 
-describe("BridgeModalContext::use", () => {
+describe("BridgeAdapterContext::use", () => {
   let container: HTMLElement;
   let ref: React.RefObject<{ getState(): NonNullable<unknown> }>;
 
@@ -85,14 +72,14 @@ describe("BridgeModalContext::use", () => {
         targetChain: "Select a chain",
       },
       tokenInfo: {
-        sourceToken: defaultTokenAmount,
-        targetToken: { ...defaultTokenAmount, chain: "Solana" },
+        sourceToken: ctx.DEFAULT_TOKEN_WITH_AMOUNT,
+        targetToken: { ...ctx.DEFAULT_TOKEN_WITH_AMOUNT, chain: "Solana" },
       },
     }).toStrictEqual(ref.current?.getState());
   });
 });
 
-describe("BridgeModalContext::setCurrentBridgeStep", () => {
+describe("BridgeAdapterContext::setCurrentBridgeStep", () => {
   let container: HTMLElement;
   let ref: React.RefObject<{ getState(): NonNullable<unknown> }>;
 
@@ -120,7 +107,7 @@ describe("BridgeModalContext::setCurrentBridgeStep", () => {
         [currentBridgeStep, previousBridgeStep],
       );
       React.useEffect(() => {
-        setCurrentBridgeStep({
+        ctx.setCurrentBridgeStep({
           step: "WALLET_SELECTION",
           params: { chain: "Solana" },
         });
@@ -168,12 +155,12 @@ describe("BridgeModalContext::setCurrentBridgeStep", () => {
       const { onSuccess } =
         currentBridgeStepParams as BridgeStepParams<"WALLET_SELECTION">;
       React.useEffect(() => {
-        setCurrentBridgeStep({
+        ctx.setCurrentBridgeStep({
           step: "WALLET_SELECTION",
           params: {
             chain: "Solana",
             onSuccess: () => {
-              setCurrentBridgeStep({
+              ctx.setCurrentBridgeStep({
                 step: "WALLET_SELECTION",
                 params: { chain: "Ethereum" },
               });

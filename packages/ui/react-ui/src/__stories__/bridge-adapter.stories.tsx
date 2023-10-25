@@ -26,7 +26,7 @@ export default meta;
 
 export const Default: StoryObj<
   Parameters<typeof BridgeAdapter>[0] & { walletConnectProjectId: string } & {
-    allowSetting?: Bridges[];
+    allowSetting: Bridges[];
     denySetting?: Bridges[];
   }
 > = {
@@ -66,7 +66,7 @@ export const Default: StoryObj<
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [error, setError] = React.useState<Error | undefined>();
 
-    const bridgeAdapterSettings: { allow?: Bridges[]; deny?: Bridges[] } = {
+    const bridgeAdapterSettings: { allow: Bridges[]; deny?: Bridges[] } = {
       allow: props.allowSetting,
     };
     if (props.denySetting) bridgeAdapterSettings.deny = props.denySetting;
@@ -83,7 +83,7 @@ export const Default: StoryObj<
         >
           <BridgeAdapterProvider
             error={error}
-            bridgeAdapterSetting={bridgeAdapterSettings}
+            bridgeAdapterSettings={bridgeAdapterSettings}
             settings={{
               solana: { solanaRpcUrl },
             }}

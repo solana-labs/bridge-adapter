@@ -7,15 +7,18 @@ import type { BridgeStep } from "@solana/bridge-adapter-react";
 import type { ErrorBoundaryProps } from "react-error-boundary";
 import type { FallbackProps } from "react-error-boundary";
 import type { FC, NamedExoticComponent } from "react";
+import type { BridgeContentProps } from "../app/bridge-content";
 import { BridgeAdapterTheme } from "../types";
 import { Button } from "../shared/ui/button";
+import { cn } from "../shared/lib/styles";
 import { ErrorBoundary } from "react-error-boundary";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
 export interface BridgeSwapProps {
-  BodyComponent: NamedExoticComponent<{ currentBridgeStep: string }>;
+  BodyComponent: NamedExoticComponent<BridgeContentProps>;
+  className?: string;
   HeaderComponent: NamedExoticComponent<{
     currentBridgeStep: BridgeStep;
     title: string;
@@ -33,6 +36,7 @@ export interface BridgeSwapProps {
  */
 export const BridgeSwap: FC<BridgeSwapProps> = ({
   BodyComponent,
+  className,
   HeaderComponent,
   onResetAfterError,
   onSwapCompleted,
@@ -87,7 +91,10 @@ export const BridgeSwap: FC<BridgeSwapProps> = ({
   return (
     <QueryClientProvider client={queryClient}>
       <div
-        className="bsa-h-[600px] bsa-max-w-md bsa-border-border bsa-bg-background bsa-text-foreground bsa-overflow-y"
+        className={cn(
+          "bsa-h-[600px] bsa-max-w-md bsa-border-border bsa-bg-background bsa-text-foreground bsa-overflow-y",
+          className,
+        )}
         style={{
           fontFeatureSettings: '"rlig" 1, "calt" 1',
         }}
@@ -95,7 +102,10 @@ export const BridgeSwap: FC<BridgeSwapProps> = ({
         <HeaderComponent currentBridgeStep={currentBridgeStep} title={title} />
         <ErrorBoundary fallbackRender={fallbackRender} onReset={onReset}>
           <div className="bsa-my-4">
-            <BodyComponent currentBridgeStep={currentBridgeStep} />
+            <BodyComponent
+              currentBridgeStep={currentBridgeStep}
+              onComplete={onSwapCompleted}
+            />
           </div>
         </ErrorBoundary>
         <Notification.NotificationProvider

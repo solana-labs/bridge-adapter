@@ -1,10 +1,10 @@
-import { memo, useCallback } from "react";
-import type { FC } from "react";
-import type { BridgeHeaderProps } from "../widgets/bridge-header";
-import type { BridgeAdapterTheme } from "../types";
 import * as BridgeAdapterReact from "@solana/bridge-adapter-react";
+import type { BridgeAdapterTheme } from "../types";
+import type { BridgeHeaderProps } from "../widgets/bridge-header";
+import type { FC, HTMLProps } from "react";
 import { BridgeContent } from "../app/bridge-content";
 import { BridgeHeader, BridgeSwap } from "../widgets";
+import { memo, useCallback } from "react";
 
 const HeaderSlotComponent = memo<BridgeHeaderProps>(
   ({ currentBridgeStep, title }) => (
@@ -18,10 +18,20 @@ HeaderSlotComponent.displayName = BridgeHeader.displayName;
 const BodySlotComponent = memo<{ currentBridgeStep: string }>(BridgeContent);
 BodySlotComponent.displayName = "BridgeBody";
 
-export const BridgeAdapter: FC<{
+/**
+ *  Bridge Adapter
+ */
+
+export interface BridgeAdapterProps extends HTMLProps<HTMLElement> {
   title: string;
   theme: BridgeAdapterTheme;
-}> = ({ title, theme }) => {
+}
+
+export const BridgeAdapter: FC<BridgeAdapterProps> = ({
+  className,
+  title,
+  theme,
+}) => {
   const onCompleted = useCallback(() => {
     BridgeAdapterReact.resetBridgeModalStore();
   }, []);
@@ -29,6 +39,7 @@ export const BridgeAdapter: FC<{
   return (
     <BridgeSwap
       BodyComponent={BodySlotComponent}
+      className={className}
       HeaderComponent={HeaderSlotComponent}
       onSwapCompleted={onCompleted}
       theme={theme}

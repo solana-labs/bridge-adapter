@@ -10,11 +10,11 @@
     "ci:publish": "turbo run build-packages && changeset publish",
     "ci:version": "changeset version",
     "clean": "turbo run clean && rm -rf node_modules",
+    "demo": "turbo run demo",
     "dev": "turbo run dev --continue",
-    "dev-docs": "turbo run dev-docs --continue",
-    "dev-demo": "turbo run dev-demo --continue",
     "format": "prettier -w \"**/*.{js,cjs,ts,tsx,md,json}\"",
     "lint": "turbo run lint && manypkg check",
+    "playground": "npx concurrently \"pnpm --filter @solana/bridge-adapter-react-ui playground\" \"pnpm run dev\"",
     "test": "turbo run test",
     "version-packages": "changeset version"
   },

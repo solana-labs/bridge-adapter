@@ -25,8 +25,13 @@ export type EvmAccount = WalletClient;
 
 export type SolanaOrEvmAccount = SolanaAccount | EvmAccount;
 
+// TODO: try to not rely on BridgeStatus["name"]
+export enum BridgeStatusNames {
+  Completed = "Completed",
+}
+
 export type BridgeStatus = {
-  name: string;
+  name: string | BridgeStatusNames;
   status: "PENDING" | "IN_PROGRESS" | "SKIPPED" | "COMPLETED" | "FAILED";
   information: string;
 };

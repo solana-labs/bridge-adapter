@@ -7,13 +7,13 @@ it("should setup adapters", async (t) => {
   let adapter = new BridgeAdapterSdk();
   t.is(adapter.sourceChain, undefined);
   t.is(adapter.targetChain, undefined);
-  t.is(adapter.bridgeAdapterSetting, undefined);
+  t.is(adapter.bridgeAdapterSettings, undefined);
   t.deepEqual(adapter.bridgeAdapters, []);
 
   const data = {
     sourceChain: "Solana" as ChainName,
     targetChain: "Ethereum" as ChainName,
-    bridgeAdapterSetting: {
+    bridgeAdapterSettings: {
       deny: ["wormhole"] as Bridges[],
       allow: ["wormhole"] as Bridges[],
     },
@@ -25,14 +25,14 @@ it("should setup adapters", async (t) => {
   adapter = new BridgeAdapterSdk({
     sourceChain: data.sourceChain,
     targetChain: data.targetChain,
-    bridgeAdapterSetting: data.bridgeAdapterSetting,
+    bridgeAdapterSettings: data.bridgeAdapterSettings,
     settings: data.settings,
   });
 
   const targetBridge = adapter.bridgeAdapters[0];
   t.is(adapter.sourceChain, data.sourceChain);
   t.is(adapter.targetChain, data.targetChain);
-  t.is(adapter.bridgeAdapterSetting, data.bridgeAdapterSetting);
+  t.is(adapter.bridgeAdapterSettings, data.bridgeAdapterSettings);
   // @ts-expect-error property exists for instance
   t.is(targetBridge.sourceChain, "Solana");
   // @ts-expect-error property exists for instance
@@ -71,7 +71,7 @@ it("should validate chain intersection", (t) => {
   const data = {
     sourceChain: "Solana" as ChainName,
     targetChain: "Solana" as ChainName,
-    bridgeAdapterSetting: {
+    bridgeAdapterSettings: {
       deny: ["wormhole"] as Bridges[],
       allow: ["wormhole"] as Bridges[],
     },
@@ -84,7 +84,7 @@ it("should validate chain intersection", (t) => {
   const adapter = new BridgeAdapterSdk({
     sourceChain: data.sourceChain,
     targetChain: data.targetChain,
-    bridgeAdapterSetting: data.bridgeAdapterSetting,
+    bridgeAdapterSettings: data.bridgeAdapterSettings,
     settings: data.settings,
   });
 

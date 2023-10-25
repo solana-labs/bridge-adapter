@@ -1,5 +1,9 @@
-import type { FC } from "react";
+import * as Popover from "../../shared/ui/popover";
 import Debug from "debug";
+import type { FC } from "react";
+import { Button, buttonVariants } from "../../shared/ui/button";
+import { cn } from "../../shared/lib/styles";
+import { EvmWalletProfile } from "./evm-wallet-profile";
 import {
   setCurrentBridgeStep,
   useAccount,
@@ -9,10 +13,6 @@ import {
   useNetwork,
   useSolanaWallet,
 } from "@solana/bridge-adapter-react";
-import * as Popover from "../../shared/ui/popover";
-import { Button, buttonVariants } from "../../shared/ui/button";
-import { cn } from "../../shared/lib/styles";
-import { EvmWalletProfile } from "./evm-wallet-profile";
 import { SolanaWalletProfile } from "./solana-wallet-profile";
 import { useMultiChainWalletInfo } from "./use-multi-chain-wallet-info";
 
@@ -56,6 +56,8 @@ export const MultiChainWalletButton: FC<MultiChainWalletButtonProps> = ({
     chain,
     disconnect,
   };
+
+  debug("Ethereum Wallet Info", { address, chain, ensName, isConnected });
 
   const wallet = solana.wallet
     ? {

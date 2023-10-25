@@ -6,10 +6,12 @@ import { UserCircle2 } from "lucide-react";
 import { useCallback } from "react";
 import { SolanaWalletDetail } from "./solana-wallet-detail";
 import { ViewAndCopyWallet } from "./view-and-copy-wallet";
-import { SOLANA_BASE_SOLSCAN_URL } from "../../constants/BaseExplorers";
 import { cn } from "../../shared/lib/styles";
 import { PublicKeyLine } from "../../shared/ui/PublicKeyLine";
 import { ChainIcon } from "../../shared/ui/icons/ChainIcon";
+
+const SOLANA_BASE_EXPLORER_URL =
+  process.env.NEXT_PUBLIC_SOLANA_BASE_EXPLORER_URL;
 
 export function SolanaWalletDetailedProfile({
   className,
@@ -61,7 +63,7 @@ export function SolanaWalletDetailedProfile({
       </div>
       <ViewAndCopyWallet
         address={publicKey?.toBase58()}
-        baseExplorerUrl={SOLANA_BASE_SOLSCAN_URL}
+        baseExplorerUrl={SOLANA_BASE_EXPLORER_URL}
       />
     </div>
   );

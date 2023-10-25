@@ -1,9 +1,8 @@
-import { useMemo } from "react";
-import { configureChains, mainnet } from "wagmi";
+import * as adapters from "./adapters";
 import type { Chain, Connector } from "wagmi";
 import { arbitrum, avalanche, bsc, optimism, polygon } from "wagmi/chains";
-import * as providers from "./providers";
-import * as connectors from "./connectors";
+import { configureChains, mainnet } from "wagmi";
+import { useMemo } from "react";
 
 export interface DefautEthereiumConfigOptions {
   alchemyApiKey?: string;
@@ -39,30 +38,30 @@ export const useDefaultEthereumConfig = ({
       avalanche,
     ];
 
-    const supportedProviders = [providers.publicProvider()];
+    const supportedProviders = [adapters.publicProvider()];
 
     if (infuraApiKey) {
       supportedProviders.push(
-        providers.infuraProvider({ apiKey: infuraApiKey }),
+        adapters.infuraProvider({ apiKey: infuraApiKey }),
       );
     }
 
     if (alchemyApiKey) {
       supportedProviders.push(
-        providers.alchemyProvider({ apiKey: alchemyApiKey }),
+        adapters.alchemyProvider({ apiKey: alchemyApiKey }),
       );
     }
 
     const { chains, publicClient, webSocketPublicClient } =
       configureChains<Chain>(supportedChains, supportedProviders);
 
-    const injectedConnector = new connectors.InjectedConnector({ chains });
+    const injectedConnector = new adapters.InjectedConnector({ chains });
 
     const supportedConnectors: Connector[] = [injectedConnector];
 
     if (metamaskWalletOptions) {
       supportedConnectors.push(
-        new connectors.MetaMaskConnector({
+        new adapters.MetaMaskConnector({
           options: {
             UNSTABLE_shimOnConnectSelectAccount: true,
             ...metamaskWalletOptions,
@@ -73,7 +72,7 @@ export const useDefaultEthereumConfig = ({
 
     if (coinbaseWalletOptions) {
       supportedConnectors.push(
-        new connectors.CoinbaseWalletConnector({
+        new adapters.CoinbaseWalletConnector({
           chains,
           options: coinbaseWalletOptions,
         }),
@@ -82,7 +81,7 @@ export const useDefaultEthereumConfig = ({
 
     if (walletConnectProjectId) {
       supportedConnectors.push(
-        new connectors.WalletConnectConnector({
+        new adapters.WalletConnectConnector({
           chains,
           options: {
             projectId: walletConnectProjectId,

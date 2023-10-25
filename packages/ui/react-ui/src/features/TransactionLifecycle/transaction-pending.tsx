@@ -1,16 +1,16 @@
-import * as BridgeAdapter from "@solana/bridge-adapter-react";
-import { useCallback, useState } from "react";
+import * as useBridgeAdapter from "@solana/bridge-adapter-react";
 import type { BridgeStatus } from "@solana/bridge-adapter-base";
+import { BridgeStatusNames } from "@solana/bridge-adapter-base";
 import { Spinner } from "../../shared/ui/spinner";
-import { useBridgeAdapter } from "@solana/bridge-adapter-react";
+import { useCallback, useState } from "react";
 import { useSubmitAndTrackTransaction } from "../../entities";
 
 export function PendingTransaction() {
-  const { setNotification } = useBridgeAdapter();
+  const { setNotification } = useBridgeAdapter.useBridgeAdapter();
   const onError = useCallback(
     (e: Error) => {
       setNotification(e);
-      BridgeAdapter.goBackOneStep();
+      useBridgeAdapter.goBackOneStep();
     },
     [setNotification],
   );
@@ -19,8 +19,9 @@ export function PendingTransaction() {
   );
   const onStatusUpdate = useCallback((args: BridgeStatus) => {
     setCurrentStatus(args);
-    if (args.name === "Completed") {
-      BridgeAdapter.setCurrentBridgeStep({
+    const statusName = args.name as BridgeStatusNames;
+    if (statusName === BridgeStatusNames.Completed) {
+      useBridgeAdapter.setCurrentBridgeStep({
         step: "TRANSACTION_COMPLETED",
       });
     }

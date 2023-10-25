@@ -1,9 +1,9 @@
 import type { BridgeAdapterSdkArgs } from "@solana/bridge-adapter-base";
+import { setBridgeAdapterSdkSettings } from "../entities/bridge-adapter-context";
 import { useEffect } from "react";
-import { setBridgeAdapterSdkSettings } from "./BridgeModalContext";
 
-export function BridgeModalProvider({
-  bridgeAdapterSetting,
+export function BridgeAdapterSettingsProvider({
+  bridgeAdapterSettings,
   children,
   settings,
   sourceChain,
@@ -12,19 +12,19 @@ export function BridgeModalProvider({
   children: React.ReactNode;
 } & BridgeAdapterSdkArgs) {
   // Hack here to prevent the useEffect from continuously firing on every render
-  const bridgeAdapterSettingString = bridgeAdapterSetting
-    ? JSON.stringify(bridgeAdapterSetting)
+  const bridgeAdapterSettingString = bridgeAdapterSettings
+    ? JSON.stringify(bridgeAdapterSettings)
     : "";
 
   useEffect(() => {
     const setting = bridgeAdapterSettingString
       ? (JSON.parse(
           bridgeAdapterSettingString,
-        ) as BridgeAdapterSdkArgs["bridgeAdapterSetting"])
+        ) as BridgeAdapterSdkArgs["bridgeAdapterSettings"])
       : undefined;
 
     setBridgeAdapterSdkSettings({
-      bridgeAdapterSetting: setting,
+      bridgeAdapterSettings: setting,
       settings,
       sourceChain,
       targetChain,

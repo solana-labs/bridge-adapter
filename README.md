@@ -1,7 +1,5 @@
 # Bridge Adapter
 
-For SDK documentation, see [here](https://bridge-adapter-sdk-docs.vercel.app).
-
 The following is for existing bridge developer or DEX who wish to integrate with the SDK.
 
 ## Bridge Developer
@@ -54,14 +52,17 @@ export abstract class AbstractBridgeAdapter {
 
 ## Local development
 
-To start developing, simply run `pnpm dev`. This will build all the packages in watch mode as well as spin up a local development server with the react sdk which uses the js sdk under the hood.
+To start developing, you may use these:
+- `pnpm demo`. The demo application will be served on a local system.
+- `pnpm dev`. It will build all the packages in watch mode as well as spin up a local development server with the demo application.
+- `pnpm playground`. It will run a sandbox powered by Storybook and build all the needed packages in the watch mode (see the `playground` script at the root package. Those scripts might be used separately for human-friendly logging).
 
 ### Building
 
-Run `pnpm build` to confirm compilation is working correctly. You should see a folder `acme-core/dist` which contains the compiled output.
+Run `pnpm build` to confirm compilation is working correctly. You should see a folder `dist` which contains the compiled output.
 
 ```bash
-acme-core
+core
 └── dist
     ├── index.d.ts  <-- Types
     ├── index.js    <-- CommonJS version
@@ -93,4 +94,4 @@ When you push your code to GitHub, the [GitHub Action](https://github.com/change
 turbo run build && changeset publish
 ```
 
-Turborepo runs the `build` script for all publishable packages (excluding docs) and publishes the packages to npm.
+Turborepo runs the `build` script for all publishable packages (excluding demo and shared packages) and publishes the packages to npm.

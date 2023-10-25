@@ -11,7 +11,6 @@ import type { StoreApi, UseBoundStore } from "zustand";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { DEFAULT_TOKEN_WITH_AMOUNT } from "../constants/Token";
 import type {
   BridgeStep,
   BridgeStepParams,
@@ -22,6 +21,18 @@ import type {
 } from "../types/bridge-adapter";
 
 const debug = Debug("debug:react:context");
+
+export const DEFAULT_TOKEN_WITH_AMOUNT: TokenWithAmount = {
+  address: "",
+  selectedAmountFormatted: "",
+  selectedAmountInBaseUnits: "",
+  chain: "Ethereum",
+  decimals: 18,
+  logoUri: "",
+  name: "",
+  symbol: "",
+  bridgeNames: [],
+};
 
 type BridgeModalState = {
   sdk: BridgeAdapterSdk;
@@ -204,6 +215,7 @@ export const setToken: BridgeModalActions["setToken"] = async (
 };
 
 export const TOKEN_AMOUNT_ERROR_INDICATOR = "-1";
+
 export const setTokenAmount: BridgeModalActions["setTokenAmount"] = (
   amount,
   chainDest,

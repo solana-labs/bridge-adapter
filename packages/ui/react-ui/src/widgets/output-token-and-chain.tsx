@@ -1,11 +1,22 @@
+import type { FC } from "react";
 import { useBridgeModalStore } from "@solana/bridge-adapter-react";
 import { ChainAndTokenSelectButton } from "../features/ChainAndTokenSelect";
 import { useTokenBalance } from "../features/MultiChainSelection";
 
+const LABELS = {
+  balance: "Balance",
+};
+
+export interface OutputTokenAndChainWidgetProps {
+  labels?: { [key: string]: string; balance: string };
+}
+
 /**
  *  Widget
  */
-export function OutputTokenAndChainWidget() {
+export const OutputTokenAndChainWidget: FC<OutputTokenAndChainWidgetProps> = ({
+  labels = LABELS,
+}) => {
   const { targetToken } = useBridgeModalStore.use.token();
   const swapInformation = useBridgeModalStore.use.swapInformation();
 
@@ -29,10 +40,11 @@ export function OutputTokenAndChainWidget() {
             className="bsa-px-2"
           />
           <div className="bsa-min-w-max bsa-text-muted-foreground">
-            Balance: {tokenBalance ?? "0"} {tokenOfInterest.symbol}
+            {labels.balance}:{" "}
+            {tokenBalance ? `${tokenBalance} ${tokenOfInterest.symbol}` : "-"}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};

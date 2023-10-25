@@ -8,12 +8,9 @@ export type {
 } from "./types/bridge-adapter";
 
 /* Entities */
-export * from "./chain-entities/ethereum/use-ethereum";
-export * from "./chain-entities/solana/use-solana";
-export * from "./provider-entities/ethereum";
-
-/* Interface */
-export * from "./providers/BridgeModalContext";
+export * from "./entities/ethereum";
+export * from "./entities/solana";
+export * from "./entities/bridge-adapter-context";
 
 /* Features */
 export * from "./features";

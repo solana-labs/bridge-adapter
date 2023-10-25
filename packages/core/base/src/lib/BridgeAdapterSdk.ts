@@ -12,7 +12,7 @@ import { getSourceAndTargetChain } from "../utils/getSourceAndTargetChain";
 const warn = Debug("warn:base:BridgeAdapterSdk");
 
 export type BridgeAdapterSdkArgs = BridgeTypes.BridgeAdapterArgs & {
-  bridgeAdapterSetting?: BridgeAdapterSetting;
+  bridgeAdapterSettings?: BridgeAdapterSetting;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,18 +21,19 @@ export type RouteError<T = any> = { index: number; reason: T };
 export class BridgeAdapterSdk {
   sourceChain: ChainName | undefined;
   targetChain: ChainName | undefined;
-  bridgeAdapterSetting: BridgeAdapterSetting | undefined;
+  bridgeAdapterSettings: BridgeAdapterSetting | undefined;
   bridgeAdapters: AbstractBridgeAdapter[] = [];
   constructor(args?: BridgeAdapterSdkArgs) {
     if (args) {
-      const { sourceChain, targetChain, bridgeAdapterSetting, settings } = args;
+      const { sourceChain, targetChain, bridgeAdapterSettings, settings } =
+        args;
       this.sourceChain = sourceChain;
       this.targetChain = targetChain;
-      this.bridgeAdapterSetting = bridgeAdapterSetting;
+      this.bridgeAdapterSettings = bridgeAdapterSettings;
       this.bridgeAdapters = getBridgeAdapters({
         sourceChain: this.sourceChain,
         targetChain: this.targetChain,
-        bridgeAdapterSetting: this.bridgeAdapterSetting,
+        bridgeAdapterSettings: this.bridgeAdapterSettings,
         settings,
       });
     }

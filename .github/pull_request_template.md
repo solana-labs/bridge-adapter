@@ -11,5 +11,5 @@
 ## How PR was tested
 
 - checkout PR
-- `ni` at the top level directory
+- further steps to reproduce the test-case
 - ...

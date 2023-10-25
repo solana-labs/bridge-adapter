@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
     "clean": "rm -rf .turbo && rm -rf dist && rm -rf node_modules",
-    "dev-demo": "next dev",
+    "demo": "next dev",
+    "dev": "next dev",
+    "dev-build": "next build",
     "lint": "next lint",
     "start": "next start"
   },

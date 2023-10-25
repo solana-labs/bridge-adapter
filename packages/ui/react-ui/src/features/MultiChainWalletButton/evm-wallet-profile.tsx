@@ -19,7 +19,7 @@ export function EvmWalletProfile({
   avatar?: string;
   chainName?: string;
   className?: string;
-  connectorName?: WalletName;
+  connectorName?: string;
   ensName?: string;
   isConnected: boolean;
   onDisconnect: () => void;

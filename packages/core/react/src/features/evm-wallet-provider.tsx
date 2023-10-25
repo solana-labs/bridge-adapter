@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { ReactNode } from "react";
-import { useDefaultEthereumConfig } from "../provider-entities/ethereum";
+import { useDefaultEthereumConfig } from "../entities/ethereum";
 import { logger } from "../lib/logger";
 import { EvmWalletProviderBase } from "./evm-wallet-provider-base";
 

@@ -3,29 +3,45 @@ import type {
   Contracts,
   ChainName as WormHoleChainName,
 } from "@certusone/wormhole-sdk";
+import Debug from "debug";
 import {
-  CONTRACTS,
   approveEth,
   coalesceChainName,
+  CONTRACTS,
   getAllowanceEth,
   getEmitterAddressEth,
+  getEmitterAddressSolana,
   getForeignAssetSolana,
   getIsTransferCompletedSolana,
   getSignedVAAWithRetry,
   parseSequenceFromLogEth,
+  parseSequenceFromLogSolana,
+  redeemOnEth,
   redeemOnSolana,
   toChainId,
+  toChainName,
   transferFromEth,
+  transferFromSolana,
   tryNativeToUint8Array,
 } from "@certusone/wormhole-sdk";
 import { postVaaWithRetry } from "@certusone/wormhole-sdk/lib/cjs/solana/sendAndConfirmPostVaa";
 import {
   createAssociatedTokenAccountInstruction,
+  createSyncNativeInstruction,
   getAssociatedTokenAddress,
+  NATIVE_MINT,
 } from "@solana/spl-token";
-import { PublicKey, Transaction as SolanaTransaction } from "@solana/web3.js";
-import { csv2json, parseValue } from "csv42";
-import { CHAIN_NAMES } from "../../constants/ChainNames";
+import {
+  PublicKey,
+  SystemProgram,
+  Transaction as SolanaTransaction,
+  TransactionInstruction,
+} from "@solana/web3.js";
+import {
+  BRIDGE_ALIASES,
+  CHAIN_ALIASES,
+  CHAIN_NAMES,
+} from "../../constants/ChainNames";
 import type {
   BridgeAdapterArgs,
   BridgeStatus,
@@ -34,6 +50,7 @@ import type {
   SolanaAccount,
   SolanaOrEvmAccount,
 } from "../../types/Bridges";
+import { BridgeStatusNames } from "../../types/Bridges";
 import type { ChainName, ChainSourceAndTarget } from "../../types/Chain";
 import type { ChainDestType } from "../../types/ChainDest";
 import type { SwapInformation } from "../../types/SwapInformation";
@@ -49,6 +66,10 @@ import { getSourceAndTargetChain } from "../../utils/getSourceAndTargetChain";
 import { submitSolanaTransaction } from "../../utils/solana";
 import { walletClientToSigner } from "../../utils/viem/ethers";
 import { AbstractBridgeAdapter } from "./AbstractBridgeAdapter";
+import { getTokenList } from "../../entities/wormhole/get-token-list";
+import { getWalletAddress } from "../../utils/getWalletAddress";
+
+const debug = Debug("debug:base:WormholeBridgeAdapter");
 
 export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
   private tokenList: BridgeToken[] = [];
@@ -64,18 +85,19 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
     super(args);
   }
   name(): Bridges {
-    return "wormhole";
+    return BRIDGE_ALIASES.Wormhole;
   }
   getSupportedChains(): Promise<ChainName[]> {
-    return Promise.resolve([
-      "Ethereum",
-      "Solana",
-      "Polygon",
-      "Optimism",
-      "BSC",
-      "Arbitrum",
-      "Avalanche",
-    ]);
+    const supportedChains: ChainName[] = [
+      CHAIN_ALIASES.Arbitrum,
+      CHAIN_ALIASES.Avalanche,
+      CHAIN_ALIASES.BSC,
+      CHAIN_ALIASES.Ethereum,
+      CHAIN_ALIASES.Optimism,
+      CHAIN_ALIASES.Polygon,
+      CHAIN_ALIASES.Solana,
+    ];
+    return Promise.resolve(supportedChains);
   }
   async getSupportedTokens(
     interestedTokenList: ChainDestType,
@@ -91,120 +113,7 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
       },
     });
     if (this.tokenList.length === 0) {
-      const tokenList = await fetch(
-        "https://raw.githubusercontent.com/certusone/wormhole-token-list/main/content/by_dest.csv",
-      );
-      if (!tokenList.ok) {
-        throw new Error("Failed to fetch token list");
-      }
-      const csv = await tokenList.text();
-      const token: BridgeToken[] = csv2json(csv, {
-        fields: [
-          {
-            name: "address",
-            setValue(item, value) {
-              item.targetAddress = value;
-            },
-          },
-          {
-            name: "sourceAddress",
-            setValue(item, value) {
-              item.sourceAddress = value;
-            },
-          },
-          {
-            name: "name",
-            setValue(item, value) {
-              item.name = value;
-            },
-          },
-          {
-            name: "symbol",
-            setValue(item, value) {
-              item.symbol = value;
-            },
-          },
-          {
-            name: "logo",
-            setValue(item, value) {
-              item.logoUri = value;
-            },
-          },
-          {
-            name: "decimals",
-            setValue(item, value) {
-              if (typeof value === "string") {
-                item.targetDecimals = parseInt(value);
-              } else if (typeof value === "number") {
-                item.targetDecimals = value;
-              } else {
-                item.targetDecimals = 0;
-              }
-            },
-          },
-          {
-            name: "sourceDecimals",
-            setValue(item, value) {
-              if (typeof value === "string") {
-                item.sourceDecimals = parseInt(value);
-              } else if (typeof value === "number") {
-                item.sourceDecimals = value;
-              } else {
-                item.sourceDecimals = 0;
-              }
-            },
-          },
-          {
-            name: "origin",
-            setValue(item, value) {
-              if (value === "sol") {
-                item.sourceChain = "Solana";
-              } else if (value === "eth") {
-                item.sourceChain = "Ethereum";
-              } else if (value === "matic") {
-                item.sourceChain = "Polygon";
-              } else if (value === "avax") {
-                item.sourceChain = "Avalanche";
-              } else if (value === "arbitrum") {
-                item.sourceChain = "Arbitrum";
-              } else if (value === "bsc") {
-                item.sourceChain = "BSC";
-              } else {
-                console.log("value", value);
-                item.sourceChain = value;
-              }
-            },
-          },
-          {
-            name: "dest",
-            setValue(item, value) {
-              if (value === "sol") {
-                item.targetChain = "Solana";
-              } else if (value === "eth") {
-                item.targetChain = "Ethereum";
-              } else if (value === "matic") {
-                item.targetChain = "Polygon";
-              } else if (value === "avax") {
-                item.targetChain = "Avalanche";
-              } else if (value === "arbitrum") {
-                item.targetChain = "Arbitrum";
-              } else if (value === "bsc") {
-                item.targetChain = "BSC";
-              } else {
-                console.log("value", value);
-                item.targetChain = value;
-              }
-            },
-          },
-        ],
-        parseValue: (value) => {
-          if (value.startsWith("0x")) {
-            return value;
-          }
-          return parseValue(value);
-        },
-      });
-      this.tokenList = token;
+      this.tokenList = await getTokenList();
     }
 
     let filteredToken = this.tokenList;
@@ -287,19 +196,19 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
     chainName: ChainName,
   ): WormHoleChainName {
     switch (chainName) {
-      case "Ethereum":
+      case CHAIN_ALIASES.Ethereum:
         return "ethereum";
-      case "Solana":
+      case CHAIN_ALIASES.Solana:
         return "solana";
-      case "Polygon":
+      case CHAIN_ALIASES.Polygon:
         return "polygon";
-      case "Arbitrum":
+      case CHAIN_ALIASES.Arbitrum:
         return "arbitrum";
-      case "Optimism":
+      case CHAIN_ALIASES.Optimism:
         return "optimism";
-      case "Avalanche":
+      case CHAIN_ALIASES.Avalanche:
         return "avalanche";
-      case "BSC":
+      case CHAIN_ALIASES.BSC:
         return "bsc";
       default:
         throw new Error("Invalid chain name");
@@ -354,16 +263,35 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
           solanaMintKey,
         ),
       );
+
+      await this.signAndSendSolanaTransaction(transaction, {
+        ownerAccount: targetAccount,
+      });
+    }
+  }
+
+  private async signAndSendSolanaTransaction(
+    transaction: SolanaTransaction,
+    {
+      ownerAccount,
+    }: {
+      ownerAccount: SolanaAccount;
+    },
+    updateBlockhash: boolean = true,
+  ) {
+    const connection = this.getSolanaConnection();
+
+    if (updateBlockhash) {
       const { blockhash } = await connection.getLatestBlockhash();
       transaction.recentBlockhash = blockhash;
-      transaction.feePayer = targetAccount.publicKey;
-
-      // sign, send, and confirm transaction
-      const signedTransaction = await targetAccount.signTransaction(
-        transaction,
-      );
-      await submitSolanaTransaction(signedTransaction, connection);
+      transaction.feePayer = ownerAccount.publicKey;
     }
+
+    // sign, send, and confirm transaction
+    const signedTransaction = await ownerAccount.signTransaction(transaction);
+    const result = await submitSolanaTransaction(signedTransaction, connection);
+
+    return result;
   }
 
   private async lockEthToken({
@@ -414,6 +342,128 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
     return { sequence };
   }
 
+  private async lockSolToken({
+    sourceAccount,
+    wormholeSourceChain,
+    wormholeTargetChainId,
+    targetAddress,
+    sourceToken,
+  }: {
+    sourceAccount: SolanaAccount;
+    wormholeSourceChain: WormHoleChainName;
+    wormholeTargetChainId: ChainId;
+    targetAddress: string;
+    sourceToken: TokenWithAmount;
+  }) {
+    const connection = this.getSolanaConnection();
+    const bridgeAddress = this.getBridgeAddressForChain(
+      this.chainNameToWormholeChainName(CHAIN_ALIASES.Solana),
+      "core",
+    );
+    const tokenBridgeAddress = this.getBridgeAddressForChain(
+      wormholeSourceChain,
+      "token_bridge",
+    );
+    const payerAddress = getWalletAddress(sourceAccount);
+    const payerAccountKey = new PublicKey(payerAddress);
+    const mintAddress = sourceToken.address;
+    const mintAccountKey = new PublicKey(mintAddress);
+
+    const fromAddress = await getAssociatedTokenAddress(
+      mintAccountKey,
+      payerAccountKey,
+    );
+
+    const amount = BigInt(sourceToken.selectedAmountInBaseUnits);
+    const targetChain = wormholeTargetChainId;
+    const targetAddressBytes = tryNativeToUint8Array(
+      targetAddress,
+      targetChain,
+    );
+
+    debug("Transfer Sol -> EVM", {
+      amount,
+      bridgeAddress,
+      connection,
+      fromAddress,
+      mintAddress,
+      payerAddress,
+      targetAddressBytes,
+      targetChain,
+      tokenBridgeAddress,
+      wormholeSourceChain,
+    });
+
+    const transaction = await transferFromSolana(
+      connection,
+      bridgeAddress,
+      tokenBridgeAddress,
+      payerAddress,
+      fromAddress,
+      mintAddress,
+      amount,
+      targetAddressBytes,
+      targetChain,
+    );
+
+    if (mintAccountKey.equals(NATIVE_MINT)) {
+      const mintAccountInfo = await connection.getAccountInfo(mintAccountKey);
+
+      let wrapNativeTokenTransactionInstructions: TransactionInstruction[] = [];
+
+      if (!mintAccountInfo) {
+        wrapNativeTokenTransactionInstructions.push(
+          createAssociatedTokenAccountInstruction(
+            payerAccountKey,
+            fromAddress,
+            payerAccountKey,
+            mintAccountKey,
+          ),
+        );
+      }
+
+      // TODO: check the wrappedSol balance. Transfer might not be needed;
+      wrapNativeTokenTransactionInstructions =
+        wrapNativeTokenTransactionInstructions.concat([
+          SystemProgram.transfer({
+            fromPubkey: payerAccountKey,
+            toPubkey: fromAddress,
+            lamports: amount,
+          }),
+          createSyncNativeInstruction(fromAddress),
+        ]);
+
+      const wrapNativeTokenTransaction = new SolanaTransaction().add(
+        ...wrapNativeTokenTransactionInstructions,
+      );
+
+      await this.signAndSendSolanaTransaction(wrapNativeTokenTransaction, {
+        ownerAccount: sourceAccount,
+      });
+    }
+
+    // sign, send, and confirm transaction
+    const { signature } = await this.signAndSendSolanaTransaction(
+      transaction,
+      { ownerAccount: sourceAccount },
+      false,
+    );
+
+    const info = await connection.getTransaction(signature);
+
+    if (!info) {
+      throw new Error("Can not fetch transaction info");
+    }
+
+    const sequence = parseSequenceFromLogSolana(info);
+
+    if (!sequence) {
+      throw new Error("Can not parse a sequence");
+    }
+
+    return { sequence };
+  }
+
   async wait({
     sequence,
     wormholeSourceChain,
@@ -431,6 +481,27 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
       emitterAddress,
       sequence,
     );
+    return { signedVAA };
+  }
+
+  async waitSolana({
+    sequence,
+    wormholeSourceChain,
+  }: {
+    sequence: string;
+    wormholeSourceChain: WormHoleChainName;
+  }) {
+    const emitterAddress = getEmitterAddressSolana(
+      this.getBridgeAddressForChain(wormholeSourceChain, "token_bridge"),
+    );
+    // poll until the guardian(s) witness and sign the vaa
+    const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
+      this.WORMHOLE_RPC_HOSTS,
+      toChainId(wormholeSourceChain),
+      emitterAddress,
+      sequence,
+    );
+
     return { signedVAA };
   }
 
@@ -528,7 +599,7 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
   }
 
   async bridge({
-    // onStatusUpdate,
+    onStatusUpdate,
     sourceAccount,
     targetAccount,
     swapInformation,
@@ -556,13 +627,76 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
     console.log("Source", sourceToken);
     console.log("Target", targetToken);
 
+    debug("Transfer", sourceToken, "for", targetToken);
+
     if (sourceToken.chain === "Solana") {
-      // From Solana to EVM
+      // Solana -> EVM
+      if (!isSolanaAccount(sourceAccount) || !isEvmAccount(targetAccount)) {
+        throw new Error("Invalid source or target account");
+      }
+
+      debug("Exchange between Solana & EVM");
+
+      onStatusUpdate({
+        information: `Approving ${sourceToken.selectedAmountFormatted} ${sourceToken.symbol}`,
+        name: "Approval",
+        status: "IN_PROGRESS",
+      });
+
+      const { sequence } = await this.lockSolToken({
+        sourceAccount,
+        sourceToken,
+        targetAddress: (await targetAccount.getAddresses())[0],
+        wormholeSourceChain,
+        wormholeTargetChainId,
+      });
+
+      debug("Executing sequence", sequence);
+
+      onStatusUpdate({
+        information: "Waiting for confirmation on Solana",
+        name: "Approval",
+        status: "IN_PROGRESS",
+      });
+
+      const { signedVAA } = await this.waitSolana({
+        sequence,
+        wormholeSourceChain,
+      });
+
+      const ethersSigner = walletClientToSigner(targetAccount);
+
+      const redeemChainAddress = this.getBridgeAddressForChain(
+        wormholeTargetChainId,
+        "token_bridge",
+      );
+
+      onStatusUpdate({
+        information: `Redeeming tokens on ${toChainName(
+          wormholeTargetChainId,
+        )}`,
+        name: "Redeeming",
+        status: "IN_PROGRESS",
+      });
+
+      await redeemOnEth(redeemChainAddress, ethersSigner, signedVAA);
+
+      debug("Got receipt from EVM");
+
+      onStatusUpdate({
+        information: "Transfer Completed",
+        name: BridgeStatusNames.Completed,
+        status: "COMPLETED",
+      });
+
+      return true;
     } else if (targetToken.chain === "Solana") {
-      // From EVM to Solana
+      // EVM -> Solana
       if (!isEvmAccount(sourceAccount) || !isSolanaAccount(targetAccount)) {
         throw new Error("Invalid source or target account");
       }
+
+      debug("Exchange between EVM & Solana");
 
       await this.createAssociatedTokenAccount({
         sourceToken,
@@ -597,10 +731,12 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
         token: targetToken,
       });
     } else {
-      //  From EVM to EVM
+      //  EVM -> EVM
       if (!isEvmAccount(sourceAccount) || !isEvmAccount(targetAccount)) {
         throw new Error("Invalid source or target account");
       }
+
+      debug("Exchange between EVM & EVM");
 
       const { sequence } = await this.lockEthToken({
         sourceAccount,
@@ -615,6 +751,7 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
         wormholeSourceChain,
       });
     }
+
     return true;
   }
 }
