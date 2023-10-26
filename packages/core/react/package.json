@@ -6,18 +6,18 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "dist/index",
-      "types": "dist/index.d.ts"
+      "import": "./dist/index",
+      "types": "./dist/index.d.ts"
     }
   },
-  "main": "dist/index",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/**"
   ],
   "scripts": {
     "build": "tsup src/index.tsx --env.ESM_ONLY true --external react",
-    "build-packages": "pnpm build --silent",
+    "build-packages": "pnpm build",
     "clean": "./clean.sh",
     "dev": "tsup src/index.tsx --env.ESM_ONLY true --external react --watch",
     "lint": "eslint src --ext .ts,.tsx",

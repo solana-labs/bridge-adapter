@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build-demo": "next build",
     "clean": "rm -rf .turbo && rm -rf dist && rm -rf node_modules",
     "demo": "next dev",
     "dev": "next dev",

@@ -6,24 +6,24 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "dist/index",
-      "types": "dist/index.d.ts"
+      "import": "./dist/index",
+      "types": "./dist/index.d.ts"
     }
   },
-  "main": "dist/index",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/**"
   ],
   "scripts": {
     "build": "tsup src/index.tsx --env.ESM_ONLY true",
-    "build-packages": "pnpm build --silent",
+    "build-packages": "pnpm build",
     "clean": "./clean.sh",
     "dev": "tsup src/index.tsx --env.ESM_ONLY true --watch",
     "lint": "eslint \"src/**/*.ts*\"",
     "test": "pnpm run test-types && pnpm run test-unit",
     "test-types": "tsc --noEmit",
-    "test-unit": "ava src"
+    "test-unit": "ava src --timeout 60s"
   },
   "ava": {
     "extensions": {

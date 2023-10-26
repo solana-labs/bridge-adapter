@@ -2,25 +2,21 @@
 
 This document covers the existing bridges available and how this package attempts to unify the various bridges out there into a unified interface that is easily extensible while still providing a great developer experience.
 
-
 ## Bridges
-
 
 ### Limitations
 
 - Currently only on Avax and Eth.
-- Stable bridges: DeBridge, Wormhole. 
+- Stable bridges: DeBridge, Wormhole.
 
 - TODO:
   - [] Mayan
   - [] CCTP
   - [] AllBridge
 
-
 ## API overview
 
 Developers interact directly with a high level BridgeSdk that abstracts away the underlying implementation for the various bridge implementation.
-
 
 ### Goals
 
@@ -28,13 +24,12 @@ Developers interact directly with a high level BridgeSdk that abstracts away the
 - Developers can easily get users to pay them from tokens on other chain while still receiving the expected assets on the target chain
 - Great DX for developers. Interruptions should be handled. Errors should be graceful and human readable.
 
-
 ### End User vanilla JS SDK usage details
 
 ```typescript
 const sdk = new BridgeAdapterSdk({
-  sourceChain: '',
-  targetChain: '',
+  sourceChain: "",
+  targetChain: "",
 });
 ```
 

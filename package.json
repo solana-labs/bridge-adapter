@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
+    "build-demo": "turbo run build-demo",
     "build-packages": "turbo run build-packages",
     "build-storybook": "turbo run build-storybook -- --quiet",
     "changeset": "changeset",

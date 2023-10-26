@@ -53,6 +53,7 @@ export abstract class AbstractBridgeAdapter {
 ## Local development
 
 To start developing, you may use these:
+
 - `pnpm demo`. The demo application will be served on a local system.
 - `pnpm dev`. It will build all the packages in watch mode as well as spin up a local development server with the demo application.
 - `pnpm playground`. It will run a sandbox powered by Storybook and build all the needed packages in the watch mode (see the `playground` script at the root package. Those scripts might be used separately for human-friendly logging).

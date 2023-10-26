@@ -5,6 +5,9 @@
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
       "dependsOn": ["^build"]
     },
+    "build-demo": {
+      "dependsOn": ["build-packages"]
+    },
     "build-packages": {
       "outputs": ["dist/**"],
       "dependsOn": ["^build-packages"]

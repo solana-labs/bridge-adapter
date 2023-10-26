@@ -3,6 +3,7 @@ import type {
   Contracts,
   ChainName as WormHoleChainName,
 } from "@certusone/wormhole-sdk";
+import type { TransactionInstruction } from "@solana/web3.js";
 import Debug from "debug";
 import {
   approveEth,
@@ -35,7 +36,6 @@ import {
   PublicKey,
   SystemProgram,
   Transaction as SolanaTransaction,
-  TransactionInstruction,
 } from "@solana/web3.js";
 import {
   BRIDGE_ALIASES,

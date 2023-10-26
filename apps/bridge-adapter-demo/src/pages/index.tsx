@@ -5,6 +5,7 @@ import * as WalletAdapters from "@solana/wallet-adapter-wallets";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { BridgeAdapter } from "@solana/bridge-adapter-react-ui";
+
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });

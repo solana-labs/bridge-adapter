@@ -24,7 +24,7 @@ BodySlotComponent.displayName = "BridgeBody";
 
 export interface BridgeAdapterProps extends HTMLProps<HTMLElement> {
   title: string;
-  theme: BridgeAdapterTheme;
+  theme?: BridgeAdapterTheme;
 }
 
 export const BridgeAdapter: FC<BridgeAdapterProps> = ({

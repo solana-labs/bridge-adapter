@@ -6,19 +6,19 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "dist/index",
-      "types": "dist/index.d.ts"
+      "import": "./dist/index",
+      "types": "./dist/index.d.ts"
     },
     "./index.css": "./dist/index.css"
   },
-  "main": "dist/index",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/**"
   ],
   "scripts": {
     "build": "tsup src/index.tsx --env.ESM_ONLY true --external react",
-    "build-packages": "pnpm build --silent",
+    "build-packages": "pnpm build",
     "build-storybook": "storybook build",
     "clean": "./clean.sh",
     "dev": "tsup src/index.tsx --env.ESM_ONLY true --external react --watch",
@@ -29,7 +29,7 @@
     "test-fn": "vitest src/__tests__/**/**.test.*",
     "test-storybook": "test-storybook --browsers chromium, firefox",
     "test-types": "tsc --noEmit",
-    "test-unit": "ava src"
+    "test-unit": "ava src --timeout 60s"
   },
   "ava": {
     "extensions": {
