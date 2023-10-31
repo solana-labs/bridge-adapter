@@ -1,0 +1,1 @@
+# @solana/bridge-adapter-base

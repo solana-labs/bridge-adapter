@@ -1,0 +1,52 @@
+name: Artefacts
+
+on:
+  pull_request:
+    path:
+      - "packages/core/react/src/**"
+  push:
+    branches:
+      - master
+
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+  CACHE_AFFIX: pnpm-packages
+
+jobs:
+  storybook:
+    name: Storybook
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: install pnpm package manager
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+
+      - name: setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - name: restore cache for packages if applicable
+        uses: actions/cache@v3
+        id: packages-cache
+        with:
+          path: "${{ env.PNPM_CACHE_FOLDER }}"
+          key: ${{ runner.os }}-${{ env.CACHE_AFFIX }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.CACHE_AFFIX }}-
+
+      - name: install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Formatting
+        run: pnpm run build-storybook

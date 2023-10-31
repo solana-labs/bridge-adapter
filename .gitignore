@@ -1,0 +1,16 @@
+*.local
+*.log
+*.sw*
+.cache
+.DS_Store
+.env
+.next
+.turbo
+.vercel
+.vim
+dist
+dist-ssr
+node_modules
+public/dist
+server/dist
+storybook-static/

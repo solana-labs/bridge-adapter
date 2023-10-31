@@ -1,0 +1,48 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
+      "dependsOn": ["^build"]
+    },
+    "build-demo": {
+      "dependsOn": ["build-packages"]
+    },
+    "build-packages": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build-packages"]
+    },
+    "build-storybook": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["build-packages"]
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "dependsOn": ["build-packages"]
+    },
+    "lint": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["build-packages"]
+    },
+    "demo": {
+      "cache": false,
+      "dependsOn": ["build-packages"],
+      "persistent": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "clean": {
+      "cache": false
+    }
+  },
+  "globalEnv": [
+    "NODE_ENV",
+    "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID",
+    "NEXT_PUBLIC_LOG_LEVEL",
+    "NEXT_PUBLIC_SOLANA_RPC_URL",
+    "NEXT_PUBLIC_ETHEREUM_BASE_EXPLORER_URL",
+    "NEXT_PUBLIC_SOLANA_BASE_EXPLORER_URL"
+  ]
+}

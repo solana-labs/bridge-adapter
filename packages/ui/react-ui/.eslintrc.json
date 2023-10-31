@@ -1,0 +1,49 @@
+{
+  "parserOptions": {
+    "project": true
+  },
+  "extends": [
+    "bridge-adapter-sdk",
+    "plugin:@tanstack/eslint-plugin-query/recommended"
+  ],
+  "rules": {
+    "@next/next/no-img-element": "off",
+    "no-shadow": "warn",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": [
+              "**/ChainAndTokenSelect/*",
+              "!**/ChainAndTokenSelect/index"
+            ],
+            "message": "Internal feauture implementation might change. Please use Public Feature Interface: `features/ChainAndTokenSelect/index.ts`"
+          },
+          {
+            "group": [
+              "**/MultiChainSelection/*",
+              "!**/MultiChainSelection/index"
+            ],
+            "message": "Internal feauture implementation might change. Please use Public Feature Interface: `features/MultiChainSelection/index.ts`"
+          },
+          {
+            "group": [
+              "**/MultiChainWalletButton/*",
+              "!**/MultiChainWalletButton/index"
+            ],
+            "message": "Internal feauture implementation might change. Please use Public Feature Interface: `features/MultiChainWalletButton/index.ts`"
+          },
+          {
+            "group": ["**/SwapDetails/*", "!**/SwapDetails/index"],
+            "message": "Internal feauture implementation might change. Please use Public Feature Interface: `features/SwapDetails/index.ts`"
+          },
+          {
+            "group": ["**/WalletSelection/*", "!**/WalletSelection/index"],
+            "message": "Internal feauture implementation might change. Please use Public Feature Interface: `features/WalletSelection/index.ts`"
+          }
+        ]
+      }
+    ]
+  }
+}

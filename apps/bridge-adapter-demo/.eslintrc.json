@@ -1,0 +1,6 @@
+{
+  "extends": "bridge-adapter-sdk",
+  "parserOptions": {
+    "project": true
+  }
+}

@@ -1,0 +1,40 @@
+name: Snapshot Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  snapshot:
+    name: Snapshot Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: install pnpm package manager
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: Setup npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+
+      - name: install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create Snapshot Release
+        run: |
+          SNAPSHOT_NAME=$(echo "${{ github.ref_name }}" | sed 's/\//-/g')
+          pnpm run ci:version-packages --snapshot "${SNAPSHOT_NAME}"
+          echo '---'
+          echo 'Detected Changes:'
+          git diff
+          echo '---'
+          pnpm run ci:publish --tag "${SNAPSHOT_NAME}" --no-git-tag
