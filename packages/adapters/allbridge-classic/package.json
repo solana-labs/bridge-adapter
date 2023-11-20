@@ -1,0 +1,67 @@
+{
+  "name": "@solana/bridge-adapter-allbridge-classic-adapter",
+  "version": "0.1.0",
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "_build": "tsup src/index.tsx --env.ESM_ONLY true",
+    "_build-packages": "pnpm build",
+    "clean": "./clean.sh",
+    "_dev": "tsup src/index.tsx --env.ESM_ONLY true --watch",
+    "_lint": "eslint \"src/**/*.ts*\"",
+    "_test": "pnpm run test-types && pnpm run test-unit",
+    "_test-types": "tsc --noEmit",
+    "_test-unit": "ava src --timeout 60s"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=tsx"
+    ]
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "project": true
+    },
+    "extends": [
+      "bridge-adapter-sdk"
+    ]
+  },
+  "dependencies": {
+    "nanoid": "^5.0.3"
+  },
+  "devDependencies": {
+    "@solana/bridge-adapter-core": "^0.1.0",
+    "@solana/web3.js": "^1.78.0",
+    "@types/web3": "^1.2.2",
+    "bridge-adapter-sdk-tsconfig": "^0.0.0",
+    "debug": "^4.3.4",
+    "eslint": "^8.29.0",
+    "eslint-config-bridge-adapter-sdk": "^0.0.0",
+    "tsup": "^7.0.0",
+    "typescript": "^5.1.3",
+    "undici": "^5.22.1",
+    "viem": "^1.4.1"
+  },
+  "peerDependencies": {
+    "@solana/web3.js": "^1.78.0",
+    "viem": "^1.4.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
