@@ -1,5 +1,6 @@
 .main {
   display: flex;
+  font-family: 'Inter', sans-serif;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;

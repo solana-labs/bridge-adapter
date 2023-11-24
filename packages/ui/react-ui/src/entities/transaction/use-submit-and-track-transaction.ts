@@ -1,4 +1,4 @@
-import type { BridgeStatus } from "@solana/bridge-adapter-base";
+import type { BridgeStatus } from "@solana/bridge-adapter-core";
 import { useBridgeModalStore } from "@solana/bridge-adapter-react";
 import { useBridgeParams } from "./use-bridge-params";
 import { useEffect } from "react";

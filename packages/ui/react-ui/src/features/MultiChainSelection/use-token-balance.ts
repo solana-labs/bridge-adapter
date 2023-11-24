@@ -1,10 +1,10 @@
-import type { Token } from "@solana/bridge-adapter-base";
+import type { Token } from "@solana/bridge-adapter-core";
 import type { Hash } from "viem";
 import Debug from "debug";
 import {
   chainNameToViemChain,
   formatTokenBalance,
-} from "@solana/bridge-adapter-base";
+} from "@solana/bridge-adapter-core";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { createPublicClient, formatUnits, http, parseAbi } from "viem";
 import { NATIVE_MINT } from "@solana/spl-token";

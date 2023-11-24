@@ -1,78 +1,27 @@
 import it from "ava";
 import { getBridgeAdapters } from "../utils/getBridgeAdapters";
+import { MockBridgeAdapter } from "../__mocks__/bridge-adapters";
 
-it("should return adapters", (t) => {
-  const adapters = getBridgeAdapters({
-    sourceChain: "Ethereum",
-    targetChain: "Solana",
-    settings: undefined,
-    bridgeAdapterSettings: undefined,
-  });
+it("should return initial adapters", (t) => {
   t.deepEqual(
-    ["deBridge", "mayan", "wormhole"],
-    adapters.map((a) => a.name()),
+    [],
+    getBridgeAdapters({
+      sourceChain: "Ethereum",
+      targetChain: "Solana",
+      settings: undefined,
+    }),
   );
 });
 
 it("should return allowed adapters", (t) => {
   const adapters = getBridgeAdapters({
+    adapters: [MockBridgeAdapter],
     sourceChain: "Ethereum",
     targetChain: "Solana",
     settings: undefined,
-    bridgeAdapterSettings: {
-      allow: ["deBridge", "wormhole"],
-    },
   });
   t.deepEqual(
-    ["deBridge", "wormhole"],
+    ["mock"],
     adapters.map((a) => a.name()),
-  );
-});
-
-it("should return adapters unless denied", (t) => {
-  const adapters = getBridgeAdapters({
-    sourceChain: "Ethereum",
-    targetChain: "Solana",
-    settings: undefined,
-    bridgeAdapterSettings: {
-      deny: ["deBridge", "wormhole"],
-    },
-  });
-  t.deepEqual(
-    ["mayan"],
-    adapters.map((a) => a.name()),
-  );
-});
-
-it("should return adapters according to the allowed & denied", (t) => {
-  const adapters = getBridgeAdapters({
-    sourceChain: "Ethereum",
-    targetChain: "Solana",
-    settings: undefined,
-    bridgeAdapterSettings: {
-      allow: ["deBridge", "wormhole"],
-      deny: ["deBridge"],
-    },
-  });
-  t.deepEqual(
-    ["deBridge", "wormhole"],
-    adapters.map((a) => a.name()),
-  );
-});
-
-it("should fail with the wrong settings", (t) => {
-  t.throws(
-    () => {
-      getBridgeAdapters({
-        sourceChain: "Ethereum",
-        targetChain: "Solana",
-        settings: undefined,
-        bridgeAdapterSettings: {
-          // @ts-expect-error negative case
-          denied: ["mayan"],
-        },
-      });
-    },
-    { message: "Invalid bridge adapter setting" },
   );
 });

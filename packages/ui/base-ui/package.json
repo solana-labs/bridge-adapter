@@ -1,25 +1,33 @@
 {
   "name": "@solana/bridge-adapter-base-ui",
   "version": "0.1.0",
-  "license": "MIT",
+  "license": "SEE LICENSE IN ../../../LICENSE",
   "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index",
+      "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./esm": {
+      "import": "./esm/index.js",
+      "types": "./esm/index.d.ts"
     }
   },
-  "main": "./dist/index",
+  "main": "./dist/index.js",
+  "module": "./esm/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist/**"
+    "dist/**",
+    "esm/**",
+    "src/**"
   ],
   "scripts": {
     "build": "tsup src/index.ts --env.ESM_ONLY true --external react",
-    "build-packages": "pnpm build",
+    "build-core/dist": "pnpm build --platform=browser",
+    "build-core/esm": "tsc --build tsconfig.esm.json --verbose",
+    "build-core": "pnpm run build-core/dist && pnpm run build-core/esm",
     "clean": "./clean.sh",
-    "dev": "tsup src/index.ts --env.ESM_ONLY true --external react --watch",
     "lint": "eslint src --ext .ts,.tsx",
     "test": "pnpm run test-fn && pnpm run test-types",
     "test-fn": "vitest src/__tests__/**.test.*",
@@ -43,8 +51,7 @@
     "immer": "^10.0.2",
     "lokijs": "^1.5.12",
     "react-error-boundary": "^4.0.10",
-    "react-window": "^1.8.9",
-    "valibot": "^0.3.0"
+    "react-window": "^1.8.9"
   },
   "devDependencies": {
     "@solana/wallet-adapter-react": "^0.15.35",
@@ -56,7 +63,7 @@
     "@types/react-window": "^1.8.5",
     "@typescript-eslint/parser": "^6.2.1",
     "autoprefixer": "^10.4.14",
-    "bridge-adapter-sdk-tsconfig": "^0.0.0",
+    "bridge-adapter-sdk-tsconfig": "^0.1.1",
     "eslint": "^8.29.0",
     "eslint-config-bridge-adapter-sdk": "^0.0.0",
     "ethers": "^5.7.2",

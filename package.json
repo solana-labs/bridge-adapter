@@ -2,20 +2,20 @@
   "name": "bridge-adapter-sdk",
   "private": true,
   "type": "module",
+  "license": "SEE LICENSE IN ./LICENSE",
   "scripts": {
-    "build": "turbo run build",
+    "_build": "turbo run build",
+    "build-core": "turbo run build-core",
     "build-demo": "turbo run build-demo",
-    "build-packages": "turbo run build-packages",
+    "build-pkg": "turbo run build-pkg",
     "build-storybook": "turbo run build-storybook -- --quiet",
     "changeset": "changeset",
     "ci:publish": "turbo run build-packages && changeset publish",
     "ci:version": "changeset version",
     "clean": "turbo run clean && rm -rf node_modules",
-    "demo": "turbo run demo",
-    "dev": "turbo run dev --continue",
     "format": "prettier -w \"**/*.{js,cjs,ts,tsx,md,json}\"",
     "lint": "turbo run lint && manypkg check",
-    "playground": "npx concurrently \"pnpm --filter @solana/bridge-adapter-react-ui playground\" \"pnpm run dev\"",
+    "playground": "pnpm --filter @solana/bridge-adapter-react-ui playground",
     "test": "turbo run test",
     "version-packages": "changeset version"
   },
@@ -40,7 +40,8 @@
     "prettier": "^2.8.0",
     "rimraf": "^5.0.1",
     "tsup": "^7.0.0",
-    "turbo": "1.10.13"
+    "turbo": "1.10.13",
+    "zod": "^3.22.4"
   },
   "packageManager": "pnpm@8.6.12",
   "pnpm": {

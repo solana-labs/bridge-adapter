@@ -8,9 +8,16 @@ import {
 import * as WalletAdapters from "@solana/wallet-adapter-wallets";
 import { BridgeAdapterDialog } from "../index";
 import { Button } from "../shared/index";
-import { userEvent, within } from "@storybook/testing-library";
-import { walletConnectProjectId, solanaRpcUrl } from "../env";
 import { BridgeAdapterTheme } from "../types";
+import { DeBridgeBridgeAdapter } from "@solana/bridge-adapter-debridge-adapter";
+import { userEvent, within } from "@storybook/testing-library";
+import {
+  walletConnectProjectId,
+  solanaRpcUrl,
+  infuraApiKey,
+  alchemyApiKey,
+} from "../env";
+import { WormholeBridgeAdapter } from "@solana/bridge-adapter-wormhole-adapter";
 
 const meta: Meta<typeof BridgeAdapterDialog> = {
   title: "Bridge Adapter Dialog",
@@ -56,6 +63,12 @@ export const Default: StoryObj<
     );
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
+    const adapters = React.useMemo(
+      () => [DeBridgeBridgeAdapter, WormholeBridgeAdapter],
+      [],
+    );
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [error, setError] = React.useState<Error | undefined>();
 
     return (
@@ -69,8 +82,10 @@ export const Default: StoryObj<
           walletConnectProjectId={evmSettings.walletConnectProjectId}
         >
           <BridgeAdapterProvider
+            adapters={adapters}
             error={error}
             settings={{
+              evm: { infuraApiKey, alchemyApiKey },
               solana: { solanaRpcUrl },
             }}
           >

@@ -1,6 +1,6 @@
 import type { ChainSelectionType } from "@solana/bridge-adapter-react";
 import type { FC } from "react";
-import type { Token } from "@solana/bridge-adapter-base";
+import type { Token } from "@solana/bridge-adapter-core";
 import { AddressLine } from "../../shared/ui/AddressLine";
 import { Button } from "../../shared/ui/button";
 import { FixedSizeList } from "react-window";

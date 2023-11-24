@@ -41,7 +41,9 @@ export const OutputTokenAndChainWidget: FC<OutputTokenAndChainWidgetProps> = ({
           />
           <div className="bsa-min-w-max bsa-text-muted-foreground">
             {labels.balance}:{" "}
-            {tokenBalance ? `${tokenBalance} ${tokenOfInterest.symbol}` : "-"}
+            {tokenBalance
+              ? `${tokenBalance} ${tokenOfInterest.symbol}`
+              : "0.00"}
           </div>
         </div>
       </div>

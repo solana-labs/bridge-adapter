@@ -2,5 +2,6 @@
 **/.turbo
 **/storybook-static
 **/dist/**
+**/esm/**
 .pnpm-store
 .changeset

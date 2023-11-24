@@ -1,6 +1,6 @@
 import Debug from "debug";
 import type { BridgeStepParams } from "@solana/bridge-adapter-react";
-import type { ChainName } from "@solana/bridge-adapter-base";
+import type { ChainName } from "@solana/bridge-adapter-core";
 import type { Connector } from "wagmi";
 import type { ConnectorData } from "./evm-wallet-selection-base";
 import type { FC } from "react";

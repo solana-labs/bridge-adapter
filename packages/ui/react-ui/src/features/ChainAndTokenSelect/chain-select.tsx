@@ -1,4 +1,4 @@
-import type { ChainName } from "@solana/bridge-adapter-base";
+import type { ChainName } from "@solana/bridge-adapter-core";
 import { useCallback } from "react";
 import { setChain, useBridgeModalStore } from "@solana/bridge-adapter-react";
 import { useChainInfo } from "./use-chain-info";

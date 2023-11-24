@@ -1,7 +1,7 @@
 import type {
   SolanaOrEvmAccount,
   SwapInformation,
-} from "@solana/bridge-adapter-base";
+} from "@solana/bridge-adapter-core";
 import {
   useBridgeModalStore,
   useEthereumWallet,

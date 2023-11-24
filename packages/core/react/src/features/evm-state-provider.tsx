@@ -1,3 +1,6 @@
+import type { ChainName } from "@solana/bridge-adapter-core";
+import type { Connector } from "wagmi";
+import type { ReactNode } from "react";
 import {
   createContext,
   useCallback,
@@ -5,10 +8,10 @@ import {
   useContext,
   useState,
 } from "react";
-import * as BridgeAdapterBase from "@solana/bridge-adapter-base";
-import type { ChainName } from "@solana/bridge-adapter-base";
-import type { Connector } from "wagmi";
-import type { ReactNode } from "react";
+import {
+  SupportedChainNames,
+  chainNameToChainId,
+} from "@solana/bridge-adapter-core";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { logger } from "../lib/logger";
 
@@ -45,9 +48,7 @@ export const EvmStateProvider = ({
   children: ReactNode;
   onError?: (e: Error) => void;
 }) => {
-  const [chainName, setChainName] = useState<ChainName>(
-    BridgeAdapterBase.SupportedChainNames[0],
-  );
+  const [chainName, setChainName] = useState<ChainName>(SupportedChainNames[0]);
 
   const { isConnected } = useAccount();
 
@@ -65,7 +66,7 @@ export const EvmStateProvider = ({
   }, []);
 
   const { connectAsync, connectors, isLoading, pendingConnector } = useConnect({
-    chainId: BridgeAdapterBase.chainNameToChainId(chainName),
+    chainId: chainNameToChainId(chainName),
     onSuccess: handleConnectSuccess,
     onError: handleConnectError,
   });

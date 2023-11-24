@@ -1,38 +1,55 @@
 import it from "ava";
-import type { Bridges } from "../types/Bridges";
-import type { ChainName } from "../types/Chain";
+import type { ChainName } from "@solana/bridge-adapter-core";
 import { BridgeAdapterSdk } from "../lib/BridgeAdapterSdk";
+import { MockBridgeAdapter } from "../__mocks__/bridge-adapters";
+
+it("should sdk be initialized", (t) => {
+  let sdk = new BridgeAdapterSdk();
+  t.is(sdk.sourceChain, undefined);
+  t.is(sdk.targetChain, undefined);
+  t.deepEqual(sdk.bridgeAdapters, []);
+
+  sdk = new BridgeAdapterSdk({
+    sourceChain: "Ethereum",
+    targetChain: "Solana",
+    settings: {
+      solana: { solanaRpcUrl: "https://mainnet-beta.solana.com" },
+    },
+  });
+  t.deepEqual([], sdk.bridgeAdapters);
+  t.is(sdk.sourceChain, "Ethereum");
+  t.is(sdk.targetChain, "Solana");
+
+  sdk = new BridgeAdapterSdk({
+    adapters: [MockBridgeAdapter],
+    sourceChain: "Ethereum",
+    targetChain: "Solana",
+    settings: {
+      solana: { solanaRpcUrl: "https://mainnet-beta.solana.com" },
+    },
+  });
+  t.is(sdk.bridgeAdapters.length, 1);
+});
 
 it("should setup adapters", async (t) => {
-  let adapter = new BridgeAdapterSdk();
-  t.is(adapter.sourceChain, undefined);
-  t.is(adapter.targetChain, undefined);
-  t.is(adapter.bridgeAdapterSettings, undefined);
-  t.deepEqual(adapter.bridgeAdapters, []);
-
   const data = {
     sourceChain: "Solana" as ChainName,
     targetChain: "Ethereum" as ChainName,
-    bridgeAdapterSettings: {
-      deny: ["wormhole"] as Bridges[],
-      allow: ["wormhole"] as Bridges[],
-    },
     settings: {
       solana: { solanaRpcUrl: "https://mainnet-beta.solana.com" },
     },
   };
 
-  adapter = new BridgeAdapterSdk({
+  const sdk = new BridgeAdapterSdk({
+    adapters: [MockBridgeAdapter],
     sourceChain: data.sourceChain,
     targetChain: data.targetChain,
-    bridgeAdapterSettings: data.bridgeAdapterSettings,
     settings: data.settings,
   });
 
-  const targetBridge = adapter.bridgeAdapters[0];
-  t.is(adapter.sourceChain, data.sourceChain);
-  t.is(adapter.targetChain, data.targetChain);
-  t.is(adapter.bridgeAdapterSettings, data.bridgeAdapterSettings);
+  const targetBridge = sdk.bridgeAdapters[0];
+  t.is(sdk.sourceChain, data.sourceChain);
+  t.is(sdk.targetChain, data.targetChain);
   // @ts-expect-error property exists for instance
   t.is(targetBridge.sourceChain, "Solana");
   // @ts-expect-error property exists for instance
@@ -41,28 +58,11 @@ it("should setup adapters", async (t) => {
   t.is(targetBridge.settings, data.settings);
   // @ts-expect-error property exists for instance
   t.deepEqual(targetBridge.tokenList, []);
-  // @ts-expect-error property exists for instance
-  t.deepEqual(targetBridge.WORMHOLE_RPC_HOSTS, [
-    "https://wormhole-v2-mainnet-api.certus.one",
-    "https://wormhole.inotel.ro",
-    "https://wormhole-v2-mainnet-api.mcf.rocks",
-    "https://wormhole-v2-mainnet-api.chainlayer.network",
-    "https://wormhole-v2-mainnet-api.staking.fund",
-    "https://wormhole-v2-mainnet.01node.com",
-  ]);
 
-  t.deepEqual(await adapter.getSupportedChains(), [
-    "Solana",
-    "Polygon",
-    "Optimism",
-    "Ethereum",
-    "BSC",
-    "Avalanche",
-    "Arbitrum",
-  ]);
+  t.deepEqual(await sdk.getSupportedChains(), ["Solana", "Ethereum"]);
 
   // @ts-expect-error private method
-  t.deepEqual(adapter.deduplicateChains(["Solana", "Solana"] as ChainName[]), [
+  t.deepEqual(sdk.deduplicateChains(["Solana", "Solana"] as ChainName[]), [
     "Solana",
   ] as ChainName[]);
 });
@@ -71,23 +71,18 @@ it("should validate chain intersection", (t) => {
   const data = {
     sourceChain: "Solana" as ChainName,
     targetChain: "Solana" as ChainName,
-    bridgeAdapterSettings: {
-      deny: ["wormhole"] as Bridges[],
-      allow: ["wormhole"] as Bridges[],
-    },
     settings: {
       solana: { solanaRpcUrl: "https://mainnet-beta.solana.com" },
     },
   };
 
   // Cover the case when the source and target chains are the same
-  const adapter = new BridgeAdapterSdk({
+  const sdk = new BridgeAdapterSdk({
     sourceChain: data.sourceChain,
     targetChain: data.targetChain,
-    bridgeAdapterSettings: data.bridgeAdapterSettings,
     settings: data.settings,
   });
 
-  t.is(adapter.sourceChain, data.sourceChain);
-  t.is(adapter.targetChain, data.targetChain);
+  t.is(sdk.sourceChain, data.sourceChain);
+  t.is(sdk.targetChain, data.targetChain);
 });

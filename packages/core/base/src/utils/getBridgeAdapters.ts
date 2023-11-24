@@ -1,56 +1,34 @@
-import Debug from "debug";
-import type { AbstractBridgeAdapter } from "../lib/BridgeAdapter/AbstractBridgeAdapter";
-import type { BridgeAdapterArgs } from "../types/Bridges";
-import type { BridgeAdapterSetting } from "../types/BridgeAdapterSetting";
-import { DeBridgeBridgeAdapter } from "../lib/BridgeAdapter/DeBridgeBridgeAdapter";
-import { MayanBridgeAdapter } from "../lib/BridgeAdapter/MayanBridgeAdapter";
-import { WormholeBridgeAdapter } from "../lib/BridgeAdapter/WormholeBridgeAdapter";
+import type {
+  AbstractBridgeAdapter,
+  BridgeAdapterArgs,
+} from "@solana/bridge-adapter-core";
+import type { BridgeAdapterSdkArgs } from "../lib/BridgeAdapterSdk";
 
-const log = Debug("log:getBridgeAdapters");
+type AdapterClass = typeof AbstractBridgeAdapter;
+/// Disable the rule as we intentionally want to use the constructor to satisfy the type checking
+interface AdapterDerived extends AdapterClass {
+  // eslint-disable-next-line @typescript-eslint/no-misused-new
+  constructor(args: BridgeAdapterArgs): void;
+}
+type BridgeAdapterDerived = new (
+  a: Parameters<AdapterDerived["constructor"]>[0],
+) => AdapterDerived;
 
 export function getBridgeAdapters({
+  adapters = [],
+  settings,
   sourceChain,
   targetChain,
-  settings,
-  bridgeAdapterSettings,
-}: {
-  bridgeAdapterSettings?: BridgeAdapterSetting;
-} & BridgeAdapterArgs) {
-  const allowedBridgeAdapters: { [bridge: string]: AbstractBridgeAdapter } = {
-    deBridge: new DeBridgeBridgeAdapter({
-      sourceChain,
-      targetChain,
-      settings,
-    }),
-    mayan: new MayanBridgeAdapter({
-      sourceChain,
-      targetChain,
-      settings,
-    }),
-    wormhole: new WormholeBridgeAdapter({ sourceChain, targetChain, settings }),
-  };
-  if (!bridgeAdapterSettings) {
-    log("Active Bridge Adapters:", Object.keys(allowedBridgeAdapters));
-    return Object.values(allowedBridgeAdapters);
-  }
+}: BridgeAdapterSdkArgs) {
+  const _adapters: unknown = adapters;
+  const providedAdapters = _adapters as BridgeAdapterDerived[];
 
-  if ("allow" in bridgeAdapterSettings) {
-    const result = [];
-    for (const bridgeAdapter of bridgeAdapterSettings.allow) {
-      result.push(allowedBridgeAdapters[bridgeAdapter]);
-    }
-    log(
-      "Allowed Bridge Adapters:",
-      result.map((a) => a.name()),
-    );
-    return result.filter((x) => !!x);
-  } else if ("deny" in bridgeAdapterSettings) {
-    for (const bridgeAdapter of bridgeAdapterSettings.deny) {
-      delete allowedBridgeAdapters[bridgeAdapter];
-    }
-    log("Allowed Bridge Adapters:", Object.keys(allowedBridgeAdapters));
-    return Object.values(allowedBridgeAdapters);
-  }
-
-  throw new Error("Invalid bridge adapter setting");
+  return providedAdapters.map(
+    (Adapter) =>
+      new Adapter({
+        sourceChain,
+        targetChain,
+        settings,
+      }),
+  ) as unknown as AbstractBridgeAdapter[];
 }

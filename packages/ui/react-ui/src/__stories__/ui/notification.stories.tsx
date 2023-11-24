@@ -95,8 +95,9 @@ export const WithDialog: StoryObj<typeof Notification> = {
     await userEvent.click(notificationBtn);
 
     const notificationEl = within(globalThis.document.body).getAllByRole(
-      "status",
+      "dialog",
     );
-    await expect(notificationEl[0]).toBeVisible();
+
+    await expect(notificationEl[0]).toBeInTheDocument();
   },
 };

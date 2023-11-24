@@ -21,7 +21,7 @@ const BridgeAdapterContext =
   React.createContext<BridgeAdapterContextState>(STATE);
 
 export function BridgeAdapterProvider({
-  bridgeAdapterSettings,
+  adapters,
   children,
   error,
   settings,
@@ -55,10 +55,12 @@ export function BridgeAdapterProvider({
     [notification, setNotification],
   );
 
+  const bridgeAdapters = React.useMemo(() => adapters, [adapters]);
+
   return (
     <BridgeAdapterContext.Provider value={data}>
       <BridgeAdapterSettingsProvider
-        bridgeAdapterSettings={bridgeAdapterSettings}
+        adapters={bridgeAdapters}
         settings={settings}
         sourceChain={sourceChain}
         targetChain={targetChain}
