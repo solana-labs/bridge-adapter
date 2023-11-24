@@ -1,29 +1,37 @@
 {
   "name": "@solana/bridge-adapter-allbridge-classic-adapter",
   "version": "0.1.0",
-  "license": "MIT",
+  "license": "SEE LICENSE IN ../../../LICENSE",
   "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./esm": {
+      "import": "./esm/index.js",
+      "types": "./esm/index.d.ts"
     }
   },
   "main": "./dist/index.js",
+  "module": "./esm/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist/**"
+    "dist/**",
+    "esm/**",
+    "src/**"
   ],
   "scripts": {
-    "_build": "tsup src/index.tsx --env.ESM_ONLY true",
-    "_build-packages": "pnpm build",
+    "build": "tsup src/index.tsx --env.ESM_ONLY true",
+    "build-packages": "pnpm build --platform=browser",
+    "build-esm": "tsc --build tsconfig.esm.json --verbose",
+    "build-pkg": "pnpm run build-esm && pnpm run build-packages",
     "clean": "./clean.sh",
-    "_dev": "tsup src/index.tsx --env.ESM_ONLY true --watch",
-    "_lint": "eslint \"src/**/*.ts*\"",
-    "_test": "pnpm run test-types && pnpm run test-unit",
-    "_test-types": "tsc --noEmit",
-    "_test-unit": "ava src --timeout 60s"
+    "lint": "eslint \"src/**/*.ts*\"",
+    "test": "pnpm run test-types && pnpm run test-unit",
+    "test-types": "tsc --noEmit",
+    "test-unit": "ava src --timeout 60s"
   },
   "ava": {
     "extensions": {
@@ -48,7 +56,7 @@
     "@solana/bridge-adapter-core": "^0.1.0",
     "@solana/web3.js": "^1.78.0",
     "@types/web3": "^1.2.2",
-    "bridge-adapter-sdk-tsconfig": "^0.0.0",
+    "bridge-adapter-sdk-tsconfig": "^0.1.1",
     "debug": "^4.3.4",
     "eslint": "^8.29.0",
     "eslint-config-bridge-adapter-sdk": "^0.0.0",
