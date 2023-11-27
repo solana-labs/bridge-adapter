@@ -13,6 +13,7 @@ import type {
   Token as TokenType,
   Token,
   TokenWithAmount,
+  CHAIN_ALIASES,
 } from "@solana/bridge-adapter-core";
 import Debug from "debug";
 import type { ITokenService } from "../types/token-service.d";
@@ -21,7 +22,6 @@ import { AllBridgeClassicSdk } from "../entities/allBridge-classic-sdk";
 import {
   AbstractBridgeAdapter,
   BRIDGE_ALIASES,
-  CHAIN_ALIASES,
   formatTokenBalance,
   getSourceAndTargetChain,
   getWalletAddress,
@@ -137,8 +137,6 @@ export class AllBridgeClassicBridgeAdapter<
     const tokenChainName = token.chain;
     const targetChainSymbol = this.findChainSymbolByName(tokenChainName);
 
-    console.log("|> ", tokenChainName, targetChainSymbol);
-
     if (!targetChainSymbol) return undefined;
 
     const targetChainDetailsWithTokens = this.chainMapping[targetChainSymbol];
@@ -147,9 +145,18 @@ export class AllBridgeClassicBridgeAdapter<
       ({ symbol }) => symbol === token.symbol,
     );
 
-    console.log(targetChainDetailsWithTokens.tokens, desiredToken);
-
     return desiredToken;
+  }
+
+  async getChainToken(
+    token: Token | TokenWithAmount,
+  ): TokenWithChainDetails | undefined {
+    if (!this.chainMapping) {
+      throw new Error("Absent chain mapping");
+    } 
+    const chainToken = await this.findTokenWithChainDetailsAtChainDetails(token)
+
+    return chainToken
   }
 
   async getSwapDetails(
@@ -263,7 +270,6 @@ export class AllBridgeClassicBridgeAdapter<
     const sourceAddress = getWalletAddress(sourceAccount);
     const targetAddress = getWalletAddress(targetAccount);
 
-    console.log({ sourceAddress, targetAddress });
     let result;
     if (sourceToken.chain === "Solana") {
       // Solana -> EVM
@@ -275,16 +281,12 @@ export class AllBridgeClassicBridgeAdapter<
       /// EVM -> Solana
       result = await sendEthToSolana(
         this.sdk,
-        // @ts-expect-error skip
-        this.findTokenWithChainDetailsAtChainDetails.bind(this),
-        { onStatusUpdate, sourceAccount, swapInformation, targetAccount },
+        { onStatusUpdate, sourceChainToken, targetChainToken,sourceAccount, swapInformation, targetAccount },
       );
     } else {
       //  EVM -> EVM
       result = await sendEthToEth(this.sdk, { sourceAccount, targetAccount });
     }
-
-    console.log({ result });
 
     return false;
   }

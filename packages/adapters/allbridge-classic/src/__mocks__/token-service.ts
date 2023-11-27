@@ -1,5 +1,5 @@
 import type { ITokenService } from "../types/token-service.d";
-import { TokenInfo } from "../types/token-service.d";
+import type { TokenInfo } from "../types/token-service.d";
 
 export class TokenService implements ITokenService {
   readonly endpoint = "https://allbridgeapi.net/token-info";

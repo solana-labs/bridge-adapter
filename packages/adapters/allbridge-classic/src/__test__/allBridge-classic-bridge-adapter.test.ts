@@ -17,7 +17,7 @@ it("should be initialized", async (t) => {
 });
 
 it("should return supported tokens", async (t) => {
-  let adapter = new AllBridgeClassicBridgeAdapter(
+  const adapter = new AllBridgeClassicBridgeAdapter(
     {
       sourceChain: "Ethereum",
       targetChain: "Solana",
@@ -146,27 +146,29 @@ it("should bridge from Ethereum to Solana", async (t) => {
     new Services.TokenService(),
   );
 
-  const swapInformation = await adapter.getSwapDetails(
-    ethereumTokenWithAmount({
+  const sourceToken = ethereumTokenWithAmount({
       address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
       decimals: 6,
       name: "USD Coin",
       selectedAmountFormatted: "1",
       selectedAmountInBaseUnits: "1000000",
       symbol: "USDC",
-    }),
-    solanaToken({
+    })
+    const targetToken = solanaToken({
       address: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       decimals: 6,
       name: "USD Coin",
       symbol: "USDC",
-    }),
+    })
+  const swapInformation = await adapter.getSwapDetails(
+   sourceToken,
+   targetToken,
   );
 
   await adapter.bridge({
     onStatusUpdate: console.info,
     sourceAccount: evmAccount(),
-    targetAccount: solanaAccount(),
     swapInformation,
+    targetAccount: solanaAccount(),
   });
 });

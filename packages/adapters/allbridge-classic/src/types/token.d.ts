@@ -1,4 +1,4 @@
-import { ChainType } from "./chain.d";
+import type { ChainType } from "./chain.d";
 
 export interface TokenWithChainDetails {
   address: string;

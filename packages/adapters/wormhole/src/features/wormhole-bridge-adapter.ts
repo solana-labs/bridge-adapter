@@ -535,13 +535,13 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
       Buffer.from(signedVAA),
       maxFailures,
     );
-    console.log("postPromise", postPromise);
+    //console.log("postPromise", postPromise);
     const isCompleted = await getIsTransferCompletedSolana(
       this.getBridgeAddressForChain(wormholeChainName, "token_bridge"),
       signedVAA,
       connection,
     );
-    console.log("isCompleted", isCompleted);
+    //console.log("isCompleted", isCompleted);
 
     // redeem tokens on solana
     const transaction = await redeemOnSolana(
@@ -561,7 +561,7 @@ export class WormholeBridgeAdapter extends AbstractBridgeAdapter {
       signedVAA,
       connection,
     );
-    console.log("isCompletedAfterRedeem ", isCompletedAfterRedeem);
+    //console.log("isCompletedAfterRedeem ", isCompletedAfterRedeem);
   }
 
   getBridgeSteps(

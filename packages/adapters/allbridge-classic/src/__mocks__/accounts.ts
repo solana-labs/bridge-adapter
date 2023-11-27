@@ -1,4 +1,4 @@
-import { SolanaOrEvmAccount, EvmAccount } from "@solana/bridge-adapter-core";
+import type { SolanaOrEvmAccount, EvmAccount } from "@solana/bridge-adapter-core";
 import { Keypair, PublicKey } from "@solana/web3.js";
 
 export const solanaAccount = (pubkey?: string) => {

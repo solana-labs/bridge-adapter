@@ -1,10 +1,9 @@
 import Debug from "debug";
-import type { TokenWithChainDetails } from "@allbridge/bridge-core-sdk";
+import type { TokenWithChainDetails } from "../types/token.d";
 import type {
+  BridgeStatus,
   SolanaOrEvmAccount,
   SwapInformation,
-  Token,
-  TokenWithAmount,
 } from "@solana/bridge-adapter-core";
 import {
   getWalletAddress,
@@ -17,21 +16,21 @@ import type { ITokenService } from "../types/token-service";
 const debug = Debug("debug:AllBridgeClassicAdapter:sendEthToSolana");
 
 interface SendEthToSolanaArgs {
-  onStatusUpdate: () => void;
+  onStatusUpdate: (a: BridgeStatus) => void;
   sourceAccount: SolanaOrEvmAccount;
+  sourceChainToken: TokenWithChainDetails,
   swapInformation: SwapInformation;
   targetAccount: SolanaOrEvmAccount;
+  targetChainToken: TokenWithChainDetails,
 }
 
 export default async function sendEthToSolana(
   sdk: AllBridgeClassicSdk<ITokenService>,
-  findToken: (
-    this: void,
-    a: Token | TokenWithAmount,
-  ) => TokenWithChainDetails | undefined,
   {
     onStatusUpdate,
     sourceAccount,
+    sourceChainToken,
+    targetChainToken,
     swapInformation,
     targetAccount,
   }: SendEthToSolanaArgs,
@@ -46,16 +45,19 @@ export default async function sendEthToSolana(
   debug("Exchange between EVM & Solana");
   debug(`From ${sourceAddress} to ${targetAddress}`);
 
-  const sourceChainToken = findToken(swapInformation.sourceToken);
-  const targetChainToken = findToken(swapInformation.targetToken);
-
   if (!sourceChainToken || !targetChainToken) {
     throw new Error("Could not find on of the tokens to transfer");
   }
 
+  onStatusUpdate({
+    information: "Executing transfer",
+    name: "Progress",
+    status: "IN_PROGRESS",
+  });
+
   const amount = swapInformation.sourceToken.selectedAmountInBaseUnits;
 
-  console.log({ sourceChainToken, targetChainToken });
+  // console.log({ sourceChainToken, targetChainToken });
 
   return false;
 }

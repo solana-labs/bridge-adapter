@@ -79,7 +79,7 @@ export class AllBridgeClassicSdk<T extends ITokenService>
 
   protected getFixedFeeByChainSymbol(chainSymbol: string) {
     let data = { fee: 0.003, isStakingAvailable: true };
-    let symbol: unknown = chainSymbol;
+    const symbol: unknown = chainSymbol;
 
     /// https://docs.allbridge.io/allbridge-overview/bridge-fee#how-large-is-the-bridge-fee-on-every-blockchain
     switch (symbol as ChainSymbol) {

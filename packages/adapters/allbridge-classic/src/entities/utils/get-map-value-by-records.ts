@@ -10,7 +10,7 @@ export const getMapValueByRecords = <
   findBy: (record: ValueOf<A>) => any,
 ) => {
   const result: S[] = [];
-  for (let key in records) {
+  for (const key in records) {
     const value = records[key];
     const criteria = findBy(value);
     if (map.has(criteria)) {

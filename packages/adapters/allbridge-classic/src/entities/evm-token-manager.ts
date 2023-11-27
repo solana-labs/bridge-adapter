@@ -1,4 +1,4 @@
-import { IEvmHttpClient } from "./evm-http-client";
+import type { IEvmHttpClient } from "./evm-http-client";
 
 interface IEvmTokenManager<_A extends IEvmHttpClient> {
   lock(
