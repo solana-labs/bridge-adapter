@@ -150,11 +150,11 @@ export class AllBridgeClassicBridgeAdapter<
 
   async getChainToken(
     token: Token | TokenWithAmount,
-  ): TokenWithChainDetails | undefined {
+  ): Promise<TokenWithChainDetails | undefined> {
     if (!this.chainMapping) {
       throw new Error("Absent chain mapping");
-    } 
-    const chainToken = await this.findTokenWithChainDetailsAtChainDetails(token)
+    }
+    const chainToken = await this.findTokenWithChainDetailsAtChainDetails(token);
 
     return chainToken
   }
