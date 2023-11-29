@@ -56,7 +56,7 @@ To start developing, you may use these:
 
 - `pnpm demo`. The demo application will be served on a local system.
 - `pnpm playground`. It will run a sandbox powered by Storybook and build all the needed packages in the watch mode (see the `playground` script at the root package. Those scripts might be used separately for human-friendly logging).
-- `pnpm dev [-- --platform=browser]`. It will build all the packages in watch mode (`--platform=browser` option should be present for `demo` & `playground` bundles).
+- `pnpm dev`. It will build all the packages in watch mode.
 
 ### Building
 

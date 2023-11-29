@@ -50,7 +50,10 @@ export default function Home({
     [title],
   );
 
-  const adapters = React.useMemo(() => [DeBridgeBridgeAdapter, WormholeBridgeAdapter], []);
+  const adapters = React.useMemo(
+    () => [DeBridgeBridgeAdapter, WormholeBridgeAdapter],
+    [],
+  );
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [error, setError] = React.useState<Error | undefined>();

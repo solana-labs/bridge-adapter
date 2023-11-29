@@ -6,27 +6,27 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./esm/index.js",
+      "types": "./esm/index.d.ts"
     },
     "./esm": {
       "import": "./esm/index.js",
       "types": "./esm/index.d.ts"
     }
   },
-  "main": "./dist/index.js",
+  "main": "./esm/index.js",
   "module": "./esm/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./esm/index.d.ts",
   "files": [
     "dist/**",
     "esm/**",
     "src/**"
   ],
   "scripts": {
-    "build": "tsup src/index.tsx --env.ESM_ONLY true",
-    "build-core/dist": "pnpm build --platform=browser",
+    "build/dist": "tsup src/index.tsx --env.ESM_ONLY true",
+    "build-core/browser": "pnpm build/dist --platform=browser",
     "build-core/esm": "tsc --build tsconfig.esm.json --verbose",
-    "build-core": "pnpm run build-core/dist && pnpm run build-core/esm",
+    "build-core": "pnpm run build-core/esm",
     "clean": "./clean.sh",
     "lint": "eslint \"src/**/*.ts*\"",
     "test": "pnpm run test-types && pnpm run test-unit",

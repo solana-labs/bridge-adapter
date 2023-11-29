@@ -31,21 +31,12 @@ export const EvmWalletConnectionList: FC<EvmWalletConnectionListProps> = ({
     setChain,
   } = useEvmContext();
 
-  // FIXME: remove "dead code" so the implementation for solana and ethereum be in sync
   const { onSuccess } =
     useBridgeModalStore.use.currentBridgeStepParams() as BridgeStepParams<"WALLET_SELECTION">;
 
   useEffect(() => {
     setChain(chain);
   }, [setChain, chain]);
-
-  /* FIXME
-   *useEffect(() => {
-   *  if (isConnected) {
-   *    // setCurrentBridgeStep({ step: "MULTI_CHAIN_SELECTION" });
-   *  }
-   *}, [isConnected, onSuccess]);
-   */
 
   /**
    *  Handle 3rd-party wallet providers.
@@ -86,7 +77,7 @@ export const EvmWalletConnectionList: FC<EvmWalletConnectionListProps> = ({
     return () => {
       if (isConnected && timerRef.current) {
         debug("Cleaning up the timer");
-        clearTimeout(timerRef.current);
+        clearTimeout(Number(timerRef.current));
       }
     };
   }, [isConnecting, isConnected, onExternalError]);

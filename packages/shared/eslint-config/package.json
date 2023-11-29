@@ -11,7 +11,6 @@
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
     "eslint": "^8.29.0",
-    "eslint-config-next": "13.4.6",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-turbo": "1.10.6",
     "eslint-plugin-react": "^7.32.2",
@@ -20,5 +19,9 @@
   },
   "publishConfig": {
     "access": "restricted"
+  },
+  "devDependencies": {
+    "eslint-config-next": "^13.4.6",
+    "next": "^13.4.6"
   }
 }

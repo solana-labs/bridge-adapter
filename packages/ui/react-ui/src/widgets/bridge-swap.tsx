@@ -92,7 +92,7 @@ export const BridgeSwap: FC<BridgeSwapProps> = ({
     <QueryClientProvider client={queryClient}>
       <div
         className={cn(
-          "bsa-h-[600px] bsa-max-w-md bsa-border-border bsa-bg-background bsa-text-foreground bsa-overflow-y",
+          "bsa-h-[600px] bsa-max-w-md bsa-min-w-[26rem] bsa-border-border bsa-bg-background bsa-text-foreground bsa-overflow-y",
           className,
         )}
         style={{

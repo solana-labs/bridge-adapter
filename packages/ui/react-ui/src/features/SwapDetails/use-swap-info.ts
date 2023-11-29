@@ -5,8 +5,6 @@ import { useCanGetSwapInfo } from "./use-can-get-swap-info";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-// TODO: write tests
-
 export function useSwapInfo() {
   const sdk = BridgeAdapter.useBridgeModalStore.use.sdk();
   const { sourceToken, targetToken } =

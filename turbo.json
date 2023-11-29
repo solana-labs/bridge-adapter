@@ -1,37 +1,26 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
-    "_build": {
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "dependsOn": ["^build"]
+    "build": {
+      "outputs": ["dist/**", "esm/**", ".next/**", "!.next/cache/**"],
+      "dependsOn": ["^build-core", "^build"]
     },
     "build-core": {
       "cache": false,
       "outputs": ["dist/**", "esm/**", ".next/**", "!.next/cache/**"],
       "dependsOn": ["^build-core"]
     },
-    "build-esm": {
-      "outputs": ["esm/**"],
-      "dependsOn": ["^build-core", "^build-esm"]
-    },
-    "build-packages": {
-      "outputs": ["dist/**"],
-      "dependsOn": ["^build-core", "^build-packages"]
-    },
-    "build-pkg": {
-      "dependsOn": ["^build-core", "^build-pkg"]
-    },
     "build-storybook": {
       "outputs": ["storybook-static/**"],
-      "dependsOn": ["^build-core", "^build-pkg"]
-    },
-    "clean": {
-      "cache": false
+      "dependsOn": ["^build-core", "^build"]
     },
     "build-demo": {
       "cache": false,
       "outputs": [".next/**"],
-      "dependsOn": ["^build-core", "^build-pkg"]
+      "dependsOn": ["^build-core", "^build"]
+    },
+    "clean": {
+      "cache": false
     },
     "dev": {
       "cache": false,
@@ -39,11 +28,11 @@
     },
     "lint": {
       "outputs": ["dist/**", "esm/**"],
-      "dependsOn": ["build-pkg"]
+      "dependsOn": ["build"]
     },
     "test": {
       "outputs": ["coverage/**"],
-      "dependsOn": ["build-pkg"]
+      "dependsOn": ["build"]
     }
   },
   "globalEnv": [

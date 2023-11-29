@@ -1,8 +1,8 @@
-import { UserCircle2 } from "lucide-react";
-import { useAccount } from "wagmi";
-import { cn } from "../../shared/lib/styles";
-import { Button } from "../../shared/ui/button";
 import type { WalletName } from "../../shared/ui/icons/WalletIcon";
+import { Button } from "../../shared/ui/button";
+import { cn } from "../../shared/lib/styles";
+import { useEvmAccount, useEvmContext } from "@solana/bridge-adapter-react";
+import { UserCircle2 } from "lucide-react";
 import { WalletIcon } from "../../shared/ui/icons/WalletIcon";
 
 export function EvmWalletDetail({
@@ -12,7 +12,8 @@ export function EvmWalletDetail({
   switchWallet?: () => void | Promise<void>;
   className?: string;
 }) {
-  const { connector, isConnected } = useAccount();
+  const { isConnected } = useEvmContext();
+  const { connector } = useEvmAccount();
 
   if (!isConnected) {
     return (

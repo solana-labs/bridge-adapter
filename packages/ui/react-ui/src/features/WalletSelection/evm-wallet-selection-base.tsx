@@ -1,8 +1,8 @@
-import { Button } from "../../shared/ui/button";
 import type { Connector } from "wagmi";
 import type { FC } from "react";
-import { WalletIcon } from "../../shared/ui/icons/WalletIcon";
 import type { WalletName } from "../../shared/ui/icons/WalletIcon";
+import { Button } from "../../shared/ui/button";
+import { WalletIcon } from "../../shared/ui/icons/WalletIcon";
 
 export type ConnectorData<T = unknown, K = unknown> = Pick<
   Connector<T, K>,
