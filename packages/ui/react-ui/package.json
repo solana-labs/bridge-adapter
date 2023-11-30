@@ -97,7 +97,7 @@
     "eslint-config-bridge-adapter-sdk": "^0.0.0",
     "eslint-config-turbo": "1.10.6",
     "eslint-plugin-storybook": "^0.6.15",
-    "postcss": "8.4.24",
+    "postcss": "8.4.31",
     "prettier-plugin-tailwindcss": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

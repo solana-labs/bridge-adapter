@@ -685,7 +685,7 @@ importers:
         specifier: ^0.6.15
         version: 0.6.15(eslint@8.49.0)(typescript@5.2.2)
       postcss:
-        specifier: '>=8.4.31'
+        specifier: 8.4.31
         version: 8.4.31
       prettier-plugin-tailwindcss:
         specifier: ^0.3.0
