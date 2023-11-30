@@ -104,13 +104,11 @@ export function useTokenBalance(token: Token) {
             functionName: "balanceOf",
             args: [walletClient?.account.address],
           });
-          //console.log("userBalannce token", userBalannce);
           return formatTokenBalance(formatUnits(userBalannce, token.decimals));
         } else {
           const userBalannce = await publicClient.getBalance({
             address: walletClient?.account.address,
           });
-          //console.log("userBalannce coin", userBalannce);
           return formatTokenBalance(formatUnits(userBalannce, token.decimals));
         }
       }

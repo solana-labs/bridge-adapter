@@ -58,7 +58,7 @@ export default async function sendEthToEth<T extends AllbridgeCoreSdk>(
 
   const amount = swapInformation.sourceToken.selectedAmountInBaseUnits;
 
-  const result = false;
+  debug("Params", { amount })
 
-  return result;
+  throw new Error("Not implemented yet");
 }

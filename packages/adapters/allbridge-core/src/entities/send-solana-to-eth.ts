@@ -92,9 +92,5 @@ export default async function sendSolanaToEth<T extends AllbridgeCoreSdk>(
   //},
   //});
 
-  return sdk.bridge.rawTxBuilder.send(params);
-
-  const result = false;
-
-  return result;
+  throw new Error("Not implemented yet");
 }

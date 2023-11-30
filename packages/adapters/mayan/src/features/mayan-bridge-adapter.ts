@@ -15,6 +15,7 @@ import type {
   Quote,
   SolanaTransactionSigner,
 } from "@mayanfinance/swap-sdk";
+import Debug from "debug";
 import { approveEth, getAllowanceEth } from "@certusone/wormhole-sdk";
 import {
   fetchQuote,
@@ -35,6 +36,8 @@ import {
   isSolanaAccount,
   walletClientToSigner,
 } from "@solana/bridge-adapter-core";
+
+const log = Debug("log:adapters:MayanBridgeAdapter");
 
 export class MayanBridgeAdapter extends AbstractBridgeAdapter {
   private tokenList: Record<string, Token[]> = {};
@@ -83,7 +86,7 @@ export class MayanBridgeAdapter extends AbstractBridgeAdapter {
       throw new Error(`Chain ${chain} is not supported by ${this.name()}`);
     }
     if (!this.tokenList[chain]) {
-      //console.log("fetching Mayan Solana token list");
+      log(`Fetching ${this.name()} Solana token list`);
       const tokenList = await fetchTokenList(
         chain.toLowerCase() as MayanChainName,
       );

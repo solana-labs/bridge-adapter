@@ -36,13 +36,15 @@ import {
 import sendEthToSolana from "../entities/send-eth-to-solana";
 import sendEthToEth from "../entities/send-eth-to-eth";
 import sendSolanaToEth from "../entities/send-solana-to-eth";
+import Web3 from "web3";
 
 const debug = Debug("debug:adapters:AllBridgeCoreBridgeAdapter");
 
-interface ProviderWithConnection extends ReturnType<typeof getProviderFromKeys> {
+interface ProviderWithConnection
+  extends ReturnType<typeof getProviderFromKeys> {
   connection: {
     url: string;
-  }
+  };
 }
 
 export class AllBridgeCoreBridgeAdapter extends AbstractBridgeAdapter {
@@ -71,7 +73,7 @@ export class AllBridgeCoreBridgeAdapter extends AbstractBridgeAdapter {
       [ChainSymbol.SOL]: this.getSolanaConnection().rpcEndpoint,
       [ChainSymbol.ETH]: this.getRpcEndpoint("Ethereum"),
       [ChainSymbol.ARB]: this.getRpcEndpoint("Arbitrum"),
-      [ChainSymbol.POL]: this.getRpcEndpoint("Polygon")
+      [ChainSymbol.POL]: this.getRpcEndpoint("Polygon"),
     };
 
     this.sdk = new AllbridgeCoreSdk(rpcUrls);
@@ -321,7 +323,13 @@ export class AllBridgeCoreBridgeAdapter extends AbstractBridgeAdapter {
       result = await sendSolanaToEth(this.sdk, bridgeParams);
     } else if (targetToken.chain === "Solana") {
       /// EVM -> Solana
-      result = await sendEthToSolana(this.sdk, bridgeParams);
+      const url = this.getRpcEndpoint(sourceChainToken.chainName as ChainName);
+      const web3 = new Web3(url);
+      console.log({sourceAccount})
+      // @ts-expect-error allow
+      web3.eth.accounts.wallet.add(sourceAccount.account);
+
+      result = await sendEthToSolana(this.sdk, bridgeParams, web3);
     } else {
       //  EVM -> EVM
       result = await sendEthToEth(this.sdk, bridgeParams);

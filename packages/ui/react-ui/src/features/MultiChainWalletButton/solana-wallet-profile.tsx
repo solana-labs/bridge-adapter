@@ -50,7 +50,10 @@ export function SolanaWalletProfile({
           className="bsa-mr-2 bsa-max-h-[2.5rem] bsa-px-2 bsa-py-[0.3125rem]"
         />
         <div>
-          <PublicKeyLine publicKey={publicKey ? publicKey : undefined} isName={!publicKey} />
+          <PublicKeyLine
+            publicKey={publicKey ? publicKey : undefined}
+            isName={!publicKey}
+          />
           <div className="bsa-text-sm bsa-text-muted-foreground">Solana</div>
         </div>
       </div>

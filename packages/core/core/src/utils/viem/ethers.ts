@@ -40,17 +40,20 @@ export function getProviderFromKeys({
   alchemyApiKey?: string;
   infuraApiKey?: string;
   chainName: ChainName;
-}){
+}) {
   const chain = chainNameToViemChain(chainName);
 
   function parseApiKey(apiKey: string | undefined) {
     let result: string | undefined;
-    if(apiKey?.length === 0) result = undefined;
-    else result = apiKey
-    return result
+    if (apiKey?.length === 0) result = undefined;
+    else result = apiKey;
+    return result;
   }
 
-  if (parseApiKey(alchemyApiKey) && supportedAlchemyChains.includes(chainName)) {
+  if (
+    parseApiKey(alchemyApiKey) &&
+    supportedAlchemyChains.includes(chainName)
+  ) {
     return new providers.AlchemyProvider(chain.id, alchemyApiKey);
   }
   if (parseApiKey(infuraApiKey) && supportedInfuraChains.includes(chainName)) {

@@ -1,8 +1,11 @@
+import Debug from "debug";
 import * as BridgeAdapterReact from "@solana/bridge-adapter-react";
 import type { BridgeStatus } from "@solana/bridge-adapter-core";
 import { PendingTransactionBase } from "./pending-transaction-base";
 import { useCallback, useState } from "react";
 import { useSubmitAndTrackTransaction } from "../../entities";
+
+const debug = Debug("debug:react-ui:PendingTransaction");
 
 const UNKNOWN_STATUS = {
   name: "",
@@ -24,7 +27,7 @@ export function PendingTransaction() {
     undefined,
   );
   const onStatusUpdate = useCallback((args: BridgeStatus) => {
-    //console.log("Transaction Status:", args);
+    debug("Transaction Status:", args);
     setCurrentStatus(args);
     if (args.name === "Completed") {
       BridgeAdapterReact.setCurrentBridgeStep({
