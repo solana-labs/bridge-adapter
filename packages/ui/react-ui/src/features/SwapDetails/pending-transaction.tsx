@@ -24,8 +24,7 @@ export function PendingTransaction() {
     undefined,
   );
   const onStatusUpdate = useCallback((args: BridgeStatus) => {
-    console.log("Transaction Status:", args);
-
+    //console.log("Transaction Status:", args);
     setCurrentStatus(args);
     if (args.name === "Completed") {
       BridgeAdapterReact.setCurrentBridgeStep({

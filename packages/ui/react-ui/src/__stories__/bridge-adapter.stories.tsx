@@ -9,9 +9,15 @@ import {
 import * as WalletAdapters from "@solana/wallet-adapter-wallets";
 import { BridgeAdapter } from "../index";
 import { expect } from "@storybook/jest";
-import { DeBridgeBridgeAdapter } from "@solana/bridge-adapter-debridge-adapter";
-import { WormholeBridgeAdapter } from "@solana/bridge-adapter-wormhole-adapter";
-import { walletConnectProjectId, solanaRpcUrl, infuraApiKey } from "../env";
+import { AllBridgeCoreBridgeAdapter } from "@solana/bridge-adapter-allbridge-core-adapter";
+//import { DeBridgeBridgeAdapter } from "@solana/bridge-adapter-debridge-adapter";
+//import { WormholeBridgeAdapter } from "@solana/bridge-adapter-wormhole-adapter";
+import {
+  walletConnectProjectId,
+  solanaRpcUrl,
+  infuraApiKey,
+  alchemyApiKey,
+} from "../env";
 import { within } from "@storybook/testing-library";
 
 const meta: Meta<typeof BridgeAdapter> = {
@@ -26,10 +32,18 @@ const meta: Meta<typeof BridgeAdapter> = {
 export default meta;
 
 export const Default: StoryObj<
-  Parameters<typeof BridgeAdapter>[0] & { walletConnectProjectId: string }
+  Parameters<typeof BridgeAdapter>[0] & {
+    walletConnectProjectId?: string;
+    infuraApiKey?: string;
+    alchemyApiKey?: string;
+    solanaRpcUrl?: string;
+  }
 > = {
   args: {
     walletConnectProjectId,
+    infuraApiKey,
+    alchemyApiKey,
+    solanaRpcUrl,
   },
   render: (props) => {
     if (!props.walletConnectProjectId) {
@@ -64,7 +78,11 @@ export const Default: StoryObj<
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const adapters = React.useMemo(
-      () => [DeBridgeBridgeAdapter, WormholeBridgeAdapter],
+      () => [
+        // FIXME: remove on completion
+        AllBridgeCoreBridgeAdapter,
+        //DeBridgeBridgeAdapter, WormholeBridgeAdapter
+      ],
       [],
     );
 
@@ -82,8 +100,11 @@ export const Default: StoryObj<
             adapters={adapters}
             error={error}
             settings={{
-              evm: { infuraApiKey },
-              solana: { solanaRpcUrl },
+              evm: {
+                infuraApiKey: props.infuraApiKey,
+                alchemyApiKey: props.alchemyApiKey,
+              },
+              solana: { solanaRpcUrl: props.solanaRpcUrl },
             }}
           >
             <BridgeAdapter theme={props.theme} title={props.title} />

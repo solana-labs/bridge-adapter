@@ -83,7 +83,7 @@ export class MayanBridgeAdapter extends AbstractBridgeAdapter {
       throw new Error(`Chain ${chain} is not supported by ${this.name()}`);
     }
     if (!this.tokenList[chain]) {
-      console.log("fetching Mayan Solana token list");
+      //console.log("fetching Mayan Solana token list");
       const tokenList = await fetchTokenList(
         chain.toLowerCase() as MayanChainName,
       );
@@ -130,7 +130,7 @@ export class MayanBridgeAdapter extends AbstractBridgeAdapter {
       gasDrop: 0.01, // optional
       referrer: this.mayanSolanaFee,
     });
-    console.log("quote", quote);
+    //console.log("quote", quote);
     this.mayanQuote = quote;
     return {
       sourceToken: sourceToken,

@@ -27,12 +27,20 @@ const meta: Meta<typeof BridgeAdapterDialog> = {
 export default meta;
 
 export const Default: StoryObj<
-  Parameters<typeof BridgeAdapterDialog>[0] & { walletConnectProjectId: string }
+  Parameters<typeof BridgeAdapterDialog>[0] & {
+    walletConnectProjectId: string;
+    alchemyApiKey?: string;
+    infuraApiKey?: string;
+    solanaRpcUrl?: string;
+  }
 > = {
   args: {
     title: "Demo",
     theme: BridgeAdapterTheme.light,
     walletConnectProjectId,
+    infuraApiKey,
+    alchemyApiKey,
+    solanaRpcUrl,
   },
   render: (props) => {
     if (!props.walletConnectProjectId) {
@@ -85,8 +93,11 @@ export const Default: StoryObj<
             adapters={adapters}
             error={error}
             settings={{
-              evm: { infuraApiKey, alchemyApiKey },
-              solana: { solanaRpcUrl },
+              evm: {
+                infuraApiKey: props.infuraApiKey,
+                alchemyApiKey: props.alchemyApiKey,
+              },
+              solana: { solanaRpcUrl: props.solanaRpcUrl },
             }}
           >
             <BridgeAdapterDialog theme={props.theme} title={props.title}>

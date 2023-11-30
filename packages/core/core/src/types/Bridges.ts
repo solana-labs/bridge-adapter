@@ -15,7 +15,7 @@ export type BridgeAdapterArgs = Partial<ChainSourceAndTarget> & {
   };
 };
 
-export type Bridges = "wormhole" | "mayan" | "deBridge";
+export type Bridges = "wormhole" | "mayan" | "deBridge" | "allBridgeCore";
 
 export type SolanaAccount = {
   signTransaction: SignerWalletAdapterProps["signTransaction"];

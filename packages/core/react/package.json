@@ -28,6 +28,7 @@
     "build-core/esm": "tsc --build tsconfig.esm.json --verbose",
     "build-core": "pnpm run build-core/esm",
     "clean": "./clean.sh",
+    "dev": "pnpm run build-core/esm --watch",
     "lint": "eslint src --ext .ts,.tsx",
     "test": "pnpm run test-fn && pnpm run test-types",
     "test-fn": "vitest src/__tests__/**.test.*",

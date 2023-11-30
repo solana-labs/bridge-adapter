@@ -13,6 +13,7 @@
     "ci:publish": "turbo run build-pkg && changeset publish",
     "ci:version": "changeset version",
     "clean": "turbo run clean && rm -rf node_modules",
+    "dev": "turbo run dev --concurrency=14",
     "format": "prettier -w \"**/*.{js,cjs,ts,tsx,md,json}\"",
     "lint": "turbo run lint && manypkg check",
     "playground": "pnpm --filter @solana/bridge-adapter-react-ui playground",

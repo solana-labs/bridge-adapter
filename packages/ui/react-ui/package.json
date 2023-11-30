@@ -48,6 +48,7 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
+    "@solana/bridge-adapter-allbridge-core-adapter": "^0.1.0",
     "@solana/bridge-adapter-base": "^0.1.0",
     "@solana/bridge-adapter-core": "^0.1.0",
     "@solana/bridge-adapter-debridge-adapter": "^0.1.0",

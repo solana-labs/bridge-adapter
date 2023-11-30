@@ -13,6 +13,7 @@ export const CHAIN_ALIASES: Record<ChainName, ChainName> = {
 };
 
 export const BRIDGE_ALIASES: Record<string, Bridges> = {
+  AllBridgeCore: "allBridgeCore",
   DeBridge: "deBridge",
   Mayan: "mayan",
   Wormhole: "wormhole",

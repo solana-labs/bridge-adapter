@@ -40,13 +40,20 @@ export function getProviderFromKeys({
   alchemyApiKey?: string;
   infuraApiKey?: string;
   chainName: ChainName;
-}) {
+}){
   const chain = chainNameToViemChain(chainName);
 
-  if (alchemyApiKey && supportedAlchemyChains.includes(chainName)) {
+  function parseApiKey(apiKey: string | undefined) {
+    let result: string | undefined;
+    if(apiKey?.length === 0) result = undefined;
+    else result = apiKey
+    return result
+  }
+
+  if (parseApiKey(alchemyApiKey) && supportedAlchemyChains.includes(chainName)) {
     return new providers.AlchemyProvider(chain.id, alchemyApiKey);
   }
-  if (infuraApiKey && supportedInfuraChains.includes(chainName)) {
+  if (parseApiKey(infuraApiKey) && supportedInfuraChains.includes(chainName)) {
     return new providers.InfuraProvider(chain.id, infuraApiKey);
   }
   return getDefaultProvider(chain.rpcUrls.default.http[0]);
