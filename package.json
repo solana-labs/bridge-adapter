@@ -7,7 +7,6 @@
     "build": "turbo run build",
     "build-core": "turbo run build-core",
     "build-demo": "turbo run build-demo",
-    "dev": "turbo run dev --concurrency=14",
     "build-storybook": "turbo run build-storybook -- --quiet",
     "changeset": "changeset",
     "ci:publish": "turbo run build-pkg && changeset publish",
