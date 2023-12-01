@@ -2,6 +2,8 @@
 
 The following is for existing bridge developer or DEX who wish to integrate with the SDK.
 
+Document with the overview of the bridge could be [found here](./BRIDGE_OVERVIEW.md).
+
 ## Bridge Developer
 
 The bridge adapter provides information on:
