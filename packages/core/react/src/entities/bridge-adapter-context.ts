@@ -1,10 +1,10 @@
 import Debug from "debug";
+import type { BridgeAdapterSdkArgs } from "@solana/bridge-adapter-base";
 import type {
-  BridgeAdapterSdkArgs,
   ChainDestType,
   SwapInformation,
   TokenWithAmount,
-} from "@solana/bridge-adapter-base";
+} from "@solana/bridge-adapter-core";
 import { BridgeAdapterSdk } from "@solana/bridge-adapter-base";
 import { parseUnits } from "viem";
 import type { StoreApi, UseBoundStore } from "zustand";
@@ -107,6 +107,7 @@ const DEFAULT_BRIDGE_ADAPTER_STATE = {
   },
   slippageTolerance: "auto",
 } satisfies BridgeModalState;
+
 const useBridgeModalStoreBase = create<BridgeModalState>()(
   devtools(
     immer<BridgeModalState>(() => {
@@ -114,6 +115,7 @@ const useBridgeModalStoreBase = create<BridgeModalState>()(
     }),
   ),
 );
+
 export const useBridgeModalStore = createSelectors(useBridgeModalStoreBase);
 
 /** ACTIONS */

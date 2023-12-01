@@ -1,4 +1,4 @@
-import type { BridgeStatus } from "@solana/bridge-adapter-base";
+import type { BridgeStatus } from "@solana/bridge-adapter-core";
 import type { FC } from "react";
 import { Spinner } from "../../shared/ui/spinner";
 

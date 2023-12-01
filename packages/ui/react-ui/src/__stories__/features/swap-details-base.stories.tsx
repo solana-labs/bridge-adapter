@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
-import type { SwapInformation } from "@solana/bridge-adapter-base";
+import type { SwapInformation } from "@solana/bridge-adapter-core";
 import { SwapDetailsBase } from "../../features/SwapDetails";
 
 const meta: Meta<typeof SwapDetailsBase> = {

@@ -3,7 +3,7 @@ import type {
   BridgeStep,
   BridgeStepParams,
 } from "@solana/bridge-adapter-react";
-import type { ChainName } from "@solana/bridge-adapter-base";
+import type { ChainName } from "@solana/bridge-adapter-core";
 import type { FC } from "react";
 import { AbsentChainError } from "../../errors";
 import { EvmWalletConnectionList } from "./evm-wallet-selection";

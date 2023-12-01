@@ -1,0 +1,68 @@
+{
+  "name": "@solana/bridge-adapter-mayan-adapter",
+  "version": "0.1.0",
+  "license": "SEE LICENSE IN ../../../LICENSE",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./esm/index.js",
+      "types": "./esm/index.d.ts"
+    },
+    "./esm": {
+      "import": "./esm/index.js",
+      "types": "./esm/index.d.ts"
+    }
+  },
+  "main": "./esm/index.js",
+  "module": "./esm/index.js",
+  "types": "./esm/index.d.ts",
+  "files": [
+    "dist/**",
+    "esm/**",
+    "src/**"
+  ],
+  "scripts": {
+    "build/dist": "tsup src/index.tsx --env.ESM_ONLY true",
+    "build/browser": "pnpm build/dist --platform=browser",
+    "build/esm": "tsc --build tsconfig.esm.json --verbose",
+    "build": "pnpm run build/esm",
+    "clean": "./clean.sh",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "test": "pnpm run test-types",
+    "test-types": "tsc --noEmit"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "project": true
+    },
+    "extends": [
+      "bridge-adapter-sdk"
+    ]
+  },
+  "dependencies": {
+    "@certusone/wormhole-sdk": "^0.10.4",
+    "@mayanfinance/swap-sdk": "^4.2.3"
+  },
+  "devDependencies": {
+    "@solana/bridge-adapter-core": "^0.1.0",
+    "@solana/web3.js": "^1.78.0",
+    "@types/web3": "^1.2.2",
+    "bridge-adapter-sdk-tsconfig": "^0.1.1",
+    "eslint": "^8.29.0",
+    "eslint-config-bridge-adapter-sdk": "^0.0.0",
+    "tsup": "^7.0.0",
+    "typescript": "^5.1.3",
+    "undici": "^5.26.2",
+    "valibot": "^0.3.0",
+    "viem": "^1.4.1"
+  },
+  "peerDependencies": {
+    "@solana/web3.js": "^1.78.0",
+    "valibot": "^0.3.0",
+    "viem": "^1.4.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

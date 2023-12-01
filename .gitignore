@@ -10,6 +10,7 @@
 .vim
 dist
 dist-ssr
+esm
 node_modules
 public/dist
 server/dist

@@ -1,5 +1,5 @@
 import React from "react";
-import type { ChainName } from "@solana/bridge-adapter-base";
+import type { ChainName } from "@solana/bridge-adapter-core";
 import type { ChainSelectionType } from "@solana/bridge-adapter-react";
 import type { FC } from "react";
 import { Button } from "../../shared/ui/button";

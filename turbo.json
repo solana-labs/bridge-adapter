@@ -2,47 +2,47 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "dependsOn": ["^build"]
+      "outputs": ["dist/**", "esm/**", ".next/**", "!.next/cache/**"],
+      "dependsOn": ["^build-core", "^build"]
     },
-    "build-demo": {
-      "dependsOn": ["build-packages"]
-    },
-    "build-packages": {
-      "outputs": ["dist/**"],
-      "dependsOn": ["^build-packages"]
+    "build-core": {
+      "cache": false,
+      "outputs": ["dist/**", "esm/**", ".next/**", "!.next/cache/**"],
+      "dependsOn": ["^build-core"]
     },
     "build-storybook": {
-      "outputs": ["dist/**"],
-      "dependsOn": ["build-packages"]
+      "outputs": ["storybook-static/**"],
+      "dependsOn": ["^build-core", "^build"]
     },
-    "test": {
-      "outputs": ["coverage/**"],
-      "dependsOn": ["build-packages"]
-    },
-    "lint": {
-      "outputs": ["dist/**"],
-      "dependsOn": ["build-packages"]
-    },
-    "demo": {
+    "build-demo": {
       "cache": false,
-      "dependsOn": ["build-packages"],
-      "persistent": false
+      "outputs": [".next/**"],
+      "dependsOn": ["^build-core", "^build"]
+    },
+    "clean": {
+      "cache": false
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "clean": {
-      "cache": false
+    "lint": {
+      "outputs": ["dist/**", "esm/**"],
+      "dependsOn": ["build"]
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "dependsOn": ["build"]
     }
   },
   "globalEnv": [
-    "NODE_ENV",
-    "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID",
-    "NEXT_PUBLIC_LOG_LEVEL",
-    "NEXT_PUBLIC_SOLANA_RPC_URL",
+    "NEXT_PUBLIC_ALCHEMY_API_KEY",
     "NEXT_PUBLIC_ETHEREUM_BASE_EXPLORER_URL",
-    "NEXT_PUBLIC_SOLANA_BASE_EXPLORER_URL"
+    "NEXT_PUBLIC_INFURA_API_KEY",
+    "NEXT_PUBLIC_LOG_LEVEL",
+    "NEXT_PUBLIC_SOLANA_BASE_EXPLORER_URL",
+    "NEXT_PUBLIC_SOLANA_RPC_URL",
+    "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID",
+    "NODE_ENV"
   ]
 }

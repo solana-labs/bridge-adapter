@@ -1,18 +1,24 @@
 import Debug from "debug";
-import type * as BridgeTypes from "../types/Bridges";
-import type { AbstractBridgeAdapter } from "./BridgeAdapter/AbstractBridgeAdapter";
-import type { BridgeAdapterSetting } from "../types/BridgeAdapterSetting";
-import type { ChainDestType } from "../types/ChainDest";
-import type { ChainName, ChainSourceAndTarget } from "../types/Chain";
-import type { SwapInformation } from "../types/SwapInformation";
-import type { Token, TokenWithAmount } from "../types/Token";
+import type {
+  AbstractBridgeAdapter,
+  BridgeAdapterArgs,
+  SolanaOrEvmAccount,
+  BridgeStatus,
+  ChainDestType,
+  ChainName,
+  ChainSourceAndTarget,
+  SwapInformation,
+  Token,
+  TokenWithAmount,
+} from "@solana/bridge-adapter-core";
+import { getSourceAndTargetChain } from "@solana/bridge-adapter-core";
 import { getBridgeAdapters } from "../utils/getBridgeAdapters";
-import { getSourceAndTargetChain } from "../utils/getSourceAndTargetChain";
 
 const warn = Debug("warn:base:BridgeAdapterSdk");
 
-export type BridgeAdapterSdkArgs = BridgeTypes.BridgeAdapterArgs & {
-  bridgeAdapterSettings?: BridgeAdapterSetting;
+export type BridgeAdapterSdkArgs = BridgeAdapterArgs & {
+  /// Allow adapters to be optional as we initialize sdk instance at the store without them
+  adapters?: (typeof AbstractBridgeAdapter)[];
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,20 +27,17 @@ export type RouteError<T = any> = { index: number; reason: T };
 export class BridgeAdapterSdk {
   sourceChain: ChainName | undefined;
   targetChain: ChainName | undefined;
-  bridgeAdapterSettings: BridgeAdapterSetting | undefined;
-  bridgeAdapters: AbstractBridgeAdapter[] = [];
+  bridgeAdapters: ReturnType<typeof getBridgeAdapters> = [];
   constructor(args?: BridgeAdapterSdkArgs) {
     if (args) {
-      const { sourceChain, targetChain, bridgeAdapterSettings, settings } =
-        args;
+      const { adapters, sourceChain, targetChain, settings } = args;
       this.sourceChain = sourceChain;
       this.targetChain = targetChain;
-      this.bridgeAdapterSettings = bridgeAdapterSettings;
       this.bridgeAdapters = getBridgeAdapters({
+        adapters,
+        settings,
         sourceChain: this.sourceChain,
         targetChain: this.targetChain,
-        bridgeAdapterSettings: this.bridgeAdapterSettings,
-        settings,
       });
     }
   }
@@ -183,9 +186,9 @@ export class BridgeAdapterSdk {
     targetAccount,
   }: {
     swapInformation: SwapInformation;
-    sourceAccount: BridgeTypes.SolanaOrEvmAccount;
-    targetAccount: BridgeTypes.SolanaOrEvmAccount;
-    onStatusUpdate: (args: BridgeTypes.BridgeStatus) => void;
+    sourceAccount: SolanaOrEvmAccount;
+    targetAccount: SolanaOrEvmAccount;
+    onStatusUpdate: (args: BridgeStatus) => void;
   }) {
     const bridgeAdapter = this.bridgeAdapters.find((bridgeAdapter) => {
       return bridgeAdapter.name() === swapInformation.bridgeName;

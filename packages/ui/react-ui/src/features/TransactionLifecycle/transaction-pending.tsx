@@ -1,6 +1,6 @@
 import * as useBridgeAdapter from "@solana/bridge-adapter-react";
-import type { BridgeStatus } from "@solana/bridge-adapter-base";
-import { BridgeStatusNames } from "@solana/bridge-adapter-base";
+import type { BridgeStatus } from "@solana/bridge-adapter-core";
+import { BridgeStatusNames } from "@solana/bridge-adapter-core";
 import { Spinner } from "../../shared/ui/spinner";
 import { useCallback, useState } from "react";
 import { useSubmitAndTrackTransaction } from "../../entities";

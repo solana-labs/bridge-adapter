@@ -1,6 +1,6 @@
 import * as BridgeAdapter from "@solana/bridge-adapter-react";
 import type { FC } from "react";
-import type { SwapInformation } from "@solana/bridge-adapter-base";
+import type { SwapInformation } from "@solana/bridge-adapter-core";
 import { SwapDetailsBase } from "./swap-details-base";
 import { useSwapInfo } from "./use-swap-info";
 

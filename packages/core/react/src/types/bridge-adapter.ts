@@ -1,4 +1,4 @@
-import type { ChainDestType, ChainName } from "@solana/bridge-adapter-base";
+import type { ChainDestType, ChainName } from "@solana/bridge-adapter-core";
 
 export type BridgeStep =
   | "MULTI_CHAIN_SELECTION"

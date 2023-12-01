@@ -1,4 +1,4 @@
-import type { ChainDestType } from "@solana/bridge-adapter-base";
+import type { ChainDestType } from "@solana/bridge-adapter-core";
 import type { FC } from "react";
 import {
   setCurrentBridgeStep,

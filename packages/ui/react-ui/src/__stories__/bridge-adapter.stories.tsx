@@ -1,6 +1,5 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import type { Bridges } from "@solana/bridge-adapter-react";
 import { BridgeAdapterTheme } from "../types";
 import {
   BridgeAdapterProvider,
@@ -10,7 +9,9 @@ import {
 import * as WalletAdapters from "@solana/wallet-adapter-wallets";
 import { BridgeAdapter } from "../index";
 import { expect } from "@storybook/jest";
-import { walletConnectProjectId, solanaRpcUrl } from "../env";
+import { DeBridgeBridgeAdapter } from "@solana/bridge-adapter-debridge-adapter";
+import { WormholeBridgeAdapter } from "@solana/bridge-adapter-wormhole-adapter";
+import { walletConnectProjectId, solanaRpcUrl, infuraApiKey } from "../env";
 import { within } from "@storybook/testing-library";
 
 const meta: Meta<typeof BridgeAdapter> = {
@@ -25,14 +26,9 @@ const meta: Meta<typeof BridgeAdapter> = {
 export default meta;
 
 export const Default: StoryObj<
-  Parameters<typeof BridgeAdapter>[0] & { walletConnectProjectId: string } & {
-    allowSetting: Bridges[];
-    denySetting?: Bridges[];
-  }
+  Parameters<typeof BridgeAdapter>[0] & { walletConnectProjectId: string }
 > = {
   args: {
-    allowSetting: ["deBridge"],
-    denySetting: undefined,
     walletConnectProjectId,
   },
   render: (props) => {
@@ -66,10 +62,11 @@ export const Default: StoryObj<
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [error, setError] = React.useState<Error | undefined>();
 
-    const bridgeAdapterSettings: { allow: Bridges[]; deny?: Bridges[] } = {
-      allow: props.allowSetting,
-    };
-    if (props.denySetting) bridgeAdapterSettings.deny = props.denySetting;
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const adapters = React.useMemo(
+      () => [DeBridgeBridgeAdapter, WormholeBridgeAdapter],
+      [],
+    );
 
     return (
       <SolanaWalletProvider
@@ -82,9 +79,10 @@ export const Default: StoryObj<
           walletConnectProjectId={evmSettings.walletConnectProjectId}
         >
           <BridgeAdapterProvider
+            adapters={adapters}
             error={error}
-            bridgeAdapterSettings={bridgeAdapterSettings}
             settings={{
+              evm: { infuraApiKey },
               solana: { solanaRpcUrl },
             }}
           >

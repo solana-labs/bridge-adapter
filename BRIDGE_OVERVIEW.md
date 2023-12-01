@@ -10,7 +10,7 @@ This document covers the existing bridges available and how this package attempt
 - Stable bridges: DeBridge, Wormhole.
 
 - TODO:
-  - [] Mayan
+  - [x] Mayan
   - [] CCTP
   - [] AllBridge
 

@@ -1,6 +1,6 @@
 import { Clock2, DollarSign, Droplet } from "lucide-react";
 import type { FC, HTMLProps } from "react";
-import type { SwapInformation } from "@solana/bridge-adapter-base";
+import type { SwapInformation } from "@solana/bridge-adapter-core";
 import { PendingTransactionButtonBase } from "./pending-transaction-button-base";
 import { formatSwapFee, formatTime } from "../../shared/lib/utils";
 import { Card, CardContent, CardHeader } from "../../shared/ui/card";

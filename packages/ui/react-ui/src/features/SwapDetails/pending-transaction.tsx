@@ -1,5 +1,5 @@
 import * as BridgeAdapterReact from "@solana/bridge-adapter-react";
-import type { BridgeStatus } from "@solana/bridge-adapter-base";
+import type { BridgeStatus } from "@solana/bridge-adapter-core";
 import { PendingTransactionBase } from "./pending-transaction-base";
 import { useCallback, useState } from "react";
 import { useSubmitAndTrackTransaction } from "../../entities";

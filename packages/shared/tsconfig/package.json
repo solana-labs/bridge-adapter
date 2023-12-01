@@ -1,8 +1,9 @@
 {
   "name": "bridge-adapter-sdk-tsconfig",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "private": true,
-  "license": "MIT",
+  "license": "SEE LICENSE IN ../../../LICENSE",
+  "main": ".",
   "publishConfig": {
     "access": "restricted"
   }

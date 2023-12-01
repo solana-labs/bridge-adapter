@@ -1,6 +1,6 @@
 import type { ChainSelectionType } from "@solana/bridge-adapter-react";
 import type { FC } from "react";
-import type { TokenWithAmount } from "@solana/bridge-adapter-base";
+import type { TokenWithAmount } from "@solana/bridge-adapter-core";
 import { Ban, ChevronRight } from "lucide-react";
 import { Button } from "../../shared/ui/button";
 import { ChainIcon } from "../../shared/ui/icons/ChainIcon";

@@ -1,6 +1,7 @@
 import * as lib from "../../shared/lib/utils";
 import type { FC } from "react";
-import type { RouteError, SwapInformation } from "@solana/bridge-adapter-base";
+import type { RouteError } from "@solana/bridge-adapter-base";
+import type { SwapInformation } from "@solana/bridge-adapter-core";
 import { Button } from "../../shared/ui/button";
 import { Clock2, Compass, DollarSign } from "lucide-react";
 import { cn } from "../../shared/lib/styles";
@@ -14,7 +15,7 @@ export interface SwapDetailsBaseProps {
   currentSwapInfo?: SwapInformation;
   isLoading: boolean;
   onSelectSwapInfo: (a: SwapInformation) => void;
-  routeErrors: SwapRouteErrorType[];
+  routeErrors?: SwapRouteErrorType[];
   swapInfo?: SwapInformation[];
 }
 
@@ -111,7 +112,7 @@ export const SwapDetailsBase: FC<SwapDetailsBaseProps> = ({
   return (
     <div className="bsa-flex bsa-flex-col bsa-space-y-5">
       {SwapDetailsBody}
-      {routeErrors?.length > 0 ? (
+      {routeErrors && routeErrors.length > 0 ? (
         <>
           <div className="bsa-flex bsa-w-full bsa-items-center bsa-justify-around bsa-text-muted-foreground">
             <Separator

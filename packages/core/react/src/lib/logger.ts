@@ -91,7 +91,7 @@ interface CustomLogger extends Logger<JsonObject> {
   warn(...any: any): any;
 }
 
-// FIXME: adjust the implementation to satisfy the wagmi logger
+// TODO: adjust the implementation to satisfy the wagmi logger
 export const logger: Pick<CustomLogger, "debug" | "info" | "warn" | "error"> = {
   debug: log.debug,
   error: log.error,

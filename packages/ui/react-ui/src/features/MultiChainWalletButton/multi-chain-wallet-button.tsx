@@ -4,6 +4,7 @@ import type { FC } from "react";
 import { Button, buttonVariants } from "../../shared/ui/button";
 import { cn } from "../../shared/lib/styles";
 import { EvmWalletProfile } from "./evm-wallet-profile";
+import { useEffect } from "react";
 import {
   setCurrentBridgeStep,
   useAccount,
@@ -39,8 +40,6 @@ export const MultiChainWalletButton: FC<MultiChainWalletButtonProps> = ({
 
   const solana = useSolanaWallet();
 
-  debug("Solana Wallet Info", solana.wallet);
-
   const { address, connector, isConnected } = useAccount();
   const { data: avatar } = useEnsAvatar();
   const { data: ensName } = useEnsName();
@@ -57,7 +56,10 @@ export const MultiChainWalletButton: FC<MultiChainWalletButtonProps> = ({
     disconnect,
   };
 
-  debug("Ethereum Wallet Info", { address, chain, ensName, isConnected });
+  useEffect(() => {
+    debug("Solana Wallet Info", solana.wallet);
+    debug("Ethereum Wallet Info", { address, chain, ensName, isConnected });
+  }, [solana.wallet, address, chain, ensName, isConnected]);
 
   const wallet = solana.wallet
     ? {
