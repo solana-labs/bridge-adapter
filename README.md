@@ -39,10 +39,7 @@ The SDK supports 3 bridges out of the box. You can choose any of them.
 - DeBridge
 - Mayan Finance
 - Allbridge Core (WIP)
-
-#### Limitations
-
-Currently only on Avax and Eth.
+- Allbridge Classic (WIP)
 
 ### Supported DEXes
 
