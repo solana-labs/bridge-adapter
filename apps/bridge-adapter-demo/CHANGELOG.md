@@ -1,4 +1,4 @@
-# @solana/bridge-adapter-base
+# bridge-adapter-demo
 
 ## 0.1.1
 

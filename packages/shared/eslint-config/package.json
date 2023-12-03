@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-bridge-adapter-sdk",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "license": "SEE LICENSE IN ../../../LICENSE",
   "main": "./index.js",
