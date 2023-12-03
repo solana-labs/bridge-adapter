@@ -45,10 +45,10 @@
   },
   "devDependencies": {
     "@solana/web3.js": "^1.78.0",
-    "bridge-adapter-sdk-tsconfig": "^0.1.1",
+    "bridge-adapter-sdk-tsconfig": "^0.2.0",
     "debug": "^4.3.4",
     "eslint": "^8.29.0",
-    "eslint-config-bridge-adapter-sdk": "^0.0.0",
+    "eslint-config-bridge-adapter-sdk": "^0.1.0",
     "eslint-plugin-turbo": "1.10.6",
     "ethers": "^5.7.2",
     "tsup": "^7.0.0",

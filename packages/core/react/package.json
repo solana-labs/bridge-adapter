@@ -1,6 +1,6 @@
 {
   "name": "@solana/bridge-adapter-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "SEE LICENSE IN ../../../LICENSE",
   "sideEffects": false,
   "type": "module",
@@ -46,7 +46,7 @@
     }
   },
   "dependencies": {
-    "@solana/bridge-adapter-base": "^0.1.0",
+    "@solana/bridge-adapter-base": "^0.1.1",
     "@solana/bridge-adapter-core": "^0.1.0",
     "roarr": "^7.15.1",
     "zustand": "^4.3.9"
@@ -59,10 +59,10 @@
     "@types/react": "^18.2.13",
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/parser": "^6.2.1",
-    "bridge-adapter-sdk-tsconfig": "^0.1.1",
+    "bridge-adapter-sdk-tsconfig": "^0.2.0",
     "debug": "^4.3.4",
     "eslint": "^8.29.0",
-    "eslint-config-bridge-adapter-sdk": "^0.0.0",
+    "eslint-config-bridge-adapter-sdk": "^0.1.0",
     "global-jsdom": "^9.1.0",
     "immer": "^10.0.3",
     "jest-environment-jsdom": "^29.7.0",
