@@ -1,19 +1,19 @@
-# Bridge Adapter Design Document
+# Unified Bridge Adapter
 
 ## Overview
 
 The unified bridge adapter SDK solves the challenge of having an increasing number of chains and growing liquidity fragmentation in two ways. By leveraging existing bridge infrastructure to go cross-chain, and by leveraging existing DEXes to increase the total pool of tokens that can be used with these bridge infrastructure.
 
-Document with the info for the bridge could be [found here](./BRIDGE_OVERVIEW.md).
+If you want to integrate another bridge or DEX into the SDK read the following [document](./BRIDGE_OVERVIEW.md).
 
 ### Unifying Existing Bridges
 
 The unified bridge adapter SDK provides a unified framework for interacting with all the various bridges out there. Instead of having to integrate each bridge 1 by 1, a developer simply needs to integrate this sdk to get the benefit of integrating multiple bridges.
 
-### Leveraging Existing Decentralzed Exchanges (DEXes)
+### Leveraging Existing Decentralized Exchanges (DEXes)
 
 While leveraging various existing bridges allows us to move more seamlessly between chains, we also leverage existing DEXes to increase the total pool of tokens that can be taken cross chain.
-Developers simply integrate a single SDK and get the combined benefits of the existing bridges and DEXes that exists today.
+Developers simply integrate a single SDK and get the combined benefits of the existing bridges and DEXes that exist today.
 
 ## Features
 
@@ -45,7 +45,7 @@ The SDK supports 3 bridges out of the box. You can choose any of them.
 
 The SDK supports 4 DEXes out of the box that is integrated with the various bridges.
 
-Unfortunately, there is no way to select speicifc DEXes to use right now. The SDK will automatically select the best DEX to use based on the token pair and the amount being swapped.
+Unfortunately, there is no way to select specific DEXes to use right now. The SDK will automatically select the best DEX to use based on the token pair and the amount being swapped.
 
 - Paraswap (EVM)
 - 1inch (EVM)
@@ -54,17 +54,17 @@ Unfortunately, there is no way to select speicifc DEXes to use right now. The SD
 
 ## Terminology
 
-This section goes over some quick basic terminology that might be usefull.
+This section goes over some quick basic terminology that might be useful.
 
 ### Source and Target
 
-Source refers to what the user starts on. We use terms like source token, source chain etc. freely
+The source refers to what the user starts on. We use terms like source token, source chain etc. freely
 Target refers to where the user wants to end up in. We use terms like target token, target chain etc. freely
 Note that Source and Target might well be the same chain or token.
 
 ### Accounts and Wallets and Signers
 
-All these refers to an owner who has the ability to sign for a transaction. For the most part we use terms like source account, target account etc. freely.
+All these refer to an owner who has the ability to sign for a transaction. For the most part, we use terms like source account, target account etc. freely.
 Due to the proliferation of various packages in the space, we might inevitably refer to these accounts as wallets or signers, but know that they are referring to the same thing unless explicitly stated otherwise.
 
 ## API overview
@@ -73,8 +73,8 @@ Developers interact directly with a high level BridgeSdk that abstracts away the
 
 ### Goals
 
-- Developer can allow users to easily bridge assets from one chain to another within their app
-- Developers can easily get users to pay them from tokens on other chain while still receiving the expected assets on the target chain
+- The developer can allow users to easily bridge assets from one chain to another within their app
+- Developers can easily get users to pay them from tokens on another chain while still receiving the expected assets on the target chain
 - Great DX for developers. Interruptions should be handled. Errors should be graceful and human readable.
 
 ### React SDK
